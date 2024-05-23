@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row; 
+
+    background-image: linear-gradient(
+          to bottom left,
+         rgba(29, 28, 2, 0.8),
+         rgba(29, 28, 2, 0.8),
+         rgba(29, 28, 2, 0.8)
+        
+    ), url('../../images/ray.webp') ;
+    background-size: cover;
+   
+    
+}
+
+#dash {
+    position: fixed;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: darkgreen;
+    margin-top: 0px;
+}
+
+#table {
+    margin-left: 500px; /* Adjusted margin to create space beside the sidebar */
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column; /* Stacking elements vertically */
+    align-items: center;
+    text-align: center;
+    margin-top: 80px;
+}
+
+#pharma-head {
+    color: white;
+}
+
+div header {
+    font-size: 22px;
+    color: white;
+    text-align: center;
+    line-height: 70px;
+    background-color: green;
+    user-select: none;
+}
+
+div ul a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 65px;
+    font-size: 20px;
+    color: white;
+    padding-left: 40px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(225, 225, 225, 0.1);
+    border-bottom: 1px solid black;
+    transition: 0.4s;
+    margin-right: 16px;
+    text-decoration: none;
+}
+
+div ul li:hover a {
+    padding-left: 50px;
+}
+
+
+#searchbar{
+    height: 50px;
+    width: 450px;
+    border-color: 1px darkgreen;
+    border-radius: 10px;
+    text-align: left;
+    padding-left: 20px;
+    margin-top: 8px;
+    font-size: larger;
+    border: 0px;
+    outline: none;
+    
+}
+div ul li{
+    list-style: none;
+}
+
+.button-container {
+    display: flex;
+}
+
+.button {
+    outline: none;
+    background-color: green;
+    border: none;
+    width: 100px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-right: 90px;
+    margin-top: 60px;
+}
+
+.button2 {
+    outline: none;
+    background-color: green;
+    border: none;
+    width: 100px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-top: 60px;
+}
+
+.button:hover, .button2:hover {
+    background-color:orange;
+    color: white;
+    cursor: pointer;
+    transition: all 400ms linear;
+}
+@media(max-width:500px){
+    body{
+        background-size: cover;
+        background-repeat: no-repeat; 
+        height: 667px;
+    }
+    #dash{
+       display: none;
+    }
+    div header{
+        font-size: 100%;
+    }
+    div ul a {
+      font-size: 80%;
+      font-weight: 300;
+    }
+    #table{
+        width: 375px;
+        margin-left: 0px;
+    }
+    #searchbar{
+        width: 250px;
+        font-size: 100%;
+        padding-left: 10px;
+    }
+    .button{
+        margin-right: 10px;
+        font-size: 80%;
+      
+    }
+    .button2{
+        margin-left: 50px;
+        font-size: 80%;
+        
+      
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+.zigege{
+    height: auto;
+    background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
+    background-size: cover;
+}
+
+.tryit{
+  background-image:url("https://avatars.mds.yandex.net/i?id=2a0000017a112839f4b4df8e98fb61d94705-4351964-images-thumbs&n=13") ;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+}
+  
+  .hospital-logo {
+    margin-top:8%;
+    margin-left: 2%;
+    width: 150px;
+    height: 150px;
+  }
+
+  .sevdiv{
+    display: flex;
+  }
+
+  .service-description{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .kulandila{
+    margin-top: 12px;
+    margin-bottom: 12px;
+    text-align: center;
+    color: green;
+    font-size:x-large;
+    font-weight: 700;
+  }
+
+  .mawu{
+    font-size: large;
+    margin-left: 13%;
+    margin-right: 5%;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  #spanid{
+    font-weight: 400;
+    text-align: left;
+    font-size: large;
+    margin-left: 13%;
+    margin-top: 2%;
+    margin-right: 5%;
+  }
+
+  .divyabt{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 1%;
+  }
+
+  @media(max-width: 500px){
+    .hospital-logo{
+      display: none;
+    }
+
+    .tryit{
+      width: 100%;
+      height: 300px;
+    }
+
+    .kulandila{
+      margin-left: 5%;
+      margin-right: 5%;
+      text-align: center;
+    }
+
+    .mawu{
+      margin-left: 5%;
+      margin-right: 2%;
+    }
+
+    #spanid{
+      margin-left: 5%;
+    }
+  }

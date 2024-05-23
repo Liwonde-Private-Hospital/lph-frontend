@@ -1,0 +1,74 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'); */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    /* background-color: rgb(86, 154, 154); */
+  
+  }
+  #team{
+      width: 1300px;
+      height: 700px;
+      background-image: linear-gradient(
+        rgba(29, 28, 5, 0.6),
+        rgba(29, 28, 5, 0.6),
+        rgba(29, 28, 5, 0.6)
+    
+      ), url('../../images/welcome3.jpeg');
+      border-color: #000;
+      margin-left: 40px; 
+      margin-right: 70px;
+      display: flex;
+      /* flex-direction: column; */
+      border-color: none;
+      margin-top: 10px;
+      border: 1px solid gray;
+  }
+  .connect{
+    width:500px ;
+    height: 600px;
+    background-color: white;
+    margin-top: 100px;
+  
+  }
+  .connect-image{
+    margin-top: 60px;
+    margin-left: 90px;
+  }
+  .connect-slide{
+    color: rgb(9, 9, 83) ;
+    margin-left: 10px;
+    margin-top: 30px;
+    font-size: 15px;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+  .comma{
+    margin-top: 30px;
+    font-size: 60px;
+    margin-left: 10px;
+  }
+  .comma1{
+    font-size: 60px;
+    margin-left: 300px;
+  }
+  .italic{
+    margin-top: -20px;
+    font-size: 22px;
+    color: rgb(20, 98, 72);
+    margin-left: 20px;
+    margin-right: 20px;
+    line-height: 1.5;
+  }
+ @media(max-width:500px){
+    #team{
+      display: none;
+    }
+ }
+
+ 

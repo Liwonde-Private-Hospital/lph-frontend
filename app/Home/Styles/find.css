@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  margin: 0;
+  padding: 0;
+  /* background-color: rgb(86, 154, 154); */
+
+}
+#find-doctor{
+    width: 1300px;
+    height: 250px;
+    background-color: green;
+    border-color: #000;
+     margin-left: 40px; 
+    margin-right: 70px;
+    display: flex;
+    flex-direction: column;
+    border-color: none;
+    margin-top: 10px;
+}
+.doctor{
+  color: white;
+  margin-top: 60px;
+  text-align: left;
+  margin-left: 70px;
+  
+}
+.contact{
+  color: white;
+  margin-top: 40px;
+  margin-left: 70px;
+  font-size: 100%;
+  font-weight: lighter;
+  line-height: 1.5;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.contact-doctor{
+  width: 200px;
+  height: 50px;
+  margin-left: 800px;
+   background-color: transparent;
+  border: 2px solid white;
+  margin-top: -170px;
+  color: white;
+  font-weight: lighter;
+  font-size: 22px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+}
+.contact-doctor:hover{
+  padding-left: 8px;
+  background-color: white;
+  color: green;
+  transform: scale(0.95);
+  transition: all 1s ease-out;
+  cursor: pointer;
+}
+@media(max-width:500px){
+  #find-doctor{
+    margin-left: 0px;
+    width: 400px;
+    height: 150px;
+  }
+  .doctor{
+    margin-top: 20px;
+    font-size: 70%;
+    font-weight: 200;
+    margin-left: 20px;
+  }
+  .contact{
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 60%;
+    line-height: 1;
+    font-weight: 100;
+  }
+  .contact-doctor{
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 70%;
+    width: 100px;
+    height: 30px;
+  }
+}

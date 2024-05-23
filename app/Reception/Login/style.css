@@ -1,0 +1,109 @@
+body{
+  background-size: cover;
+  background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.center {
+  display: block; /* Make sure the image is treated as a block element */
+  margin: auto; /* Set margin to auto to center horizontally */
+}
+
+h1 {
+  align-items: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  
+}
+
+.form {
+  width: 400px; /* Set the width as needed */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 50px; /* Add padding inside the form */
+  /*border: 1px solid #ccc; /* Border styles */
+  border-radius: 20px; /* Optional: Add rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+  text-align: center; /* Center the text content inside the form container */
+  margin-top: 60px;
+}
+
+.name {
+  display: block; /* Make labels block-level for easier styling */
+  margin-bottom: 10px; /* Add space between labels */
+  font-size: 20px; /* Corrected property for adjusting font size */
+  color: green;
+}
+
+input {
+  width: 100%; /* Make inputs fill the container width */
+  padding: 12px; /* Adjust padding for larger input size */
+  margin-bottom: 15px; /* Add space between input fields */
+  box-sizing: border-box; /* Include padding and border in the input's total width */
+  border-radius: 10px;
+  border: 1px solid #000000;
+  
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  background-color: white;
+  margin-top: 30px;
+}
+.form-wrapper{
+  padding: 20px;
+  
+}
+.button1{
+  outline: none;
+  background-color: green;
+  margin-top: 10px;
+  border: none;
+  width: 25%;
+  height: 40px;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+}
+.button1:hover{
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+  transition: all 400ms linear;
+}
+@media(max-width:500px){
+  .center{
+    width: 80px;
+    height: 80px;
+  }
+  h1{
+    font-size: 100%;
+    font-weight: 300;
+  }
+  .name{
+    font-size: 100%;
+  }
+  .form{
+    width: 300px;
+    border: 1px solid lightgreen;
+    margin-top: 90px;
+
+  }
+  .button1{
+    width: 70px;
+  }
+  #name{
+    border-radius: 5px;
+    height: 30px;
+    border: 1px solid lightgreen;
+    
+
+  }
+}
+  
+  
+  

@@ -1,0 +1,77 @@
+    .nmt{
+      background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
+      background-size: cover;
+    }
+
+    .kudya {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    #hex12{
+      text-align: center;
+      font-size: 3rem;
+    }
+
+    .card-kudya {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+  
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+     .kuzco{
+      max-width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .denm {
+      text-align: center;
+      margin: 0;
+      margin-bottom: 5%;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .view-more {
+      display: block;
+      margin-top: 10px;
+      color: #0070f3;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .view-more:hover {
+      text-decoration: underline;
+    }
+
+    .depthc{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 500px) {
+      .kudya{
+        width: fit-content;
+        padding: 0%;
+        margin-left: 7%;
+      }
+
+      .card{
+        width: 350px;
+      }
+
+      .kuzco{
+        width: 100%;
+        height: 200px;
+      }
+    }

@@ -1,0 +1,142 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'); */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #quick-service{
+    width: 1150px;
+    height: 500px;
+    background-color: rgb(86, 154, 154);
+    border-color: #000;
+    margin-left: 70px;
+    margin-right: 70px;
+    display: flex; 
+    margin-top: 60px;
+    flex-direction: column;
+  }
+  .Quick-services{
+    color: white;
+    margin-top: 10px;
+  }
+  #access{
+    width: 1125px;
+    height: 435px;
+    background-color: white;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+  }
+  .appointment{
+    width: 260px;
+    height: 400px;
+    border: 1px solid darkgray;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .book{
+    color: rgb(86, 154, 154) ;
+    text-align: center;
+  }
+  .make{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 110%;
+    color: darkgray;
+    font-weight: 500;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 300;
+    color:rgb(115, 179, 115);
+  }
+  .make1{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size:20px;
+    color:rgb(115, 179, 115);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 300;
+  }
+  .book-appointment{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .booking{
+    margin-top: 10px;
+    margin-left: 60px;
+    width: 120px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgb(86, 154, 154);
+    color: white;
+  }
+  .booking:hover{
+    cursor: pointer;
+    background-color: orange;
+    color:  white;
+    transform: scale(0.95) ;
+    transition: all 1s ease-in-out;
+  }
+  @media(max-width:500px){
+    .Quick-services{
+      margin-top: 5px;
+      font-size: 100%;
+      text-align: center;
+      color: green;
+      font-weight: 400;
+      text-align: center;
+     
+    }
+    #quick-service{
+      margin-left: 0px;
+      margin-top: 10PX;
+      display: flex;
+      width: 390px;  
+      height: 1000px;
+    
+    }
+    #access{
+      display: block;
+      width: 330px;
+      height: 930px;
+      margin-left: 20px;
+      
+    }
+    .make2{
+      font: 990px;
+    }
+    .image{
+      height: 120px;
+    }
+    .book{
+      font-size: 70%;
+    }
+    .make, .make1{
+     font-size: 55%;
+    }
+    .appointment{
+      height: 220px;
+      margin-left: 30px;
+    }
+    .booking{
+      font-size: 50%;
+      width: 90px;
+      margin-left: 90px;
+      height: 20px;
+    }
+  }
+  @media(min-width: 1500px){
+    #quick-service{
+      margin-top: 30px;
+      margin-left: 350px;
+    }
+ }

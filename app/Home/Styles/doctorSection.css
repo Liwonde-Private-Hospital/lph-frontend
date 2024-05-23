@@ -1,0 +1,108 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'); */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    /* background-color: rgb(86, 154, 154); */
+  
+  }  
+  #doctors-section{
+    background-color: green;
+  
+  }
+  .staff-team{
+    width: 260px;
+    height: 400px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgba(46, 81, 46, 0.987);
+  }
+  .staff-team1{
+    width: 260px;
+    height: 400px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgba(46, 81, 46, 0.987);
+  }
+  #staff{
+    width: 1125px;
+    height: 435px;
+    background-color: transparent;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+   
+  }
+  .Quick-services{
+    color: white;
+    margin-top: 10px;
+    margin-left: 500px;  
+  }
+  .staff-image{
+    margin-left: 20px;
+  }
+  .staff-role{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size:16px;
+    color: rgb(227, 226, 226);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 100;
+  }
+  .staff-names{
+    color: white;
+    margin-top: 10px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+  }
+  @media(max-width:500px){
+    #doctors-section{
+      margin-left: 0px;
+      margin-top: 20px;
+      height: 420px; /* Adjust height to fit content */
+      width: 400px; /* Take full width */
+      padding: 0 10px; /* Add padding to align with the layout */
+    }
+    #staff {
+     margin-left: 1px;
+    }
+    .staff-team{
+      margin-top: 10px;
+      height: 300px;
+      margin-right: 4px;
+      width: 180px;
+      margin-left: 4px;
+    }
+    .staff-role{
+      font-size: 65%;
+    }
+    .staff-team1{
+     display: none;
+    }
+    .staff-image{
+      width: 150px;
+      height: 150px;
+      margin-top: 0px;
+      margin-left: 10px;
+    }
+    .Quick-services{
+      margin-left: 30px;
+    }
+  }
+  
+  
+  

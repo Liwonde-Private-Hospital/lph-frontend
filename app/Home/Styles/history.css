@@ -1,0 +1,97 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'); */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #Brief-history{
+     width: 1400px;
+      height: 500px;
+      background-color: rgb(251, 250, 248);
+      border-color: #000;
+      /* margin-left: 70px; */
+      margin-right: 70px;
+      display: flex;
+      flex-direction: column;
+      border-color: none;
+  }
+  .footer-colo h4{
+    font-size: 22px;
+      color: black;
+      text-transform: capitalize;
+      margin-bottom: 35px;
+      font-weight: 500;
+      position: relative;
+      text-decoration: none;
+      margin-left: 90px;
+      margin-top: 120px;
+      margin-right: 10px;
+  }
+  .footer-colo h4::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: black;
+    height: 2px;
+    box-sizing: border-box;
+    width: 120px;
+  }
+  .footer-colo p{
+      margin-left: 90px;
+      color: rgb(61, 61, 61);
+      font-size: 18px;
+      bottom: -10px;
+      margin-bottom: 30px;
+      margin-right: 70px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  .brief-image{
+    margin-top: -270px;
+    margin-left: 650px;
+    border-radius: 5px;
+  }
+  @media(max-width:500px){
+    #Brief-history{
+      display: inline-block;
+      width: 430px;
+    }
+    .footer-colo h4{
+      font-size: 100%;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+    .footer-colo p{
+      margin-left: 20px;
+      font-size: 60%;
+    }
+    .brief-image{
+      margin-top: 10px;
+      width: 300px;
+      height: 200px;
+      margin-left: 20px;
+    } 
+  }
+@media(min-width:1500px){
+   #Brief-history{
+    width: 100%;
+   }
+   .footer-colo h4{
+    margin-left: 200px;
+   }
+   .footer-colo p{
+    margin-left: 200px;
+   }
+   .brief-image{
+    margin-left: 800px;
+    width: 600px;
+    height: 300px;
+   }
+}
+ 

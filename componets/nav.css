@@ -1,0 +1,172 @@
+
+
+.header{
+  background: green;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Center items vertically */
+    justify-content: center;
+    width: 100%;
+    height: 4.5rem;
+    position: sticky !important;
+    top: 0;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    z-index: 1;
+}
+.nav-links{
+  text-decoration: none;
+}
+
+.header img{
+  position: absolute;
+  left: 1.5rem;
+}
+
+.in-header2{
+  position: absolute;
+  right: 3rem;
+  margin-top: 3px;
+}
+
+
+  .links{
+    color: white;
+    margin-left: 4em;
+    display: flex,inline-block;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .links:hover {
+    text-decoration: underline;
+
+  }
+ 
+  .links:active {
+    text-decoration: none;
+    color: aqua;
+  }
+
+  .menu-icon{
+    display: none;
+  }
+  .button{
+    margin-left: 100px;
+    height: 50px;
+    width: 170px;
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 9px;
+    padding-top: 10px;
+   ;
+  }
+  .button:hover{
+    color: green;
+    background-color: white;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+  }
+
+  /*menu icon*/
+  #copyright{
+    bottom: 3%;
+    left: 3%;
+    position: absolute;
+    color: rgb(2, 139, 139);
+  }
+  .my-icon1{
+    margin-right: 0.5rem;
+    color: yellow;
+    margin-top: 5px;
+    margin-left: 0.5rem;
+    text-decoration: none;
+  }
+  .bar1, .bar2, .bar3 {
+    width: 25px;
+    height: 2px;
+    background-color: aliceblue;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  .change .bar1 {
+    background-color: rgb(7, 163, 190);
+    transform: translate(0, 11px) rotate(-45deg);
+  }
+  
+  .change .bar2 {opacity: 0;}
+  
+  .change .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+    background-color: rgb(7, 163, 190);
+  }
+
+  @media only screen and (max-width: 600px) {
+    .nav-links,.in-header2 {
+      display: none;
+    }
+    
+
+  .new-links{
+    width: 50%;
+    height: 30vh !important;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 3.5rem;
+    left: 50%;
+    color: white;
+    background-color: green;
+    padding: 5px; 
+    box-shadow: 0 1px 1px  rgba(12, 245, 245,0.5);
+  }
+    .links{
+      margin-left: 4px;
+      text-decoration: none;
+    }
+    .menu-icon{
+      display: block;
+      margin-left: 2rem;
+      color: aliceblue;
+    }
+
+    #menu{
+      top: 7px;
+      right: 0;
+      position: absolute;
+      width: 5rem;
+      height: 4rem;
+    }
+
+    .header{
+      height: 3.5rem;
+      margin-bottom: 0;
+      background: linear-gradient(to right, rgba(6, 8, 10, 0.25), rgba(5, 5, 5, 0.25));
+    }
+
+
+    .header img{
+     left: 3px;
+     position: absolute;
+    }
+
+  }
+
+  @media only screen and (max-width: 820px) {
+    .links{
+      font-size: 0.8rem;
+      margin-left: 10px;
+    }
+    .button{
+      display: none;
+    }
+    .header{
+      background-color: green;
+    }
+  }
+  
