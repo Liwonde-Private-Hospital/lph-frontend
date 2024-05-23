@@ -8,35 +8,35 @@ const people = [
     name: "Samson Zarila",
     role: "Full-Stack Developer & Integration Manager",
     imageUrl:
-      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/357734201_3397892850525582_1436579738853118720_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF8fsgODOUfdSmAx5ySDuShbmkLX9Ss_hNuaQtf1Kz-E1TPZ-TfVnYDfd_fOqRAJ9RbZfQCZcadnO8ou14fQ83O&_nc_ohc=sZCRrSQVusgQ7kNvgGuqmql&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AfBfAgTxbuH9NBr7L5E4N6UbtDS7HzRS_yQyl1uQxYDdXQ&oe=66329846",
+      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/346633571_246195788065316_8681281355806901271_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG9P74UkNA3YEBsjY4TddelCM94POWZrh0Iz3g85ZmuHezvGLcC-sfSLwNkOBIIXnIgBnxJYztkp4Tren-E4XhC&_nc_ohc=Jnq2SEclMWMQ7kNvgHvUVQG&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYD83yV2sOAvKAgG0ONuwSq6dLxvGt2a7io1PYR3291mnw&oe=66555EDB",
     phoneNumber: "+265887261094",
   },
   {
     name: "Crossby Chilikumtima",
     role: "System Analyst, Information System Manager & Developer",
     imageUrl:
-      "https://scontent.fblz2-1.fna.fbcdn.net/v/t1.6435-9/74588507_950856858606381_4667126207903432704_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHX6zJjUuTjY9xbRuCj9qQN-F7RHr-g7WP4XtEev6DtY7mRYMLLbr3n-By3jckIF-EaBCPeN4CMEdli-GHerISY&_nc_ohc=X2BHIV7X7pwAb5kxR3F&_nc_ht=scontent.fblz2-1.fna&oh=00_AfDbmiOgA23xMV9Y-Ffdgltmqx_Zdvm9kx9N7wA5FPCu4g&oe=663E568A",
+      "https://scontent.fblz2-1.fna.fbcdn.net/v/t1.6435-9/116582215_1168043260221072_8807594132717734057_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGRPyuOULLsxozsQhDPF8J4856Yrmmrq37znpiuaaurfsBlPmng31j7Ki7-6wNdiovMQA_9thFuXTGq6EtcHdD8&_nc_ohc=L8bj8v_xUQgQ7kNvgFcpqTJ&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCQuXZ_MpjXOlwOeM0DPay7eRdopMpwO2NooRPEMYYqLQ&oe=6676FCEA",
     phoneNumber: "+265886262527",
   },
   {
     name: "Richard Mlambuzi",
     role: "Full-Stack Developer",
     imageUrl:
-      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/407865931_1891544774575812_7388651972688331146_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEVVWWq9Q6W8a51Rgki-lOKG9MZ2OyVXNcb0xnY7JVc1yItsfy1G5ijoRIfmzO-LgKGrAAYxWWI18ERXp7rJwBN&_nc_ohc=6PxyiCTVs1sAb51JmjZ&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AfBr2dk-jOtUh0L3dFGjmP-4KHvoQ8JpzhoZzXXdbh6JHQ&oe=6632C7B9",
+      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/407865931_1891544774575812_7388651972688331146_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEVVWWq9Q6W8a51Rgki-lOKG9MZ2OyVXNcb0xnY7JVc1yItsfy1G5ijoRIfmzO-LgKGrAAYxWWI18ERXp7rJwBN&_nc_ohc=Bb-VzzA8SLsQ7kNvgGZ-kM6&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYBXUVFCBMrHDIqKYeFoTGz-tYCUPexVdRTiH-uIe59mnQ&oe=665546F9",
     phoneNumber: "", // Add the phone number here
   },
   {
     name: "Tafadzwa Gambiza",
     role: "Front-End Developer",
     imageUrl:
-      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-1/275781291_499955221767178_1356201981530388921_n.jpg?stp=c0.33.200.200a_dst-jpg_p200x200&_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGzRYzJcwdGMT8-HkcmUnNfrVX1sFtR9aGtVfWwW1H1oalouyrnJfGQ1D42I7kotD7A_UaFagsM9WaieEkph92m&_nc_ohc=5aM4nBL_cRIAb7YCoT8&_nc_ht=scontent.fblz2-1.fna&oh=00_AfDDEZIQGYAvJZbD-lDMkAmp88CxctXfQY9SoGFPO13_vg&oe=66345E4C",
+      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-1/275781291_499955221767178_1356201981530388921_n.jpg?stp=c0.33.200.200a_dst-jpg_p200x200&_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGzRYzJcwdGMT8-HkcmUnNfrVX1sFtR9aGtVfWwW1H1oalouyrnJfGQ1D42I7kotD7A_UaFagsM9WaieEkph92m&_nc_ohc=am4J41o-5wYQ7kNvgHEfaCy&_nc_ht=scontent.fblz2-1.fna&oh=00_AYDX2UvT2docdAIE4nQRjEF-TEzD7IOX49Sst7i4Pzh2ZA&oe=665553CC",
     phoneNumber: "", // Add the phone number here
   },
   {
     name: "Peter Kayira",
     role: "UX Designer",
     imageUrl:
-      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/425297930_359602856978080_7032392020350021342_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEuthHkmj5czO83-e7v5HrZmhdDChd4SS-aF0MKF3hJL38_AkjJ0PcsBUwYX7tOfNbz5R0Zkhcn6uXuV0Nllbr8&_nc_ohc=cdEEc1bOTAcQ7kNvgEMKXUy&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AfDnCfA0qrT9WhdGrReBfcF-xeqwH7YxN3t8oCBSm65oFA&oe=6632BBEF",
+      "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/425297930_359602856978080_7032392020350021342_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEuthHkmj5czO83-e7v5HrZmhdDChd4SS-aF0MKF3hJL38_AkjJ0PcsBUwYX7tOfNbz5R0Zkhcn6uXuV0Nllbr8&_nc_ohc=tueQzrCfjgwQ7kNvgH3c3WS&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYC4VHHPQSUl8CtGk28WRsBZdIidwzacVXZynRWdHEo3wg&oe=6655736F",
     phoneNumber: "", // Add the phone number here
   },
 ];
