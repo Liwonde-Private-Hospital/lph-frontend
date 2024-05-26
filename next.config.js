@@ -1,7 +1,17 @@
 // next.config.js
+
 module.exports = {
     images: {
-      domains: ['scontent-jnb2-1.xx.fbcdn.net'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'scontent-jnb2-1.xx.fbcdn.net',
+        },
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+        },
+      ],
     },
-  }
+  };
   

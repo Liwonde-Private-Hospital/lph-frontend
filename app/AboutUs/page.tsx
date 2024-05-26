@@ -1,20 +1,19 @@
-
 'use client'
 import { useState } from 'react';
-import Header from "@/componets/navbar";
-import Footer from "@/componets/footer";
+import Image from 'next/image';
+import Header from '@/componets/navbar';
+import Footer from '@/componets/footer';
 import NumberAnimation from "../animation";
 
 const AboutUs = () => {
   const [showMessage, setShowMessage] = useState(false);
- 
+
   const handleClickVacancies = () => {
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
     }, 3000); // Change 5000 to the desired duration in milliseconds (e.g., 5000 for 5 seconds)
   };
- 
 
   const links = [
     { name: "vacancies", onClick: handleClickVacancies },
@@ -25,7 +24,7 @@ const AboutUs = () => {
 
   const stats = [
     { name: "Team Of Staff", value: "25" },
-    { name: "Full-time colleagues", value: <NumberAnimation/> },
+    { name: "Full-time colleagues", value: <NumberAnimation /> },
     { name: "Hours per week", value: "24/7 hours" },
     { name: "Paid time off", value: "Unlimited" },
   ];
@@ -36,20 +35,20 @@ const AboutUs = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div
-            className="bg-orangeC-400 w-full h-400 justify-center  py-24 sm:py-32"
+            className="bg-orangeC-400 w-full h-400 justify-center py-24 sm:py-32"
             style={{
               backgroundImage:
                 "url(https://scontent-jnb2-1.xx.fbcdn.net/v/t1.6435-9/109476601_2682474625366584_8174910277247011450_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=rwX2rpnpfgkQ7kNvgGZXwuu&_nc_ht=scontent-jnb2-1.xx&oh=00_AYBOUQAnI3pepPRnZvd0HeBPvWxhKwxL33o3rT2gaUp4vA&oe=667AAE1E)",
               backgroundRepeat: "no-repeat",
-              backgroundColor:"white",
+              backgroundColor: "white",
               backgroundSize: "cover",
             }}
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl sm:text-centre">
-              <h1 className="mt-60 text-3xl font-bold tracking-tight text-orange-900 sm:text-4xl padding: text-top">
-    About Liwonde Private Hospital
-  </h1>
+                <h1 className="mt-60 text-3xl font-bold tracking-tight text-orange-900 sm:text-4xl padding: text-top">
+                  About Liwonde Private Hospital
+                </h1>
               </div>
             </div>
           </div>
@@ -57,10 +56,13 @@ const AboutUs = () => {
       </div>
 
       <div className="relative isolate overflow-hidden bg-green-400 py-24 sm:py-32">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
           alt=""
-          className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="right center"
+          className="absolute inset-0 -z-10 h-full w-full"
         />
         <div
           className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
