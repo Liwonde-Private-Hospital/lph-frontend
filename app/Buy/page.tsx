@@ -32,13 +32,11 @@ export default function Buy() {
             className="bg-green-400 w-full h-700 justify-center py-24 sm:py-32"
             style={{
               backgroundImage:
-                "url(https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441517465_847660704047357_4809517772273671259_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFqBUe0Iq9g0BUkgkVA4DXIdZ9Ozz4j0Gd1n07PPiPQZ7uQkKj5nTvEv96kss35HeGfxapFUGWdqqaWD5TltNfu&_nc_ohc=D2CNlE_R0HIQ7kNvgF2jPGj&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYDmi0sAKG3OV3F1MUuDterd1chEKsz72EhvtkW5Fk7CfQ&oe=664C5854)",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
+                "url(https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/440877620_847659734047454_3275822707332724965_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeH8Wf6fX051KIjILgsVt7AhU8UDGX2VykxTxQMZfZXKTAw79vIGonhQHjiH8487dVHLApYXi3uHckqqX2wjHTv1&_nc_ohc=e2sFbnqx5hsQ7kNvgHsRpO-&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYC7_U6qJZhtEcTFjxHBpR1Rh7DUnFxDyi4jqdy6UCkgKg&oe=66557E77)"
             }}
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto max-w-2xl sm:text-center">
+              <div className="mx-auto max-w-4xl sm:text-center">
                 <h1 className="mt-60 text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
                   Liwonde Private Hospital Pharmacy Services
                 </h1>

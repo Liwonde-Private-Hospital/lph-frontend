@@ -1,0 +1,111 @@
+.divyadept{
+    display: flex;
+    flex-direction: row;
+    background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
+    background-size: cover;
+}
+
+.deptinfo{
+    width: 50%;
+    height: 100vh;
+}
+
+.tiyikelogo{
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+}
+
+.zitobe{
+    margin-top: 5%;
+    margin: 5%;
+}
+
+.infoija{
+   width: 100%;
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+}
+
+.deptTitle{
+    color: green;
+    font-size: 5ch;
+    font-weight: 500;
+    margin-bottom: 3%;
+    margin-left: 10%;
+}
+
+.deptdis{
+    text-align: left;
+    font-weight: 400;
+    margin-left: 10%;
+    margin-right: 20% ;
+    margin-bottom: 2%;
+}
+
+.deptgcpd{
+    font-weight: 400;
+    margin-left: 10%;
+}
+
+.deptcont{
+    margin-left: 10%;
+    font-size: x-large;
+    font-weight: 500;
+}
+
+.deptImg{
+    width: 50%;
+    height: 100vh;
+    background-image: url("https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/441910845_847629340717160_8364228998593965139_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=xAjiv3XP50kQ7kNvgEuCPM4&_nc_ht=scontent-jnb2-1.xx&oh=00_AYBo_rUTzU1BrfqTYa1LrqpeKMP9EuyF-fe0qjZLbk11rA&oe=6658DB6E");
+    background-size: cover;
+}
+
+@media(max-width: 500px){
+   .divyadept{
+    display: flex;
+    flex-direction: column-reverse;
+    height: auto;
+   }
+
+   .deptImg{
+    width: 100%;
+    height: 300px;
+   }
+
+   .deptinfo{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+   }
+   
+   .tiyikelogo{
+    display: none;
+   }
+
+   .infoija{
+    width: 200%;
+   }
+
+   .deptTitle{
+    margin-top: 5%;
+    margin-left: 5%;
+    font-size: xx-large;
+   }
+
+   .deptdis{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+   }
+
+   .deptgcpd{
+    margin-left: 5%;
+   }
+
+   .deptcont{
+    margin-left: 5%;
+   }
+  }
+    

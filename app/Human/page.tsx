@@ -26,8 +26,8 @@ export default function Page() {
             <p className='deptdis'>
               At Liwonde, our Human Resources Department serves as the heart of our organization, dedicated to fostering a vibrant, inclusive, and empowered workplace culture. We are committed to supporting our employees at every stage of their journey, from recruitment to retirement, and beyond.
             </p>
-            <span className='deptgcpd'>To contact the department call</span>
-            <button onClick={handleCallClick}><a>0999146894</a></button>
+            <span className='deptgcpd'>To contact the department </span>
+            <button onClick={handleCallClick}><a>call now</a></button>
           </div>
         </div>
         <div className='deptImg'></div>

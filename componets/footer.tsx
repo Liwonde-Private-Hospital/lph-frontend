@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {faBook, faHome, faInfoCircle, faLocation,faNoteSticky,faUserFriends} from "@fortawesome/free-solid-svg-icons";
 import './footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Facebook, Instagram, Twitter } from 'react-bootstrap-icons';
+import { Facebook, Instagram, Twitter, Whatsapp } from 'react-bootstrap-icons';
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -52,14 +52,15 @@ export default function Footer() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>follow us</h4>
+            <h4>Follow Us</h4>
             <div className="social-links">
-              <a href="https://web.facebook.com/liwondemedicalclinic"><Facebook /></a>
-              <a href="#"><Twitter /></a>
-              <a href="#"><Instagram /></a>
-              <a href="https://wa.me/message/W7OYL7YA7NVEE1"></a>
+              <a href="https://web.facebook.com/liwondemedicalclinic"><Facebook size={40} /></a>
+              <a href="#"><Twitter size={40} /></a>
+              <a href="https://www.instagram.com/liwondeprivatehospital/"><Instagram size={40} /></a>
+              <a href="https://wa.me/message/W7OYL7YA7NVEE1"><Whatsapp size={40} /></a> {/* WhatsApp icon */}
             </div>
           </div>
+        
           <div className="footer-col">
             <h4>Map Of The Hospital</h4>
             <iframe

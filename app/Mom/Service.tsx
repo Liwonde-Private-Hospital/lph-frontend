@@ -24,7 +24,7 @@ function Service() {
 
       <div className="service-description">
         <h2 className="kulandila">WELCOME TO OUR MATERNITY SERVICE</h2>
-        <p className="mawu">At Liownde Private Hospital
+        <p className="mawu">At Liwonde Private Hospital
          We are dedicated to providing exceptional care and support throughout
          your pregnancy, childbirth, and postpartum journey. Our team of experienced
          obstetricians, midwives, and nurses are here to ensure the health and
@@ -37,7 +37,7 @@ function Service() {
          postpartum support, including breastfeeding assistance, newborn care education, 
          and emotional guidance for new parents. We strive to make this special time
          in your life as joyful and stress-free as possible.</span>
-        <span id='spanid'>Choose Liownde Private Hospital for your maternity care and 
+        <span id='spanid'>Choose Liwonde Private Hospital for your maternity care and 
         experience excellence in every moment of your journey to parenthood</span>
       </div>
       </div>

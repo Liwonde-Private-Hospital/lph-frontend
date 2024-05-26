@@ -64,7 +64,7 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             >
-       <img  src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/436366126_847616464051781_3716270528436982268_n.jpg?stp=dst-jpg_s720x720&_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHn6NRPfTiQ1bdtv1j3nLK4YBLf-coFEA5gEt_5ygUQDiSoL33ujfCEJoeqUbskBExP6NboUGtppFuAflbS1TKi&_nc_ohc=NHbe42_dK-4Q7kNvgHwo2bY&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYBAQB6QwD-8lXFLP7hMtbX_aqjJkP5HFvejuIBL3h3r_A&oe=664C2E58'/>
+       <img  src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/436429637_847660294047398_7005383217381675414_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGcYg5Zyl32kUiRmKdLGBQllfk9TMJjhvGV-T1MwmOG8SWA4EpOhRTcVRAlAoQZt4t0fRMOsKulfbOML1wq-NbC&_nc_ohc=NTVUQu9S7S8Q7kNvgHX9NqC&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCvofe4afEhX5eDOsbezx7o6ft6eoFEwE3PY4u_15vNfQ&oe=6655AF1D'/>
               <p className=" text-center mt-2 text-2xl  sm:text-2xl">Pharmacy Services</p>
               <p className="text-center  mt-1 text-1xl sm:text-sm text-yellow-300 font-light">
                 Pharmacy is responsible for storing medicine, selling medicine,
@@ -93,7 +93,7 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             >
-              <img src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441321679_847615397385221_6188719467371561758_n.jpg?stp=dst-jpg_p180x540&_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE5eDKsNVGQBLhjm_IHlb-8ts4Ae5GGigq2zgB7kYaKCuXYWwsBxsF8HZr8vw6vaxvA8nCqOmVA8oMFLRFJQ8-q&_nc_ohc=eCd7XmAIOdAQ7kNvgFU_bbh&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYCJwU9d3PeDG9nrXTPu1tGa-plNWdcbimlxwF-zAOOolw&oe=664C1F3B' />
+              <img src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/444976210_852387556908005_5428332056438282258_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGmpLAr-t35H6RlxDuV3WyHoVDvSt8CJPihUO9K3wIk-OYHcsRP3ByF4ey7mkYg33UmrbznafF7rTrC4bGrTztU&_nc_ohc=yGpMpAW48aoQ7kNvgEK5X26&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCfmTuG67fg2mL20YOgJxxKrlU3oKtFtXGJQy1onUKJIw&oe=665585BF' />
               <p className=" text-center mt-2   sm:text-2xl" >Reception Services</p>
               <p className="text-center mt-1 text-1xl text-yellow-300 sm:text-sm font-light ">
                 Reception is the entry point of all the services
@@ -122,13 +122,12 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             > 
-            <img src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/439935685_847613394052088_2962033458726271154_n.jpg?stp=dst-jpg_p180x540&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGzLXcUPgK9G1FU0G6Nii23uKxl_w6Ll-q4rGX_DouX6iO7mNxamNFs24hPh33mKgcDpcAymH0Yk0PrzSt3l_Lr&_nc_ohc=BoGm8pnhUJEQ7kNvgHiytLu&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYDP7WpZrUBwj4S1eVXTR77Q_HIaZZRFl6l3NYlCiB30tg&oe=664C31CC'/>
+            <img src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/439935685_847613394052088_2962033458726271154_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGzLXcUPgK9G1FU0G6Nii23uKxl_w6Ll-q4rGX_DouX6iO7mNxamNFs24hPh33mKgcDpcAymH0Yk0PrzSt3l_Lr&_nc_ohc=ZzbODK5iT6IQ7kNvgEvvsNd&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYB_P8q2_J06HE_c-afhQzYcF1U79nqgWSHcO0Eti6zl1w&oe=6655A48C'/>
 
                <p className=" text-center mt-2 text-2xl sm:text-2xl" >OPD Services</p>
               <p className="text-center mt-1  text-1xl text-yellow-300 sm:text-sm font-light">
-                This is the doctors office each and ever client is warmly Welcome
-                to this office and every client is helped accordingly. get any
-                medical help from this office
+              Our OPD offers efficient and comfortable care for an array of illnesses. We ensure prompt
+medical service,no waiting-because your health can't wait.
               </p>
               <div className="">
                 <a
@@ -153,12 +152,11 @@ const ProductImages = () => {
              
               }}
             >
-              <img src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441041760_847614654051962_6370260677110377676_n.jpg?stp=dst-jpg_p843x403&_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGV2lzRkU3Pv8Og0NQsEslYNOHIukOUquQ04ci6Q5Sq5D-5jCqffhtzxd0eHAqYQdqiz1CpzxXwuSQX5xgT9kDu&_nc_ohc=XrPHxjYOHVwQ7kNvgHUbIj2&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYB0XV-o_5ZoDbNjX3S7wzAQ5SutZzpbbJhG_1RGK9TmvA&oe=664C1DFE"/>
+              <img src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/440072618_847623114051116_5830858774568460928_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHlI4g6AqvMfoAH6x1NNSZz9AMN1EkRnOP0Aw3USRGc499nsOX6VkitwKv1ZzLZVsqpiAkkHQ7SL6GrrtBFMXn6&_nc_ohc=QxjR0rSM46YQ7kNvgH4vItI&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYAoUqmAOQ7SF2kyec4mhCj3kOyjDefotYkzYrwFuSfIXg&oe=665599C3"/>
               <p className="text-center mt-2 text-2xl  sm:text-2xl">Maternity Services</p>
               <p className="text-center text-1xl text-yellow-300">
-                This is the doctors office each and ever client is warmly Welcome
-                to this office and every client is helped accordingly. get any
-                medical help from this office
+              We pride ourselves in promoting martenal health and our services provide comprehensive care
+from prenatal to postnatal stages
               </p>
               <div className="">
                 <a
@@ -182,12 +180,11 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             >
-              <img src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441623754_847608277385933_6366622942508059321_n.jpg?stp=dst-jpg_s960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGFRvKVv8JCVmAkaxE5_Zqf0xC5_ql5kv7TELn-qXmS_oDmuCXL5zVBzrtXD5KbGrwO7COndlOM18y1GDk6TInU&_nc_ohc=f3gs8zFy_LMQ7kNvgHD1MUO&_nc_oc=AdhPi4JEubfHeMrsbmrkdT0OWu4rvNPbB7WgsrzvyYBm8XuzMSEyGRmaFQrEtEOmD5U&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYAuDpY2xcQzQw1GIGos7woS5ga0pmFfT3XrTE14PUNcfw&oe=664C1DB3"/>
+              <img src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/441623754_847608277385933_6366622942508059321_n.jpg?stp=dst-jpg_s960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGFRvKVv8JCVmAkaxE5_Zqf0xC5_ql5kv7TELn-qXmS_oDmuCXL5zVBzrtXD5KbGrwO7COndlOM18y1GDk6TInU&_nc_ohc=kaln_VvQ2_0Q7kNvgEyq4Xo&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYA15UVhOGdhRIhn91zRkDYXNV_Fm11ijmWdnEUmilGmdQ&oe=66559073"/>
               <p className="text-center mt-2 text-2xl  sm:text-2xl">Lab Services</p>
               <p className="text-center   text-1xl text-yellow-300 sm:text-sm font-light">
-                This is the doctors office each and ever client is warmly Welcome
-                to this office and every client is helped accordingly. get any
-                medical help from this office
+              Our state-of-the-art Laboratory provides precise and timely diagnostics to the patient's
+satisfaction
               </p>
               <div className="">
                 <a
@@ -200,7 +197,7 @@ const ProductImages = () => {
                   Explore Lab
                 </a>
               </div>
-            </div>
+              </div>
           </div>
           <div className="slides">
             <div
@@ -211,12 +208,11 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             >
-              <img src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441413553_847617120718382_7192173699096547920_n.jpg?stp=dst-jpg_s640x640&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFmdCIgq1nXKWe2LZru1xDdHS0mzvXio4gdLSbO9eKjiIOzfdBtLeIWHikRV3kMAXpESLh5vGPwAZ4rAVBVxlVh&_nc_ohc=3Ctkg-DbQacQ7kNvgEP3B4H&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYDisgiCuKy9qm3LqMHA3JxfjJLiJXje6TbSrWVaq-s1Zw&oe=664C4CB8"/>
+              <img src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/441413553_847617120718382_7192173699096547920_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFmdCIgq1nXKWe2LZru1xDdHS0mzvXio4gdLSbO9eKjiIOzfdBtLeIWHikRV3kMAXpESLh5vGPwAZ4rAVBVxlVh&_nc_ohc=CDUnVUFli1EQ7kNvgEkiPvF&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYAqehtqhEli8u1IdXc3TJnJiVt5WRWH4P5hb5Z4EA8v5g&oe=66558738"/>
                <p className="text-center mt-2 text-2xl sm:text-2xl">Dental Services</p>
               <p className="text-center   text-1xl text-yellow-300 sm:text-sm font-light">
-                This is the doctors office each and ever client is warmly Welcome
-                to this office and every client is helped accordingly. get any
-                medical help from this office
+              We are leaders in dental care!. We have skilled dentists at your service to provide optimal oral
+health and we prioritize patients’ satisfaction and comfort
               </p>
               <div className="">
                 <a
@@ -227,6 +223,35 @@ const ProductImages = () => {
                   className=" inline-block rounded-md border border-transparent bg-green-600 px-8 py-3 text-center font-medium text-white hover:bg-yellow-700"
                 >
                   Explore Dental
+                </a>
+              </div>
+              </div>
+          </div>
+          <div className="slides">
+            <div
+              style={{
+                width: "18rem",
+                height: "25rem",
+                backgroundColor: "green",
+                borderRadius: "5px",
+              }}
+            >
+              <img src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/442440260_852370770243017_1386807777882654563_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHOKAH7m54xU13gpJvEMyooDHSvGro1M8gMdK8aujUzyHJaOPMxgos9XO0lklTeORmKXNVOYSguPtkmSqautli_&_nc_ohc=4T410RM1mVMQ7kNvgH9mjkg&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYAIjD5GT4KvEQiwSqT4j46aEMNR2X4H1qbE7SI4McLuqA&oe=66558A54"/>
+               <p className="text-center mt-2 text-2xl sm:text-2xl">Radiology Services</p>
+              <p className="text-center   text-1xl text-yellow-300 sm:text-sm font-light">
+              We maintain the highest standards in X-Ray and Imaging services,ensuring clarity in every scan
+with advanced technology and experts in the field.
+         
+              </p>
+              <div className="">
+                <a
+                  style={{
+                    marginLeft: "50px",
+                  }}
+                  href="X-RayScan"
+                  className=" inline-block rounded-md border border-transparent bg-green-600 px-8 py-3 text-center font-medium text-white hover:bg-yellow-700"
+                >
+                  Explore Radiology
                 </a>
               </div>
             </div>

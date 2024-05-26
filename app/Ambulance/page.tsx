@@ -96,15 +96,15 @@ export default function Example() {
           {/* Image gallery */}
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-              <img src='https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/442467873_847654704047957_8346954052644180733_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG8VOENo0iUVLl0SSqQWQ_WLiOkLMoeSDkuI6Qsyh5IORSUlrwiWW4CVliScexYhlwfin1NsbTlKLPOk4xGECiz&_nc_ohc=uSLfHB_A2LcQ7kNvgHaav9B&_nc_oc=Adg-j1Os_LMr7_ECuB_XuDdyBkw1mkW3F4fNG0ogVnTvmE6PXltRBOHg6yvds35dZ70&_nc_pt=5&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&oh=00_AYDCLZvtnpIyLYNs8WOKXER9uT0CelyKAKimQm_19QDE8A&oe=664D7F38' alt="Ambulance" />
+              <img src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/441605710_848300063983421_1239665998443658867_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEHJStYdNtqLwLvD_pEOT9uZxGnu-tjFL5nEae762MUvhknJL6LXxY--BadsDBGryWADF1ltvGSFDjf_BKNlQi1&_nc_ohc=DO6QRq4slhsQ7kNvgF6Ela5&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYAS9Fv4PR2mBaDA3udP1xWZkm2ZTLqo3rohfDI2BN1Jhw&oe=66557C42' alt="Ambulance" />
             </div>
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                <img src='https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/441605710_848300063983421_1239665998443658867_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEHJStYdNtqLwLvD_pEOT9uZxGnu-tjFL5nEae762MUvhknJL6LXxY--BadsDBGryWADF1ltvGSFDjf_BKNlQi1&_nc_ohc=4MlXWMr9_SUQ7kNvgF3_3Dp&_nc_pt=5&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&oh=00_AYAlKbuHvgjrlxzdG4ygzjE2OyBNCJG8gHaz53KtiwMnAQ&oe=664D5B02' alt="Ambulance" />
+                <img src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/441966287_847654050714689_7336397440920767764_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHFuh0QzdCHy7-8UnKy2t8eu8aU3IDau0-7xpTcgNq7T67BUfFFwVBuWGy27AyFILgGoC8eo5UHPm8sOB_np7zL&_nc_ohc=p2Fmxl0n2UwQ7kNvgFx2xs1&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYBCMzUc5ZiUyKT0n53Inx5RHjQj6W6E51hHF5CJbFDesg&oe=66557FF6' alt="Ambulance" />
               </div>
             </div>
             <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-              <img src='https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/441966287_847654050714689_7336397440920767764_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHFuh0QzdCHy7-8UnKy2t8eu8aU3IDau0-7xpTcgNq7T67BUfFFwVBuWGy27AyFILgGoC8eo5UHPm8sOB_np7zL&_nc_ohc=bgozthUFXosQ7kNvgEBlVEx&_nc_pt=5&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&oh=00_AYDPRTOxbushS2cPNRivS3VQA1KNVV3CeJXBoh77q_Uc2Q&oe=664D5EB6' alt="Ambulance" />
+              <img src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/442467873_847654704047957_8346954052644180733_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG8VOENo0iUVLl0SSqQWQ_WLiOkLMoeSDkuI6Qsyh5IORSUlrwiWW4CVliScexYhlwfin1NsbTlKLPOk4xGECiz&_nc_ohc=mUTIeeQperAQ7kNvgGU95Nf&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCBh7ewvgicwHDZy_o43EThM6M8sR197UyluZBAEliuCw&oe=66556838' alt="Ambulance" />
             </div>
           </div>
 
@@ -243,7 +243,7 @@ export default function Example() {
                 <button
                   type="button"
                   onClick={handleCallNowClick}
-                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-green-700 px-8 py-3 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   Call Now
                 </button>

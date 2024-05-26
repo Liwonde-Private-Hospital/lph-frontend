@@ -16,38 +16,87 @@ const AppointmentForm = () => {
     message: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    date: "",
+    time: "",
+    area: "",
+    city: "",
+    message: "",
+  });
+
   const [alert, setAlert] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
-  const [bookedName, setBookedName] = useState<string | null>(null); // New state variable
+  const [bookedName, setBookedName] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case "name":
+        return value.trim() === "" ? "Full Name is required" : "";
+      case "phone":
+        const phonePattern = /^(08|09)\d{8}$/;
+        return !phonePattern.test(value)
+          ? "Invalid phone number. It must start with 08 or 09 and be 10 digits long."
+          : "";
+      case "email":
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return !emailPattern.test(value) ? "Invalid email address" : "";
+      case "date":
+        const selectedDate = new Date(value);
+        const currentDate = new Date();
+        return selectedDate <= currentDate ? "Please select a date above the current date." : "";
+      case "time":
+        return value.trim() === "" ? "Time is required" : "";
+      case "area":
+        return value.trim() === "" ? "Area is required" : "";
+      case "city":
+        return value.trim() === "" ? "City is required" : "";
+      case "message":
+        return value.trim() === "" ? "Message is required" : "";
+      default:
+        return "";
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-
-    if (name === "date") {
-      const selectedDate = new Date(value);
-      const currentDate = new Date();
-
-      if (selectedDate <= currentDate) {
-        setAlert("Please select a date above the current date.");
-      } else {
-        setAlert(null); // Clear the alert if date is valid
-      }
-    }
 
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+
+    const error = validateField(name, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors = Object.keys(formData).reduce((acc, key) => {
+      const error = validateField(key, formData[key as keyof typeof formData]);
+      if (error) acc[key as keyof typeof formData] = error;
+      return acc;
+    }, {} as typeof errors);
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error !== "")) {
+      setAlert("Please fix the errors before submitting.");
+      return;
+    }
+
     try {
       await emailjs.sendForm('service_gw5ypqa', 'template_g57vw56', formRef.current!, 'HlMFIQVluZ-Bfo1qv');
       setAlert(`${formData.name} has booked for appointment successfully ✅`);
       setShowMessage(true);
-      setBookedName(formData.name); // Update bookedName
+      setBookedName(formData.name);
       setFormData({
         name: "",
         phone: "",
@@ -86,6 +135,7 @@ const AppointmentForm = () => {
                 onChange={handleChange}
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
             <div className="mb-5">
               <label htmlFor="phone" className="mb-3 block text-base font-medium text-[#07074D]">
@@ -101,6 +151,7 @@ const AppointmentForm = () => {
                 onChange={handleChange}
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               />
+              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
             </div>
             <div className="mb-5">
               <label htmlFor="email" className="mb-3 block text-base font-medium text-[#07074D]">
@@ -116,6 +167,7 @@ const AppointmentForm = () => {
                 onChange={handleChange}
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
             <div className="-mx-3 flex flex-wrap">
               <div className="w-full px-3 sm:w-1/2">
@@ -132,9 +184,7 @@ const AppointmentForm = () => {
                     onChange={handleChange}
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   />
-                  {alert && (
-                    <p className="text-red-500 text-sm mt-1">{alert}</p>
-                  )}
+                  {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
                 </div>
               </div>
               <div className="w-full px-3 sm:w-1/2">
@@ -151,6 +201,7 @@ const AppointmentForm = () => {
                     onChange={handleChange}
                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                   />
+                  {errors.time && <p className="text-red-500 text-sm mt-1">{errors.time}</p>}
                 </div>
               </div>
             </div>
@@ -174,6 +225,7 @@ const AppointmentForm = () => {
                       onChange={handleChange}
                       className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     />
+                    {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area}</p>}
                   </div>
                 </div>
                 <div className="w-full px-3 sm:w-1/2">
@@ -188,6 +240,7 @@ const AppointmentForm = () => {
                       onChange={handleChange}
                       className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     />
+                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                   </div>
                 </div>
               </div>
@@ -205,6 +258,7 @@ const AppointmentForm = () => {
                 onChange={handleChange}
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md resize-none"
               ></textarea>
+              {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
             </div>
             <button
               type="submit"

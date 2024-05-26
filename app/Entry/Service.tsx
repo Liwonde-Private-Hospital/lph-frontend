@@ -15,7 +15,7 @@ function Service() {
      <div className="zigege">
       <div>
       <img 
-        src="https://i.pinimg.com/564x/9d/d5/f3/9dd5f373cf11ab7a6ac2dd2f1e67e0e5.jpg" 
+        src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/442419395_852387566908004_1110448681254518384_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGtUL85X_PzZYAhTWI5y3j0osQ4gy8zPGuixDiDLzM8a0uGbBkRw0hiRyDLqrwJDOn2lQch6UAygu5Vs2bBXCHK&_nc_ohc=hd7Qr-Icbj4Q7kNvgH9vFvH&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYAzd84BoppdJQrCFw6w9Sxcy4sEkOGkNConDK3kmLyq1w&oe=66555E50" 
         alt="Hospital" 
         className="hospital-image"
       />
@@ -30,7 +30,7 @@ function Service() {
 
       <div className="service-description">
         <h2 className="kulandila">WELCOME TO THE RECEPTION SERVICE</h2>
-        <p className="mawu">We provide oral health care to patients which helps patients maintain good oral hygiene, prevent and treat dental diseases and enhance their self confidence and quality of life</p>
+        <p className="mawu">At our reception, we strive to provide a warm and welcoming environment for all our visitors. Our dedicated team of receptionists is here to assist you with any inquiries or assistance you may need during your visit to our facility</p>
        
       </div>
      

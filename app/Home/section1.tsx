@@ -89,7 +89,7 @@ export default function Section1() {
                 <p className="mt-4 text-gray-500">
                   Welcome to Liwonde Private Hospital, this section provides
                   guidance towards the Service, important details and some
-                  insights of the functions clinic
+                  insights of the functions of the hospital
                 </p>
 </div>
                 <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
@@ -110,7 +110,7 @@ export default function Section1() {
               </div>
               <div className=" mt-20 grid grid-cols-2 grid-rows-1 gap-4 sm:gap-6 lg:gap-8">
 
-                 <Image src={liwonde} alt="" className=""/>
+                 <Image src={liwonde}  height="1000" width="1000" alt="" className=""/>
                  <Image src={Ambulannce} alt="" className=""/>
                  <Image src={theatre} alt="" className=""/>
                  <Image src={welcome} alt="" className=""/>

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import './Service.css';
 import logo from "../images/icon.png"
@@ -8,6 +9,10 @@ import Footer from '@/componets/footer';
 
 
 function Service() {
+  const handleCallClick = () => {
+    const phoneNumber = "0999146894"; // Replace with the actual phone number
+    window.location.href = "tel:" + phoneNumber;
+  }
   return (
     <>
     <Header/>
@@ -37,6 +42,9 @@ function Service() {
         delivering exceptional service and personalized care to every patient</span>
         <span id='spanid'>Contact us today to learn more or schedule your 
         appointment. Your health is our priority</span>
+        <br></br>
+
+        <button onClick={handleCallClick}><a>call now</a></button>
       </div>
       </div>
      <Link href="/Appointment">

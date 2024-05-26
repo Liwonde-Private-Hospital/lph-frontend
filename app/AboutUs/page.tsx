@@ -39,8 +39,9 @@ const AboutUs = () => {
             className="bg-orangeC-400 w-full h-400 justify-center  py-24 sm:py-32"
             style={{
               backgroundImage:
-                "url(https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/435914476_848334057313355_912438519930836672_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kPmxUW7b0_oQ7kNvgGevVgs&_nc_ht=scontent-jnb2-1.xx&oh=00_AYDC5FND-JQiH9IZjmjxhHgmRmZLPjoYwPfnOQtSQCBXaQ&oe=664D8081)",
+                "url(https://scontent-jnb2-1.xx.fbcdn.net/v/t1.6435-9/109476601_2682474625366584_8174910277247011450_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=rwX2rpnpfgkQ7kNvgGZXwuu&_nc_ht=scontent-jnb2-1.xx&oh=00_AYBOUQAnI3pepPRnZvd0HeBPvWxhKwxL33o3rT2gaUp4vA&oe=667AAE1E)",
               backgroundRepeat: "no-repeat",
+              backgroundColor:"white",
               backgroundSize: "cover",
             }}
           >
