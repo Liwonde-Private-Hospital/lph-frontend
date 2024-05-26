@@ -6,7 +6,7 @@ import './Service.css';
 const callouts = [
   {
     name: 'Patient Admission',
-    description: 'Our hospital\'s patient admission service combines compassionate care with seamless efficiency. Our dedicated team prioritizes your comfort, safety, and well-being, providing personalized assistance with paperwork and expedited processing for a stress-free experience. Trust us to provide high-quality care from the moment you arrive.',
+    description: 'Our hospitals patient admission service combines compassionate care with seamless efficiency. Our dedicated team prioritizes your comfort, safety, and well-being, providing personalized assistance with paperwork and expedited processing for a stress-free experience. Trust us to provide high-quality care from the moment you arrive.',
     imageSrc: 'https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/436570700_847620377384723_7356139790777712170_n.jpg?stp=dst-jpg_s640x640&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEFxnS51F0QV5b2n5oA1GwSsHf1D8Gg7Uewd_UPwaDtR3HnadOEIpEyb3hNJ_E29CmIIJ3Y3fOuVa5Q_YNkQkXT&_nc_ohc=FjxYyF5ta3YQ7kNvgEu74fg&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYDfiFQq-pLAQFI8_I4Gz4l2S5ZXu_4_ctdxUIDXQZA8YA&oe=664C227D',
   },
   {
@@ -22,7 +22,7 @@ const callouts = [
 ];
 
 const Visit = [
-  { day: 'Monday-Sunday', time1: '7AM to 9AM', time2: '12PM to 2PM', time3: '5PM to 7PM' },
+  { day: 'Monday-Sunday', time1: '7AM to 9AM', time2: '12PM to 2PM', time3: '5PM to 7PM' }
 ];
 
 export default function Patient() {
@@ -40,7 +40,7 @@ export default function Patient() {
                     <img
                       src={callout.imageSrc}
                       className="h-full w-full object-cover object-center"
-                      alt={callout.name} // Added alt prop
+                      alt={callout.name}
                     />
                   </div>
                   <h3 className="mt-6 text-base font-semibold text-green-500">
@@ -91,5 +91,3 @@ export default function Patient() {
     </>
   );
 }
-
-
