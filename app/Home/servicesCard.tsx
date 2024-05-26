@@ -132,7 +132,7 @@ const ProductImages = () => {
               />
               <p className=" text-center mt-2 text-2xl sm:text-22xl">OPD Services</p>
               <p className="text-center mt-1 text-1xl text-yellow-300 sm:text-sm font-light">
-                Our OPD offers efficient and comfortable care for an array of illnesses. We ensure prompt medical service, no waiting - because your health can't wait.
+                Our OPD offers efficient and comfortable care for an array of illnesses. We ensure prompt medical service, no waiting - because your health cant wait.
               </p>
               <div className="">
                 <a
@@ -196,7 +196,7 @@ const ProductImages = () => {
               />
               <p className="text-center mt-2 text-2xl  sm:text-2xl">Lab Services</p>
               <p className="text-center   text-1xl text-yellow-300 sm:text-sm font-light">
-                Our state-of-the-art Laboratory provides precise and timely diagnostics to the patient's satisfaction.
+                Our state-of-the-art Laboratory provides precise and timely diagnostics to the patients satisfaction.
               </p>
               <div className="">
                 <a
