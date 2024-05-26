@@ -9,7 +9,15 @@ module.exports = {
         },
         {
           protocol: 'https',
+          hostname: 'scontent.fblz2-1.fna.fbcdn.net',
+        },
+        {
+          protocol: 'https',
           hostname: 'images.unsplash.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 'i.pinimg.com',
         },
       ],
     },

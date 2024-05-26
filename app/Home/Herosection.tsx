@@ -9,12 +9,12 @@ export default function Herosection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const mainControls = useAnimation();
-  const slideControls = useAnimation();
   useEffect(() => {
     if (isInView) {
       mainControls.start("visible");
     }
-  }, [isInView]);
+  }, [isInView, mainControls]); // Include mainControls in the dependency array
+  
   return (
     <>
       {" "}

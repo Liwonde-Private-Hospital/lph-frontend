@@ -38,7 +38,7 @@ export default function Finance(){
             <div className="button-container">
                 <div>
                     <a href="ViewData">
-                    <button className="button">Today's Data</button>
+                    <button className="button">Todays Data</button>
                     </a>
                 </div>
                 <div>

@@ -14,9 +14,9 @@ export default function MissionSection() {
   useEffect(() => {
     if (isInView) {
       mainControls.start("visible");
-     
     }
-  }, [isInView]);
+  }, [isInView, mainControls]); // Include mainControls in the dependency array
+  
   return (
     <>
       {/* mission and Vision section */}

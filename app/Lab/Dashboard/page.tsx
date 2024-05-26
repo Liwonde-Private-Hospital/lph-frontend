@@ -76,7 +76,7 @@ export default function Sale() {
           <div>
             <a href="ViewData">
             <button className="button"  >
-              Today's Data
+              Todays Data
             </button>
             </a>
           </div>

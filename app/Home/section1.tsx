@@ -46,7 +46,7 @@ export default function Section1() {
     if (isInView) {
       mainControls.start("visible");
     }
-  }, [isInView]);
+  }, [isInView, mainControls]); // Add mainControls to the dependency array
 
   return (
     <>
