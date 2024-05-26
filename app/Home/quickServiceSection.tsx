@@ -58,13 +58,16 @@ export default function QuickServiceSection() {
                 </a>
               </div>
               <div className="appointment">
-                <Image
-                  className="image"
-                  src={Ambulance}
-                  alt=""
-                  width={258}
-                  height={200}
-                />
+
+              <Image
+          className="image"
+         src="https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/441966287_847654050714689_7336397440920767764_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHFuh0QzdCHy7-8UnKy2t8eu8aU3IDau0-7xpTcgNq7T67BUfFFwVBuWGy27AyFILgGoC8eo5UHPm8sOB_np7zL&_nc_ohc=rKE-TtF8iuoQ7kNvgEkhOJt&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCp42BCH6UrKsGV95S64Une7IkfMCrPO6_0buDrovZHPQ&oe=66597476"
+          alt=""
+           width={258}
+          height={200}
+             />
+
+
                 <h3 className="book">Call Ambulance</h3>
                 <p className="make">
                   Request fast and reliable ambulance services from liwonde
