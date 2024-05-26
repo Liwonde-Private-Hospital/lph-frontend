@@ -58,7 +58,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -87,7 +87,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -119,7 +119,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -151,7 +151,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                 height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -183,7 +183,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                 height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -215,7 +215,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
@@ -247,7 +247,7 @@ const ProductImages = () => {
             <div
               style={{
                 width: "18rem",
-                height: "25rem",
+                height: "27rem",
                 backgroundColor: "green",
                 borderRadius: "5px",
               }}
