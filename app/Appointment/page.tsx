@@ -1,6 +1,8 @@
-'use client'
+'use client';
 import React, { useState, useRef } from "react";
 import emailjs from "emailjs-com";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import Header from "@/componets/navbar";
 import Footer from "@/componets/footer";
 
@@ -37,10 +39,8 @@ const AppointmentForm = () => {
       case "name":
         return value.trim() === "" ? "Full Name is required" : "";
       case "phone":
-        const phonePattern = /^(08|09)\d{8}$/;
-        return !phonePattern.test(value)
-          ? "Invalid phone number. It must start with 08 or 09 and be 10 digits long."
-          : "";
+        const phonePattern = /^\d+$/;
+        return !phonePattern.test(value) ? "Invalid phone number. Only digits are allowed." : "";
       case "email":
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return !emailPattern.test(value) ? "Invalid email address" : "";
@@ -73,6 +73,19 @@ const AppointmentForm = () => {
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
+    }));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      phone: value,
+    }));
+
+    const error = validateField("phone", value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      phone: error,
     }));
   };
 
@@ -141,15 +154,17 @@ const AppointmentForm = () => {
               <label htmlFor="phone" className="mb-3 block text-base font-medium text-[#07074D]">
                 Phone Number
               </label>
-              <input
-                type="text"
-                name="phone"
-                required
-                id="phone"
-                placeholder="Enter your phone number"
+              <PhoneInput
+                country={'us'}
                 value={formData.phone}
-                onChange={handleChange}
-                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                onChange={handlePhoneChange}
+                inputProps={{
+                  name: 'phone',
+                  required: true,
+                  autoFocus: false,
+                }}
+                containerClass="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                inputClass="w-full bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none"
               />
               {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
             </div>
@@ -208,73 +223,74 @@ const AppointmentForm = () => {
             <div className="mb-5 pt-3">
               <label
                 htmlFor="address-details"
-                className="mb-5 block text-base font-semibold text-[#07074D] sm:text-xl"
-              >
-                Address Details
-              </label>
-              <div className="-mx-3 flex flex-wrap">
-                <div className="w-full px-3 sm:w-1/2">
-                  <div className="mb-5">
-                    <input
-                      type="text"
-                      name="area"
-                      id="area"
-                      required
-                      placeholder="Enter area"
-                      value={formData.area}
-                      onChange={handleChange}
-                      className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    />
-                    {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area}</p>}
+                className="mb-5 block text-base font-semibold text                text-[#07074D] sm:text-xl"
+                >
+                  Address Details
+                </label>
+                <div className="-mx-3 flex flex-wrap">
+                  <div className="w-full px-3 sm:w-1/2">
+                    <div className="mb-5">
+                      <input
+                        type="text"
+                        name="area"
+                        id="area"
+                        required
+                        placeholder="Enter area"
+                        value={formData.area}
+                        onChange={handleChange}
+                        className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                      />
+                      {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area}</p>}
+                    </div>
                   </div>
-                </div>
-                <div className="w-full px-3 sm:w-1/2">
-                  <div className="mb-5">
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      placeholder="Enter city"
-                      required
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                    />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                  <div className="w-full px-3 sm:w-1/2">
+                    <div className="mb-5">
+                      <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        placeholder="Enter city"
+                        required
+                        value={formData.city}
+                        onChange={handleChange}
+                        className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                      />
+                      {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="mb-5">
-              <label htmlFor="message" className="mb-3 block text-base font-semibold text-[#07074D] sm:text-xl">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                placeholder="Please tell us more about your appointment"
-                required
-                value={formData.message}
-                onChange={handleChange}
-                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md resize-none"
-              ></textarea>
-              {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
-            </div>
-            <button
-              type="submit"
-              className="w-full rounded-md bg-[green] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-orange-500"
-            >
-              Book Appointment
-            </button>
-            {showMessage && (
-              <div className="text-[green] mt-3">{bookedName} has booked for appointment successfully ✅</div>
-            )}
-          </form>
+              <div className="mb-5">
+                <label htmlFor="message" className="mb-3 block text-base font-semibold text-[#07074D] sm:text-xl">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Please tell us more about your appointment"
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md resize-none"
+                ></textarea>
+                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+              </div>
+              <button
+                type="submit"
+                className="w-full rounded-md bg-[green] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-orange-500"
+              >
+                Book Appointment
+              </button>
+              {showMessage && (
+                <div className="text-[green] mt-3">{bookedName} has booked for appointment successfully ✅</div>
+              )}
+            </form>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
-};
-
-export default AppointmentForm;
+    );
+  };
+  
+  export default AppointmentForm;
+  
