@@ -5,7 +5,7 @@ const posts = [
       id: 1,
       title: 'I Must Say Thank You Liwonde',
       description:
-        'After Moving around the hospitals in malawi, looking for  a treatment i came accross this website of liwonde. i booke an appointment right at the website and the i visited the hospita.',
+        'After Moving around the hospitals in malawi, looking for  a treatment i came across this website of liwonde. i booke an appointment right at the website and the i visited the hospita.',
       date: 'Mar 16, 2024',
       datetime: '2020-03-16',
       category: { title: 'Zomba' },
