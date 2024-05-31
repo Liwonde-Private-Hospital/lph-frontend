@@ -155,7 +155,8 @@ const AppointmentForm = () => {
                 Phone Number
               </label>
               <PhoneInput
-                country={'us'}
+                country={'mw'} // Default country set to Malawi
+                onlyCountries={['mw', 'mz']} // Only allow Malawi and Mozambique
                 value={formData.phone}
                 onChange={handlePhoneChange}
                 inputProps={{
@@ -183,6 +184,11 @@ const AppointmentForm = () => {
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               />
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            </div>
+            <div className="mb-5">
+              <label className="mb-3 block text-base font-medium text-[#07074D]">
+                Please indicate the day and time you would like to schedule your appointment
+              </label>
             </div>
             <div className="-mx-3 flex flex-wrap">
               <div className="w-full px-3 sm:w-1/2">
@@ -293,4 +299,3 @@ const AppointmentForm = () => {
   };
   
   export default AppointmentForm;
-  

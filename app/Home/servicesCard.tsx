@@ -63,7 +63,7 @@ const ProductImages = () => {
                 borderRadius: "5px",
               }}
             >
-       <img  src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/436429637_847660294047398_7005383217381675414_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGcYg5Zyl32kUiRmKdLGBQllfk9TMJjhvGV-T1MwmOG8SWA4EpOhRTcVRAlAoQZt4t0fRMOsKulfbOML1wq-NbC&_nc_ohc=NTVUQu9S7S8Q7kNvgHX9NqC&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCvofe4afEhX5eDOsbezx7o6ft6eoFEwE3PY4u_15vNfQ&oe=6655AF1D'/>
+       <img  src='https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/436429637_847660294047398_7005383217381675414_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGcYg5Zyl32kUiRmKdLGBQllfk9TMJjhvGV-T1MwmOG8SWA4EpOhRTcVRAlAoQZt4t0fRMOsKulfbOML1wq-NbC&_nc_ohc=uZxRmkXoLzgQ7kNvgEcUtgn&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYDZwc40BMsF20O4wtaxkYUyETz7tapIfpneWBTSHR4fTQ&oe=665EE99D'/>
               <p className=" text-center mt-2 text-2xl  sm:text-2xl">Pharmacy Services</p>
               <p className="text-center  mt-1 text-1xl sm:text-sm text-yellow-300 font-light">
                 Pharmacy is responsible for storing medicine, selling medicine,

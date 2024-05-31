@@ -16,13 +16,13 @@ const posts = [
   {
     id: 1,
     title: 'I Must Say Thank You Liwonde',
-    description: 'After Moving around the hospitals in malawi, looking for neck cancer chemo i came accross this website of liwonde. i booke an appointment right at the website and the i visited the hospita.',
+    description: 'After Moving around the hospitals in malawi, looking for  treatment i came accross this website of liwonde. i booke an appointment right at the website and the i visited the hospita.',
     date: 'Mar 16, 2024',
     datetime: '2020-03-16',
-    category: { title: 'Karonga' },
+    category: { title: 'Zomba' },
     author: {
       name: 'Jeremial Kamanga',
-      role: 'Cancer Patient',
+      role: 'Patient',
       href: '#',
       imageUrl: 'https://i.pinimg.com/564x/01/f4/c8/01f4c8851b0b58aa937541b8827e5feb.jpg',
     },
@@ -35,8 +35,8 @@ const posts = [
     datetime: '2020-03-16',
     category: { title: 'Liwonde' },
     author: {
-      name: 'Dr. E. Lunzu',
-      role: 'Surgeon',
+      name: 'Mr Chilikumtima',
+      role: 'Doctor',
       imageUrl: 'https://i.pinimg.com/564x/e8/f9/64/e8f964f2a79487c2bc9515b193be19e3.jpg',
     },
   },
