@@ -1,25 +1,23 @@
-'use client'
+"use client"
 import React, { useState, useEffect } from "react";
-import Header from "@/componets/navbar";
 import Footer from "@/componets/footer";
-
+import Header from "@/componets/navbar";
 
 interface DataItem {
   ID: number;
   FirstName: string;
   LastName: string;
-  Treatment:string;
-  Amount:number;
+  Treatment: string;
+  Amount: number;
   PaymentMethod: string;
-
 }
 
-const api = "http://localhost:3000/finance";
+const api = "http://localhost:3000/finance/day";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
@@ -29,36 +27,43 @@ const ViewData = () => {
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await fetch(api);
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
       const responseData = await response.json();
-  
-      // Check if response data is an array
       if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-        const mappedData = filteredData.map((item: any) => ({
-          ID: item.iD,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          Treatment:item.Treatment,
-          Amount:item.Amount,
-         PaymentMethod:item.PaymentMethod,
-      
-        }));
-  
+        const uniqueData = removeDuplicates(responseData, 'ID');
+        const mappedData = uniqueData.map(mapToDataItem);
         setData(mappedData);
-        setAlert(null);
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setError("Invalid data received from the server.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      setError("Oops! Today's data is not available.");
     } finally {
       setLoading(false);
     }
   };
+
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
+    );
+  };
+
+  const mapToDataItem = (item: any): DataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    PaymentMethod: item.PaymentMethod,
+  });
 
   const handleViewData = async () => {
     fetchData();
@@ -71,9 +76,7 @@ const ViewData = () => {
         <br />
         <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
         <br />
-        {alert && (
-          <div className="text-center text-red-500">{alert.message}</div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
@@ -84,13 +87,12 @@ const ViewData = () => {
                 <th className="py-2 px-4">Treatment</th>
                 <th className="py-2 px-4">Amount</th>
                 <th className="py-2 px-4">PaymentMethod</th>
-           
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
               ) : (
                 data.length > 0 ? (
@@ -102,12 +104,11 @@ const ViewData = () => {
                       <td className="py-2 px-4">{item.Treatment}</td>
                       <td className="py-2 px-4">{item.Amount}</td>
                       <td className="py-2 px-4">{item.PaymentMethod}</td>
-                   
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                    <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
                   </tr>
                 )
               )}
@@ -115,11 +116,12 @@ const ViewData = () => {
           </table>
         </div>
         <div className="text-center mt-4">
-          <button 
+          <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
             onClick={handleViewData}
+            disabled={loading}
           >
-            View Data
+            Refresh Data
           </button>
         </div>
       </div>

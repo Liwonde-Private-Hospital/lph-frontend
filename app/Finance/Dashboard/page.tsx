@@ -1,24 +1,17 @@
 'use client'
-
-import React, {useState} from "react";
+import React from "react";
 import './style.css'
 import icon from '../../images/icon.png'
 import Image from "next/image";
-import search from '../images/search.png'
-import { Search } from "react-bootstrap-icons";
-import Login from "../Login/page";
-
-
 export default function Finance(){
-    
     return(
         <div>
             <div id="dash">
                 <header>Finance</header>
                 <ul>
                     <li><a href="#">Profile</a></li>
-                    <li><a href="History">Transaction History</a></li>
                     <li><a href="Summary">Day Summary</a></li>
+                    <li><a href="History">Transaction History</a></li>
                     <li><a href="Login">Logout</a></li>
                 </ul>
             </div>

@@ -17,7 +17,7 @@ interface PharmacyItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-export default function Pharmacy() {
+const Pharmacy: React.FC = () => {
     const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([
         { ID: 1, firstName: '', LastName: '', DrugName: '', DrugType: '', Amount: 0, MedicalScheme: '' }
     ]);
@@ -62,47 +62,46 @@ export default function Pharmacy() {
             return newData;
         });
     }
-const API_URL="";
 
-        
-        const postData = async (url: string, data: PharmacyItem) => {
-            try {
-              const response = await fetch(url, {
+    const API_URL = "http://localhost:3000/pharmacy/add"; // Assuming a similar API endpoint
+
+    const postData = async (url: string, data: PharmacyItem) => {
+        try {
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(data),
-              });
-        
-              if (response.ok) {
+            });
+
+            if (response.ok) {
                 alert("Data saved successfully");
-              } else {
+            } else {
                 alert("Failed to save data");
-              }
-            } catch (error) {
-              console.log("Error connecting to server:", error);
-              alert("Failed to save data");
             }
-          };
-        
-          const handleSubmit = async () => {
-            try {
-              for (const item of pharmacy) {
-                if (!item.firstName || !item.LastName || !item.DrugName || !item.DrugType||!item.Amount||!item.MedicalScheme) {
-                  alert("Enter All fields !");
-                  return;
+        } catch (error) {
+            console.log("Error connecting to server:", error);
+            alert("Failed to save data");
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            for (const item of pharmacy) {
+                if (!item.firstName || !item.LastName || !item.DrugName || !item.DrugType || !item.Amount || !item.MedicalScheme) {
+                    alert("Enter All fields!");
+                    return;
                 }
-        
+
                 await postData(API_URL, item);
-              }
-              setDataModified(false); // Reset dataModified after successful submission
-            } catch (error) {
-              console.log("Error connecting to server:", error);
-              alert("Failed to save data");
             }
-          };
-        
+            setDataModified(false); // Reset dataModified after successful submission
+        } catch (error) {
+            console.log("Error connecting to server:", error);
+            alert("Failed to save data");
+        }
+    };
 
     const updateRow = (index: number, newData: Partial<PharmacyItem>) => {
         const updatedData = [...pharmacy];
@@ -116,131 +115,142 @@ const API_URL="";
     }
 
     return (
-        <div>
-            <div id="table">
-                <Image
-                    src={icon}
-                    alt=""
-                    width={100}
-                    height={100}
-                />
-                <div>
-                    <h1 className="Tsikuli">Pharmacy</h1>
-                    <h1 className="Tsiku">{formattedDate}</h1>
-                </div>
-                <div className="table-box">
-                    <div className="table-row">
-                        <div className="table-cell">
-                            <p>ID</p>
+        <div className="container mx-auto p-4 bg-opacity-75">
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                <div className="flex items-center justify-between bg-gray-800 text-white p-4">
+                    <div className="flex items-center">
+                        <Image src={icon} alt="icon" width={100} height={100} />
+                        <div className="ml-4">
+                            <h1 className="text-4xl font-bold">Pharmacy</h1>
                         </div>
-                        <div className="table-cell">
-                            <p>FirstName</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>LastName</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>DrugName</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>DrugType</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Amount</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>MedicalScheme</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Action</p>
-                        </div>
+                        <h1 className="tsiku">{formattedDate}</h1>
                     </div>
                 </div>
-                {pharmacy.map((row, index) => (
-                    <div className="table-row" key={index}>
-                        <div className="table-cell">
-                            <input
-                                type="number"
-                                id="label"
-                                placeholder="e.g 1"
-                                value={row.ID}
-                                onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder=" e.g damascus"
-                                value={row.firstName}
-                                onChange={(event) => updateRow(index, { ...row, firstName: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="multiplug"
-                                value={row.LastName}
-                                onChange={(event) => updateRow(index, { ...row, LastName: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="drugname"
-                                value={row.DrugName}
-                                onChange={(event) => updateRow(index, { ...row, DrugName: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="drugtype"
-                                value={row.DrugType}
-                                onChange={(event) => updateRow(index, { ...row, DrugType: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="number"
-                                id="label"
-                                placeholder="0"
-                                value={row.Amount}
-                                onChange={(event) => updateRow(index, { ...row, Amount: parseInt(event.target.value) })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <select
-                                name={`medical-scheme-${index}`}
-                                id="label"
-                                required
-                                onChange={(event) => updateRow(index, { ...row, MedicalScheme: event.target.value })}
-                            >
-                                <option value="">MASM</option>
-                                <option value="">Liberty Health</option>
-                                <option value="">National Bank</option>
-                                <option value="">Escom</option>
-                            </select>
-                        </div>
-                        <div className="table-cell">
-                            <button className="delete" onClick={() => deleteRow(index)}>Delete</button>
-                        </div>
+                <div className="px-4 py-2">
+                    <div className="overflow-x-auto">
+                        <table className="w-full table-auto">
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th className="px-4 py-2">ID</th>
+                                    <th className="px-4 py-2">First Name</th>
+                                    <th className="px-4 py-2">Last Name</th>
+                                    <th className="px-4 py-2">Drug Name</th>
+                                    <th className="px-4 py-2">Drug Type</th>
+                                    <th className="px-4 py-2">Amount</th>
+                                    <th className="px-4 py-2">Medical Scheme</th>
+                                    <th className="px-4 py-2">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pharmacy.map((row, index) => (
+                                    <tr key={index} className="border-b border-gray-300">
+                                        <td className="px-4 py-2">{row.ID}</td>
+                                        <td className="px-4 py-2">
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent focus:outline-none"
+                                                placeholder="e.g. John"
+                                                value={row.firstName}
+                                                onChange={(event) =>
+                                                    updateRow(index, { firstName: event.target.value })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent focus:outline-none"
+                                                placeholder="e.g. Doe"
+                                                value={row.LastName}
+                                                onChange={(event) =>
+                                                    updateRow(index, { LastName: event.target.value })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent focus:outline-none"
+                                                placeholder="Drug Name"
+                                                value={row.DrugName}
+                                                onChange={(event) =>
+                                                    updateRow(index, { DrugName: event.target.value })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent focus:outline-none"
+                                                placeholder="Drug Type"
+                                                value={row.DrugType}
+                                                onChange={(event) =>
+                                                    updateRow(index, { DrugType: event.target.value })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <input
+                                                type="number"
+                                                className="w-full bg-transparent focus:outline-none"
+                                                placeholder="0"
+                                                value={row.Amount}
+                                                onChange={(event) =>
+                                                    updateRow(index, { Amount: parseInt(event.target.value) })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <select
+                                                className="w-full bg-transparent focus:outline-none"
+                                                value={row.MedicalScheme}
+                                                onChange={(event) =>
+                                                    updateRow(index, { MedicalScheme: event.target.value })
+                                                }
+                                            >
+                                                <option value="">Select Medical Scheme</option>
+                                                <option value="MASM">MASM</option>
+                                                <option value="MediHealth">MediHealth</option>
+                                                <option value="National Bank">National Bank</option>
+                                                <option value="Liberty Health">Liberty Health</option>
+                                                <option value="Escom">Escom</option>
+                                            </select>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <button
+                                                className="bg-green-500 text-white hover:bg-red-500 hover:text-white focus:outline-none px-4 py-2 rounded"
+                                                onClick={() => deleteRow(index)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                ))}
-                <div className="table-row">
-                    <div className="table-cell">
-                        <p>Total Amount:</p>
+                    <div className="flex justify-end mt-4">
+                        <div className="px-4 py-2 font-bold">Total Amount:</div>
+                        <div className="px-4 py-2 font-bold">{getTotalAmount()}</div>
                     </div>
-                    <div className="table-cell">
-                        <p>{getTotalAmount()}</p>
+                    <div className="flex justify-center mt-4">
+                        <button
+                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
+                            onClick={addRow}
+                        >
+                            Add Row
+                        </button>
+                        <button
+                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            onClick={handleSubmit}
+                        >
+                            Save
+                        </button>
                     </div>
                 </div>
-                <button onClick={addRow} className="button">Add Row</button>
-                <button onClick={handleSubmit} className="button1">Save</button>
             </div>
         </div>
     );
 }
+
+export default Pharmacy;

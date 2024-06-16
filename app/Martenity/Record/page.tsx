@@ -4,7 +4,7 @@ import './style.css';
 import Image from "next/image";
 import icon from '../../images/icon.png';
 
-interface MartenityItem {
+interface MaternityItem {
     ID: number;
     firstName: string;
     LastName: string;
@@ -14,8 +14,8 @@ interface MartenityItem {
     Date: string;
 }
 
-export default function Martenity() {
-    const [Martenity, setMartenity] = useState<MartenityItem[]>([
+const Maternity: React.FC = () => {
+    const [maternity, setMaternity] = useState<MaternityItem[]>([
         { ID: 1, firstName: '', LastName: '', Treatment: '', Amount: '', MedicalScheme: '', Date: '' }
     ]);
 
@@ -39,8 +39,8 @@ export default function Martenity() {
     }, [dataModified]);
 
     const addRow = () => {
-        const newRow: MartenityItem = {
-            ID: Martenity.length + 1,
+        const newRow: MaternityItem = {
+            ID: maternity.length + 1,
             firstName: '',
             LastName: '',
             Treatment: '',
@@ -48,63 +48,64 @@ export default function Martenity() {
             MedicalScheme: '',
             Date: ''
         };
-        setMartenity(prevData => [...prevData, newRow]);
+        setMaternity(prevData => [...prevData, newRow]);
         setDataModified(true);
     }
 
     const deleteRow = (index: number) => {
-        setMartenity(prevData => {
+        setMaternity(prevData => {
             const newData = prevData.filter((row, i) => i !== index);
             setDataModified(true);
             return newData;
         });
     }
 
-    const updateRow = (index: number, newData: Partial<MartenityItem>) => {
-        const updatedData = [...Martenity];
+    const updateRow = (index: number, newData: Partial<MaternityItem>) => {
+        const updatedData = [...maternity];
         updatedData[index] = { ...updatedData[index], ...newData };
-        setMartenity(updatedData);
+        setMaternity(updatedData);
         setDataModified(true);
     }
-    const API_URL=""
 
-    const postData = async (url: string, data: MartenityItem) => {
+    const API_URL = ""; // Replace with your API endpoint
+
+    const postData = async (url: string, data: MaternityItem) => {
         try {
-          const response = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-    
-          if (response.ok) {
-            alert("Data saved successfully");
-          } else {
-            alert("Failed to save data");
-          }
-        } catch (error) {
-          console.log("Error connecting to server:", error);
-          alert("Failed to save data");
-        }
-      };
-    
-      const handleSubmit = async () => {
-        try {
-          for (const item of Martenity) {
-            if (!item.firstName || !item.LastName || !item.Treatment || !item.MedicalScheme||!item.Amount||!item.Date) {
-              alert("Enter All fields !");
-              return;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert("Data saved successfully");
+            } else {
+                alert("Failed to save data");
             }
-    
-            await postData(API_URL, item);
-          }
-          setDataModified(false); // Reset dataModified after successful submission
         } catch (error) {
-          console.log("Error connecting to server:", error);
-          alert("Failed to save data");
+            console.log("Error connecting to server:", error);
+            alert("Failed to save data");
         }
-      };
+    };
+
+    const handleSubmit = async () => {
+        try {
+            for (const item of maternity) {
+                if (!item.firstName || !item.LastName || !item.Treatment || !item.Amount || !item.MedicalScheme || !item.Date) {
+                    alert("Enter All fields !");
+                    return;
+                }
+
+                await postData(API_URL, item);
+            }
+            setDataModified(false); // Reset dataModified after successful submission
+        } catch (error) {
+            console.log("Error connecting to server:", error);
+            alert("Failed to save data");
+        }
+    };
 
     return (
         <div>
@@ -116,7 +117,7 @@ export default function Martenity() {
                     height={100}
                 />
                 <div>
-                    <h1 id="pharma-head">Martenity</h1>
+                    <h1 id="pharma-head">Maternity</h1>
                 </div>
                 <div className="table-box">
                     <div className="table-row">
@@ -133,14 +134,20 @@ export default function Martenity() {
                             <p>Treatment</p>
                         </div>
                         <div className="table-cell">
-                            <p>Medical Scheme</p>
+                            <p>Amount</p>
+                        </div>
+                        <div className="table-cell">
+                            <p>MedicalScheme</p>
                         </div>
                         <div className="table-cell">
                             <p>Date</p>
                         </div>
+                        <div className="table-cell">
+                            <p>Action</p>
+                        </div>
                     </div>
                 </div>
-                {Martenity.map((row, index) => (
+                {maternity.map((row, index) => (
                     <div className="table-row" key={index}>
                         <div className="table-cell">
                             <input
@@ -179,6 +186,15 @@ export default function Martenity() {
                             />
                         </div>
                         <div className="table-cell">
+                            <input
+                                type="text"
+                                id="label"
+                                placeholder="Amount"
+                                value={row.Amount}
+                                onChange={(event) => updateRow(index, { ...row, Amount: event.target.value })}
+                            />
+                        </div>
+                        <div className="table-cell">
                             <select
                                 name={`medical-scheme-${index}`}
                                 id="label"
@@ -202,17 +218,15 @@ export default function Martenity() {
                             />
                         </div>
                         <div className="table-cell">
-                            <button className="delete1" onClick={() => updateRow(index, row)}>Update</button>
-                        </div>
-                        <div className="table-cell">
                             <button className="delete" onClick={() => deleteRow(index)}>Delete</button>
                         </div>
                     </div>
                 ))}
                 <button onClick={addRow} className="button">Add Row</button>
-                <button  onClick={handleSubmit}className="button1">Save</button>
+                <button onClick={handleSubmit} className="button1">Save</button>
             </div>
         </div>
     );
-
 }
+
+export default Maternity;

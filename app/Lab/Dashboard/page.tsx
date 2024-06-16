@@ -13,7 +13,6 @@ interface Patient {
   LastName: string;
   PaymentMethod:string;
   TestOrdered:string;
-
 }
 
 const api = 'http://localhost:3000/laboratory';
