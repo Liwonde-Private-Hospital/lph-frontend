@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import './style.css';
+import './style.css';  // Assuming you have a CSS file for styling
 import Image from "next/image";
 import icon from '../../images/icon.png';
 
@@ -67,7 +67,7 @@ const Maternity: React.FC = () => {
         setDataModified(true);
     }
 
-    const API_URL = ""; // Replace with your API endpoint
+    const API_URL = "http://localhost:3000/maternity/add"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: MaternityItem) => {
         try {
@@ -108,122 +108,133 @@ const Maternity: React.FC = () => {
     };
 
     return (
-        <div>
-            <div id="table">
-                <Image
-                    src={icon}
-                    alt=""
-                    width={100}
-                    height={100}
-                />
-                <div>
-                    <h1 id="pharma-head">Maternity</h1>
-                </div>
-                <div className="table-box">
-                    <div className="table-row">
-                        <div className="table-cell">
-                            <p>ID</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>FirstName</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>LastName</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Treatment</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Amount</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>MedicalScheme</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Date</p>
-                        </div>
-                        <div className="table-cell">
-                            <p>Action</p>
+        <div className="container mx-auto p-4 bg-opacity-75">
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                <div className="flex items-center justify-between bg-gray-800 text-white p-4">
+                    <div className="flex items-center">
+                        <Image src={icon} alt="icon" width={100} height={100} />
+                        <div className="ml-4">
+                            <h1 className="text-4xl font-bold">Maternity</h1>
                         </div>
                     </div>
                 </div>
-                {maternity.map((row, index) => (
-                    <div className="table-row" key={index}>
-                        <div className="table-cell">
-                            <input
-                                type="number"
-                                id="label"
-                                placeholder="e.g 1"
-                                value={row.ID}
-                                onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) })}
-                            />
+                <div className="px-4 py-2">
+                    <div className="overflow-x-auto">
+                        <div className="table-box">
+                            <div className="table-row">
+                                <div className="table-cell">
+                                    <p>ID</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>First Name</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Last Name</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Treatment</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Amount</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Medical Scheme</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Date</p>
+                                </div>
+                                <div className="table-cell">
+                                    <p>Action</p>
+                                </div>
+                            </div>
+                            {maternity.map((row, index) => (
+                                <div className="table-row" key={index}>
+                                    <div className="table-cell">
+                                        <input
+                                            type="number"
+                                            placeholder="e.g 1"
+                                            value={row.ID}
+                                            onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <input
+                                            type="text"
+                                            placeholder=" e.g John"
+                                            value={row.firstName}
+                                            onChange={(event) => updateRow(index, { ...row, firstName: event.target.value })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <input
+                                            type="text"
+                                            placeholder=" e.g Doe"
+                                            value={row.LastName}
+                                            onChange={(event) => updateRow(index, { ...row, LastName: event.target.value })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <input
+                                            type="text"
+                                            placeholder="Treatment"
+                                            value={row.Treatment}
+                                            onChange={(event) => updateRow(index, { ...row, Treatment: event.target.value })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <input
+                                            type="text"
+                                            placeholder="Amount"
+                                            value={row.Amount}
+                                            onChange={(event) => updateRow(index, { ...row, Amount: event.target.value })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <select
+                                            value={row.MedicalScheme}
+                                            onChange={(event) => updateRow(index, { ...row, MedicalScheme: event.target.value })}
+                                        >
+                                            <option value="">Select Medical Scheme</option>
+                                            <option value="MASM">MASM</option>
+                                            <option value="MediHealth">MediHealth</option>
+                                            <option value="National Bank">National Bank</option>
+                                            <option value="Liberty Health">Liberty Health</option>
+                                            <option value="Escom">Escom</option>
+                                        </select>
+                                    </div>
+                                    <div className="table-cell">
+                                        <input
+                                            type="date"
+                                            value={row.Date}
+                                            onChange={(event) => updateRow(index, { ...row, Date: event.target.value })}
+                                        />
+                                    </div>
+                                    <div className="table-cell">
+                                        <button className="delete" onClick={() => deleteRow(index)}>Delete</button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder=" e.g damascus"
-                                value={row.firstName}
-                                onChange={(event) => updateRow(index, { ...row, firstName: event.target.value })}
-                            />
+                        <div className="flex justify-end mt-4">
+                            <div className="px-4 py-2 font-bold">Total Amount:</div>
+                            <div className="px-4 py-2 font-bold">0</div>
                         </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="multiplug"
-                                value={row.LastName}
-                                onChange={(event) => updateRow(index, { ...row, LastName: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="Aids"
-                                value={row.Treatment}
-                                onChange={(event) => updateRow(index, { ...row, Treatment: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                id="label"
-                                placeholder="Amount"
-                                value={row.Amount}
-                                onChange={(event) => updateRow(index, { ...row, Amount: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <select
-                                name={`medical-scheme-${index}`}
-                                id="label"
-                                required
-                                onChange={(event) => updateRow(index, { ...row, MedicalScheme: event.target.value })}
+                        <div className="flex justify-center mt-4">
+                            <button
+                                className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
+                                onClick={addRow}
                             >
-                                <option value="">MASM</option>
-                                <option value="">MediHealth</option>
-                                <option value="">National Bank</option>
-                                <option value="">Liberty Health</option>
-                                <option value="">MRA</option>
-                                <option value="">ECM</option>
-                            </select>
-                        </div>
-                        <div className="table-cell">
-                            <input
-                                type="date"
-                                id="label"
-                                value={row.Date}
-                                onChange={(event) => updateRow(index, { ...row, Date: event.target.value })}
-                            />
-                        </div>
-                        <div className="table-cell">
-                            <button className="delete" onClick={() => deleteRow(index)}>Delete</button>
+                                Add Row
+                            </button>
+                            <button
+                                className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                onClick={handleSubmit}
+                            >
+                                Save
+                            </button>
                         </div>
                     </div>
-                ))}
-                <button onClick={addRow} className="button">Add Row</button>
-                <button onClick={handleSubmit} className="button1">Save</button>
+                </div>
             </div>
         </div>
     );

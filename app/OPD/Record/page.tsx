@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
-import './style.css';
+import './style.css'; // Make sure this CSS file aligns with the Pharmacy component styles
 import Image from "next/image";
 import icon from '../../images/icon.png';
 
@@ -71,6 +71,16 @@ const OPD: React.FC = () => {
 
     const updateRow = (index: number, newData: Partial<OPDItem>) => {
         const updatedData = [...opd];
+
+        // Check if both Amount and Medical Scheme are entered
+        const amount = newData.Amount || updatedData[index].Amount;
+        const medicalScheme = newData.MedicalScheme || updatedData[index].MedicalScheme;
+        
+        if (amount && medicalScheme) {
+            alert("Amount and Medical Scheme cannot be entered at once.");
+            return; // Prevent the update if both are entered
+        }
+
         updatedData[index] = { ...updatedData[index], ...newData };
         setOpd(updatedData);
         setDataModified(true);
@@ -83,6 +93,7 @@ const OPD: React.FC = () => {
         const total = data.reduce((acc, curr) => acc + parseFloat(curr.Amount || '0'), 0);
         setTotalAmount(total);
     }
+
     const API_URL = "http://localhost:3000/opd/add"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: OPDItem) => {
@@ -109,8 +120,8 @@ const OPD: React.FC = () => {
     const handleSubmit = async () => {
         try {
             for (const item of opd) {
-                if (!item.firstName || !item.LastName || !item.Treatment || !item.Amount || !item.MedicalScheme) {
-                    alert("Enter All fields!");
+                if (!item.firstName || !item.LastName || !item.Treatment || (!item.Amount && !item.MedicalScheme)) {
+                    alert("Enter all required fields and either Amount or Medical Scheme!");
                     return;
                 }
 
@@ -124,15 +135,15 @@ const OPD: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 bg-opacity-75">
+        <div className="container mx-auto p-4">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
                     <div className="flex items-center">
-                        <Image src={icon} alt="" width={100} height={100} />
+                        <Image src={icon} alt="icon" width={100} height={100} />
                         <div className="ml-4">
-                            <h1 className="text-4xl font-bold">Doctors Office</h1>
+                            <h1 className="text-3xl font-bold">Doctors Office</h1>
                         </div>
-                        <h1 className="tsiku">{formattedDate}</h1>
+                        <h1 className="tsiku text-lg">{formattedDate}</h1>
                     </div>
                 </div>
                 <div className="px-4 py-2">
@@ -235,7 +246,8 @@ const OPD: React.FC = () => {
 
                     <div className="flex justify-center mt-4">
                         <button
-                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
+                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none
+                            focus:shadow-outline mr-4"
                             onClick={addRow}
                         >
                             Add Row

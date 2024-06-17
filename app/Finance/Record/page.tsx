@@ -1,6 +1,5 @@
 'use client'
-// Finance.tsx
-
+import './style.css';
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../images/icon.png";
@@ -117,7 +116,7 @@ const Finance: React.FC = () => {
       );
 
       if (!allFieldsEntered) {
-        setError("Enter all fields!");
+        alert("Enter all fields!");
         return;
       }
 
@@ -131,7 +130,7 @@ const Finance: React.FC = () => {
       }
     } catch (error) {
       console.error("Error handling submit:", error);
-      setError("Failed to save data");
+      alert("Failed to save data");
     }
   };
 
