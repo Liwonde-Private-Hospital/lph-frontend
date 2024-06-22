@@ -46,14 +46,14 @@ export default function Header() {
         <div className="new-links">
           <a className="links" href="/">Profile
           </a>
-          <a className="links" href="Patient">
+          <a className="links" href="/pages/Patient">
             <FontAwesomeIcon icon={faUserFriends} className="my-icon1" />
             Transaction History
           </a>
-          <a className="links" href="/departments">
+          <a className="links" href="/pages/departments">
             <FontAwesomeIcon icon={faTools} className="my-icon1" /> Day Summary
           </a>
-          <a className="links" href="/Staff">
+          <a className="links" href="/login">
             <FontAwesomeIcon icon={faUserDoctor} className="my-icon1" /> Logout
           </a>
          

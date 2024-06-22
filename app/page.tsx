@@ -1,16 +1,17 @@
-import Herosection from "./Home/Herosection";
-import Section1 from "./Home/section1";
-import ServicesCard from "./Home/servicesCard";
-import MissionSection from "./Home/Mission";
-import QuickServiceSection from "./Home/quickServiceSection";
-import BriefHistory from "./Home/history";
-import ScrollToTopButton from "./Scroll/scroll";
-import FAQ from "./Home/Faq";
-import BottomSection from "./Home/BottomSection";
+
+import ScrollToTopButton from "./pages/Scroll/scroll";
 import Footer from "@/componets/footer";
 
 import Image from 'next/image';
 import Navbar from "@/componets/navbar";
+import Herosection from "./pages/Home/Herosection";
+import ServicesCard from "./pages/Home/servicesCard";
+import Section1 from "./pages/Home/section1";
+import MissionSection from "./pages/Home/Mission";
+import QuickServiceSection from "./pages/Home/quickServiceSection";
+import BriefHistory from "./pages/Home/history";
+import BottomSection from "./pages/Home/BottomSection";
+import SimpleAccordion from "./pages/Home/Faq";
 
 const posts = [
   {
@@ -112,7 +113,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <FAQ />
+      <SimpleAccordion/>
       <BottomSection />
       <ScrollToTopButton />
       <Footer />

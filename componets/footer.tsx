@@ -34,10 +34,10 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Important Links</h4>
             <ul>
-              <li><a href="Appointment"><FontAwesomeIcon icon={faNoteSticky} className="my-icon1" />Book Appointment</a></li>
-              <li><a href="/Team"><FontAwesomeIcon icon={faUserFriends} className="my-icon1" />Team of Developers</a></li>
-              <li><a href="/Map"><FontAwesomeIcon icon={faLocation} className="my-icon1" /> Location</a></li>
-              <li><a href="/AboutUs"><FontAwesomeIcon icon={faInfoCircle} className="my-icon1" />About Us</a></li>
+              <li><a href="/pages/Appointment"><FontAwesomeIcon icon={faNoteSticky} className="my-icon1" />Book Appointment</a></li>
+              <li><a href="/pages/Team"><FontAwesomeIcon icon={faUserFriends} className="my-icon1" />Team of Developers</a></li>
+              <li><a href="/pages/Map"><FontAwesomeIcon icon={faLocation} className="my-icon1" /> Location</a></li>
+              <li><a href="/pages/AboutUs"><FontAwesomeIcon icon={faInfoCircle} className="my-icon1" />About Us</a></li>
             </ul>
           </div>
           <div className="footer-col">

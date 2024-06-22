@@ -47,17 +47,17 @@ export default function Header() {
           <a className="links" href="/">
             <FontAwesomeIcon icon={faHome} className="my-icon1" /> Home
           </a>
-          <a className="links" href="Patient">
+          <a className="links" href="/pages/Patient">
             <FontAwesomeIcon icon={faUserFriends} className="my-icon1" />
             Patients & Visitors
           </a>
-          <a className="links" href="/departments">
+          <a className="links" href="/pages/departments">
             <FontAwesomeIcon icon={faTools} className="my-icon1" /> Departments
           </a>
-          <a className="links" href="/Staff">
+          <a className="links" href="/login">
             <FontAwesomeIcon icon={faUserDoctor} className="my-icon1" /> Staff
           </a>
-          <a className="links" href="/AboutUs">
+          <a className="links" href="/pages/AboutUs">
             <FontAwesomeIcon icon={faInfoCircle} className="my-icon1" /> About Us
           </a>
         </div>
@@ -67,22 +67,22 @@ export default function Header() {
           <FontAwesomeIcon icon={faHome} className="my-icon1" />
           Home
         </a>
-        <a className="links" href="Patient">
+        <a className="links" href="/pages/Patient">
           <FontAwesomeIcon icon={faUserFriends} className="my-icon1" />
           Patients and Visitors
         </a>
-        <a className="links" href="/Staff">
+        <a className="links" href="/login">
           <FontAwesomeIcon icon={faUserDoctor} className="my-icon1" /> Staff
         </a>
         <a className="links" href="/departments">
           <FontAwesomeIcon icon={faHospital} className="my-icon1" /> Departments
         </a>
-        <a className="links" href="/AboutUs">
+        <a className="links" href="/pages/AboutUs">
           <FontAwesomeIcon icon={faInfoCircle} className="my-icon1" /> About Us
         </a>
       </div>
       <div className="button">
-        <a href="Appointment">
+        <a href="/pages/Appointment">
           <button>Book Appointment</button>
         </a>
       </div>
