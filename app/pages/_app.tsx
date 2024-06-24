@@ -1,12 +1,12 @@
-import { AppProps } from 'next/app';
-import { AuthProvider } from '../contexts/AuthContext';
+import { AppProps } from "next/dist/pages/_app";
+import { AuthProvider } from "../context/AuthContext";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <AuthProvider>
       <Component {...pageProps} />
     </AuthProvider>
   );
-}
+};
 
-export default MyApp;
+export default App;

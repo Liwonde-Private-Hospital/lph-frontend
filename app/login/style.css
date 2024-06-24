@@ -1,7 +1,8 @@
 body{
   background-size: cover;
   background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
-}
+  justify-content: center;
+  align-items: center;}
 .logo-container {
   display: flex;
   justify-content: center;
@@ -11,6 +12,7 @@ body{
   display: block; /* Make sure the image is treated as a block element */
   margin: auto; /* Set margin to auto to center horizontally */
 }
+
 
 h1 {
   align-items: center;

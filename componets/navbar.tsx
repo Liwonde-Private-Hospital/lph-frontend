@@ -10,9 +10,8 @@ import {
   faHospital,
   faUserFriends,
 } from "@fortawesome/free-solid-svg-icons";
-import icon from "../app/images/icon.png";
 import Image from "next/image";
-
+import icon from "../app/images/icon.png";
 export default function Header() {
   const [showLinks, setShowLinks] = useState(false);
 
@@ -51,7 +50,7 @@ export default function Header() {
             <FontAwesomeIcon icon={faUserFriends} className="my-icon1" />
             Patients & Visitors
           </a>
-          <a className="links" href="/pages/departments">
+          <a className="links" href="/departments">
             <FontAwesomeIcon icon={faTools} className="my-icon1" /> Departments
           </a>
           <a className="links" href="/login">
@@ -63,7 +62,7 @@ export default function Header() {
         </div>
       )}
       <div className="nav-links">
-        <a className="links" href="../">
+        <a className="links" href="/">
           <FontAwesomeIcon icon={faHome} className="my-icon1" />
           Home
         </a>
@@ -82,7 +81,7 @@ export default function Header() {
         </a>
       </div>
       <div className="button">
-        <a href="/pages/Appointment">
+        <a href="Appointment">
           <button>Book Appointment</button>
         </a>
       </div>

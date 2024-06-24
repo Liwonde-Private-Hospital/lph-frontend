@@ -21,10 +21,10 @@ const people = [
   },
   {
     name: "Richard Mlambuzi",
-    role: "Full-Stack Developer",
+    role: "Software Engineer (Senior Level), Full-Stack Developer,Software Architect,UI/UX Designer,Database Administrator ",
     imageUrl:
       "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/407865931_1891544774575812_7388651972688331146_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEVVWWq9Q6W8a51Rgki-lOKG9MZ2OyVXNcb0xnY7JVc1yItsfy1G5ijoRIfmzO-LgKGrAAYxWWI18ERXp7rJwBN&_nc_ohc=Bb-VzzA8SLsQ7kNvgGZ-kM6&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYBXUVFCBMrHDIqKYeFoTGz-tYCUPexVdRTiH-uIe59mnQ&oe=665546F9",
-    phoneNumber: "", // Add the phone number here
+    phoneNumber: "+265991673436", 
   },
   {
     name: "Tafadzwa Gambiza",
