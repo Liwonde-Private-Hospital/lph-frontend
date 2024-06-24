@@ -1,8 +1,8 @@
 'use client'
 // Import necessary modules and styles
-import './style.css'; 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import './style.css';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import icon from '../../../images/icon.png';
 
 // Define interface for VitalsItem
@@ -13,14 +13,14 @@ interface VitalsItem {
     Temperature: number;
     Height: number;
     Weight: number;
-    BloodPressure: string;
-    BMI: string;
+    BloodPressure: number;
+    BMI: string; // Changed BMI type to string
 }
 
 // React functional component Vitals
 const Vitals: React.FC = () => {
     const [vitals, setVitals] = useState<VitalsItem[]>([
-        { ID: 1, FirstName: '', LastName: '', Temperature: 0, Height: 0, Weight: 0, BloodPressure: '', BMI: '' }
+        { ID: 1, FirstName: '', LastName: '', Temperature: 0, Height: 0, Weight: 0, BloodPressure: 0, BMI: '0' }
     ]);
 
     const [dataModified, setDataModified] = useState<boolean>(false);
@@ -50,8 +50,8 @@ const Vitals: React.FC = () => {
             Temperature: 0,
             Height: 0,
             Weight: 0,
-            BloodPressure: '',
-            BMI: ''
+            BloodPressure: 0,
+            BMI: '0' // Initialize BMI as string
         };
         setVitals(prevData => [...prevData, newRow]);
         setDataModified(true);
@@ -67,83 +67,67 @@ const Vitals: React.FC = () => {
     const updateRow = (index: number, newData: Partial<VitalsItem>) => {
         const updatedData = [...vitals];
         updatedData[index] = { ...updatedData[index], ...newData };
-        
+
         // Recalculate BMI when height or weight changes
         if (newData.Height && newData.Weight) {
             const bmi = calculateBMI(newData.Height, newData.Weight);
-            updatedData[index].BMI = calculateBMIStatus(bmi);
+            updatedData[index].BMI = bmi; // BMI is already a string
         }
-        
+
         setVitals(updatedData);
         setDataModified(true);
     };
 
     // Function to calculate BMI
-    const calculateBMI = (height: number, weight: number): number => {
+    const calculateBMI = (height: number, weight: number): string => {
         if (height > 0 && weight > 0) {
-            const bmi = weight / ((height / 100) * (height / 100)); // Calculate BMI using height in cm
+            const bmi = (weight / ((height / 100) * (height / 100))).toFixed(2); // Calculate BMI and convert to string with two decimal places
             return bmi;
         }
-        return 0;
+        return '0';
     };
 
-    // Function to determine BMI status
-    const calculateBMIStatus = (bmi: number): string => {
-        if (bmi < 18.5) {
-            return "Underweight";
-        } else if (bmi >= 18.5 && bmi < 24.9) {
-            return "Normal weight";
-        } else if (bmi >= 25 && bmi < 29.9) {
-            return "Overweight";
-        } else {
-            return "Obese";
-        }
-    };
+    const API_URL="http://localhost:3000/vitals"
 
     // Function to handle form submission
     const handleSubmit = async () => {
         try {
             for (const item of vitals) {
-                if (!item.FirstName || !item.LastName || !item.Temperature || !item.Weight || !item.BloodPressure) {
-                    alert("Please fill in all fields!");
+                if (!item.FirstName || !item.LastName || item.Temperature === 0 || item.Weight === 0 || item.BloodPressure === 0) {
+                    alert('Please fill in all fields!');
                     return;
                 }
 
+                // Convert BMI to string before sending to server
+                item.BMI = item.BMI.toString();
                 await postData(API_URL, item);
             }
             setDataModified(false); // Reset dataModified after successful submission
         } catch (error) {
-            console.log("Error connecting to server:", error);
-            alert("Failed to save data");
+            console.error('Error connecting to server:', error);
+            alert('Failed to save data');
         }
     };
-
-    // Current date for display
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
-
-    // Replace with your API URL
-    const API_URL = "";
 
     // Function to post data to server
     const postData = async (url: string, data: VitalsItem) => {
         try {
             const response = await fetch(url, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
             });
 
             if (response.ok) {
-                alert("Data saved successfully");
+                alert('Data saved successfully');
             } else {
-                alert("Failed to save data");
+                alert('Failed to save data');
             }
         } catch (error) {
-            console.log("Error connecting to server:", error);
-            alert("Failed to save data");
+            console.error('Error connecting to server:', error);
+            alert('Failed to save data');
         }
     };
 
@@ -157,7 +141,6 @@ const Vitals: React.FC = () => {
                         <div className="ml-4">
                             <h1 className="text-4xl font-bold">Body Tests</h1>
                         </div>
-                        <h1 className="tsiku" style={{ fontWeight: 'bolder', fontSize: '30px', marginLeft: '500px' }}>{formattedDate}</h1>
                     </div>
                 </div>
                 <div className="px-4 py-2">
@@ -183,7 +166,7 @@ const Vitals: React.FC = () => {
                                             className="w-full p-2"
                                             placeholder="e.g 1"
                                             value={row.ID}
-                                            onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) })}
+                                            onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) || 0 })}
                                         />
                                     </div>
                                     <div className="table-cell border border-gray-300 p-2 text-center">
@@ -210,7 +193,7 @@ const Vitals: React.FC = () => {
                                             className="w-full p-2"
                                             placeholder="e.g Temperature"
                                             value={row.Temperature}
-                                            onChange={(event) => updateRow(index, { ...row, Temperature: parseFloat(event.target.value) })}
+                                            onChange={(event) => updateRow(index, { ...row, Temperature: parseFloat(event.target.value) || 0 })}
                                         />
                                     </div>
                                     <div className="table-cell border border-gray-300 p-2 text-center">
@@ -219,7 +202,7 @@ const Vitals: React.FC = () => {
                                             className="w-full p-2"
                                             placeholder="e.g Height in cm"
                                             value={row.Height}
-                                            onChange={(event) => updateRow(index, { ...row, Height: parseFloat(event.target.value) })}
+                                            onChange={(event) => updateRow(index, { ...row, Height: parseFloat(event.target.value) || 0 })}
                                         />
                                     </div>
                                     <div className="table-cell border border-gray-300 p-2 text-center">
@@ -228,53 +211,51 @@ const Vitals: React.FC = () => {
                                             className="w-full p-2"
                                             placeholder="e.g Weight in kg"
                                             value={row.Weight}
-                                            onChange={(event) => updateRow(index, { ...row, Weight: parseFloat(event.target.value) })}
+                                            onChange={(event) => updateRow(index, { ...row, Weight: parseFloat(event.target.value) || 0 })}
                                         />
                                     </div>
                                     <div className="table-cell border border-gray-300 p-2 text-center">
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="w-full p-2"
                                             placeholder="e.g Blood Pressure"
                                             value={row.BloodPressure}
-                                            onChange={(event) => updateRow(index,
-                                                { ...row, BloodPressure: event.target.value })}
-                                                />
-                                            </div>
-                                            <div className="table-cell border border-gray-300 p-2 text-center">
-                                                {row.BMI}
-                                            </div>
-                                            <div className="table-cell border border-gray-300 p-2 text-center">
-                                                <button
-                                                    className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg focus:outline-none"
-                                                    onClick={() => deleteRow(index)}
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                                            onChange={(event) => updateRow(index, { ...row, BloodPressure: parseFloat(event.target.value) || 0 })}
+                                        />
+                                    </div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center">
+                                        {row.BMI}
+                                    </div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center">
+                                        <button
+                                            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none"
+                                            onClick={() => deleteRow(index)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mt-4 flex justify-center">
-                                <button
-                                    className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none mr-4"
-                                    onClick={addRow}
-                                >
-                                    Add Row
-                                </button>
-                                <button
-                                    className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none"
-                                    onClick={handleSubmit}
-                                >
-                                    Save
-                                </button>
-                            </div>
+                            ))}
+                        </div>
+                        <div className="mt-4 flex justify-center">
+                            <button
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none mr-4"
+                                onClick={addRow}
+                            >
+                                Add Row
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none"
+                                onClick={handleSubmit}
+                            >
+                                Save
+                            </button>
                         </div>
                     </div>
                 </div>
-            );
-        };
-        
-        export default Vitals;
-        
+            </div>
+        </div>
+    );
+};
+
+export default Vitals;

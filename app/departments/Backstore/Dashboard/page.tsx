@@ -40,7 +40,7 @@ export default function Vitals() {
                         id="searchbar"
                         placeholder="search for available drugs"
                     />
-                    <Search className="search-icon" />
+                    {/* <Search className="search-icon" /> */}
                 </div>
                 <div className="button-container">
                     <div>

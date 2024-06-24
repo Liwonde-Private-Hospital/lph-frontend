@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
-import './style.css'; // Make sure this CSS file aligns with the Dental component styles
+import './style.css';
 
 interface DentalItem {
     ID: number;
@@ -16,7 +16,7 @@ interface DentalItem {
     Treatment: string;
 }
 
-const API_URL = ""; // Replace with your API URL
+const API_URL = "http://localhost:3000/dental";
 
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
@@ -73,9 +73,9 @@ const Dental: React.FC = () => {
         const updatedData = [...dental];
 
         // Validate that either Amount or MedicalScheme is entered, not both
-        const amount = newData.Amount || updatedData[index].Amount;
-        const medicalScheme = newData.MedicalScheme || updatedData[index].MedicalScheme;
-        
+        const amount = newData.Amount !== undefined ? newData.Amount : updatedData[index].Amount;
+        const medicalScheme = newData.MedicalScheme !== undefined ? newData.MedicalScheme : updatedData[index].MedicalScheme;
+
         if (amount && medicalScheme) {
             alert("Amount and Medical Scheme cannot be entered at once.");
             return; // Prevent the update if both are entered
@@ -99,8 +99,13 @@ const Dental: React.FC = () => {
     const handleSubmit = async () => {
         try {
             for (const item of dental) {
-                if (!item.FirstName || !item.LastName || !item.Treatment || !item.MedicalScheme || !item.Amount ) {
-                    alert("Enter all fields before saving!");
+                if (!item.FirstName || !item.LastName || !item.PhoneNumber || !item.Address || !item.Diagnosis || !item.Treatment) {
+                    alert("Enter required fields before saving!");
+                    return;
+                }
+
+                if (!item.Amount && !item.MedicalScheme) {
+                    alert("Either Amount or Medical Scheme must be entered.");
                     return;
                 }
 
@@ -152,13 +157,13 @@ const Dental: React.FC = () => {
                             <thead className="bg-gray-200">
                                 <tr>
                                     <th className="px-4 py-2">ID</th>
-                                    <th className="px-4 py-2">First Name</th>
-                                    <th className="px-4 py-2">Last Name</th>
-                                    <th className="px-4 py-2">Phone Number</th>
+                                    <th className="px-4 py-2">FirstName</th>
+                                    <th className="px-4 py-2">LastName</th>
+                                    <th className="px-4 py-2">PhoneNumber</th>
                                     <th className="px-4 py-2">Address</th>
                                     <th className="px-4 py-2">Diagnosis</th>
                                     <th className="px-4 py-2">Amount</th>
-                                    <th className="px-4 py-2">Medical Scheme</th>
+                                    <th className="px-4 py-2">MedicalScheme</th>
                                     <th className="px-4 py-2">Treatment</th>
                                     <th className="px-4 py-2">Action</th>
                                 </tr>
@@ -258,7 +263,7 @@ const Dental: React.FC = () => {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colSpan={10} className="px-4 py-2 text-right font-bold">Total Amount:</td>
+                                    <td colSpan={9} className="px-4 py-2 text-right font-bold">Total Amount:</td>
                                     <td className="px-4 py-2">{calculateTotalAmount()}</td>
                                 </tr>
                             </tfoot>

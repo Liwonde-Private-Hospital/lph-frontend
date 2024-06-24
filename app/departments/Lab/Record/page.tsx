@@ -48,18 +48,27 @@ const Lab: React.FC = () => {
 
   const postData = async (url: string, data: LabItem) => {
     try {
-      const response = await axios.post(url, data); // Use axios to post data
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
-      if (response.status === 200) {
-        alert("Data saved successfully");
-      } else {
-        alert("Failed to save data");
-      }
+        if (response.ok) {
+            alert("Data saved successfully");
+        } else {
+            alert("Failed to save data");
+        }
     } catch (error) {
-      console.log("Error connecting to server:", error);
-      alert("Failed to save data");
+        console.log("Error connecting to server:", error);
+        alert("Failed to save data");
     }
-  };
+};
+    
+    
+   
 
   const handleSubmit = async () => {
     try {
@@ -125,10 +134,10 @@ const Lab: React.FC = () => {
               <thead>
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
-                  <th className="px-4 py-2 text-left">First Name</th>
-                  <th className="px-4 py-2 text-left">Last Name</th>
-                  <th className="px-4 py-2 text-left">Payment Method</th>
-                  <th className="px-4 py-2 text-left">Test Ordered</th>
+                  <th className="px-4 py-2 text-left">FirstName</th>
+                  <th className="px-4 py-2 text-left">LastName</th>
+                  <th className="px-4 py-2 text-left">PaymentMethod</th>
+                  <th className="px-4 py-2 text-left">TestOrdered</th>
                   <th className="px-4 py-2 text-left">Action</th>
                 </tr>
               </thead>

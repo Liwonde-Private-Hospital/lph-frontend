@@ -76,7 +76,7 @@ const Backstore: React.FC = () => {
     const currentDate = new Date();
     const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-    const API_URL = ""; // Add your API URL here
+    const API_URL = "http://localhost:3000/backstore"; // Add your API URL here
 
     const postData = async (url: string, data: BackstoreItem) => {
         try {

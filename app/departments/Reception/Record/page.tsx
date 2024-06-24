@@ -70,7 +70,7 @@ const Reception: React.FC = () => {
         setDataModified(true);
     }
 
-    const API_URL = ""; // Replace with your API endpoint
+    const API_URL = "http://localhost:3000/reception"; // Replace with your API endpoint
 
     const postData = async (url: string, data: ReceptionItem) => {
         try {
@@ -128,9 +128,9 @@ const Reception: React.FC = () => {
                             <thead className="bg-gray-200">
                                 <tr>
                                     <th className="px-4 py-2">ID</th>
-                                    <th className="px-4 py-2">First Name</th>
-                                    <th className="px-4 py-2">Last Name</th>
-                                    <th className="px-4 py-2">Phone Number</th>
+                                    <th className="px-4 py-2">FirstName</th>
+                                    <th className="px-4 py-2">LastName</th>
+                                    <th className="px-4 py-2">PhoneNumber</th>
                                     <th className="px-4 py-2">Payment Method</th>
                                     <th className="px-4 py-2">Returned</th>
                                     <th className="px-4 py-2">Action</th>
@@ -193,7 +193,7 @@ const Reception: React.FC = () => {
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Cash">Cash</option>
-                                                <option value="NedicalScheme">Medical Scheme</option>
+                                                <option value="MedicalScheme">Medical Scheme</option>
                                             </select>
                                         </td>
                                         <td className="px-4 py-2">

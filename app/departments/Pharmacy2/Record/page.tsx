@@ -18,7 +18,7 @@ enum DrugForm {
 
 interface PharmacyItem {
     ID: number;
-    firstName: string;
+    FirstName: string;
     LastName: string;
     DrugName: string;
     DrugType: DrugForm; // Using the DrugForm enum here
@@ -31,7 +31,7 @@ const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('de
 
 const Pharmacy: React.FC = () => {
     const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([
-        { ID: 1, firstName: '', LastName: '', DrugName: '', DrugType: DrugForm.Tablet, Amount: 0, MedicalScheme: '' }
+        { ID: 1, FirstName: '', LastName: '', DrugName: '', DrugType: DrugForm.Tablet, Amount: 0, MedicalScheme: '' }
     ]);
 
     const [dataModified, setDataModified] = useState(false);
@@ -61,7 +61,7 @@ const Pharmacy: React.FC = () => {
     const addRow = () => {
         const newRow: PharmacyItem = {
             ID: pharmacy.length + 1,
-            firstName: '',
+            FirstName: '',
             LastName: '',
             DrugName: '',
             DrugType: DrugForm.Tablet,
@@ -105,7 +105,7 @@ const Pharmacy: React.FC = () => {
         setTotalAmount(total);
     }
 
-    const API_URL = "http://localhost:3000/pharmacy/add"; // Assuming a similar API endpoint
+    const API_URL = "http://localhost:3000/pharmacy-sales"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: PharmacyItem) => {
         try {
@@ -131,7 +131,7 @@ const Pharmacy: React.FC = () => {
     const handleSubmit = async () => {
         try {
             for (const item of pharmacy) {
-                if (!item.firstName || !item.LastName || !item.DrugName || (!item.Amount && !item.MedicalScheme)) {
+                if (!item.FirstName || !item.LastName || !item.DrugName || (!item.Amount && !item.MedicalScheme)) {
                     alert("Enter all required fields and ensure either Amount or Medical Scheme is entered!");
                     return;
                 }
@@ -186,9 +186,9 @@ const Pharmacy: React.FC = () => {
                                                 type="text"
                                                 className="w-full bg-transparent focus:outline-none"
                                                 placeholder="e.g. John"
-                                                value={row.firstName}
+                                                value={row.FirstName}
                                                 onChange={(event) =>
-                                                    updateRow(index, { firstName: event.target.value })
+                                                    updateRow(index, { FirstName: event.target.value })
                                                 }
                                             />
                                         </td>
