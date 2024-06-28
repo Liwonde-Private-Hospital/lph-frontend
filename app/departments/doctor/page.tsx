@@ -63,6 +63,7 @@ const DoctorView = () => {
       const formattedPatients = responseData.map((patient: any) => ({
         id: patient.ID,
         firstName: patient.FirstName,
+        lastName: patient.LastName,
         phoneNumber: patient.PhoneNumber,
         paymentMethod: patient.PaymentMethod,
         date: patient.Date,
