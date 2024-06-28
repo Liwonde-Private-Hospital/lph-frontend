@@ -1,6 +1,4 @@
 'use client';
-import Footer from "@/componets/footer";
-import Header from "@/componets/navbar";
 import React, { useState, useEffect } from "react";
 
 interface DataItem {
@@ -16,12 +14,14 @@ interface Patient {
   id: number;
   firstName: string;
   lastName: string;
-  appointmentTime: string;
+  phoneNumber: string;
+  paymentMethod: string;
+  date: string;
   department?: string; // New field to track department assignment
 }
 
-const apiVitals = "http://localhost:3000/vitals/selected";
-const apiPatients = "http://localhost:3000/patients/assigned"; // Update with your actual API endpoints
+const apiVitals = "http://localhost:3000/vitals";
+const apiPatients = "http://localhost:3000/reception/patients"; // Update with your actual API endpoints
 
 const DoctorView = () => {
   const [data, setData] = useState<DataItem[]>([]);
@@ -59,7 +59,16 @@ const DoctorView = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const responseData = await response.json();
-      setPatients(responseData);
+      // Map the received data to match the Patient interface
+      const formattedPatients = responseData.map((patient: any) => ({
+        id: patient.ID,
+        firstName: patient.FirstName,
+        phoneNumber: patient.PhoneNumber,
+        paymentMethod: patient.PaymentMethod,
+        date: patient.Date,
+        department: patient.department // If department info is available
+      }));
+      setPatients(formattedPatients);
       setAlert(null);
     } catch (error) {
       console.error("Error fetching patients data:", error);
@@ -86,10 +95,12 @@ const DoctorView = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      {/* Header component */}
+      <header className="bg-green-500 text-white p-4">
+        <h1 className="text-2xl font-bold text-center">Doctor's Dashboard</h1>
+      </header>
 
       <main className="flex-grow mx-auto p-6">
-        <h1 className="text-4xl font-bold text-center my-8">Doctor's Dashboard</h1>
         {alert && (
           <div className={`text-center text-white p-3 mb-4 ${alert.type === "error" ? "bg-red-500" : "bg-green-500"}`}>
             {alert.message}
@@ -106,6 +117,8 @@ const DoctorView = () => {
                   <th className="py-2 px-4">ID</th>
                   <th className="py-2 px-4">First Name</th>
                   <th className="py-2 px-4">Last Name</th>
+                  <th className="py-2 px-4">Phone Number</th>
+                  <th className="py-2 px-4">Payment Method</th>
                   <th className="py-2 px-4">Appointment Time</th>
                   <th className="py-2 px-4">Department</th>
                   <th className="py-2 px-4">Actions</th>
@@ -114,7 +127,7 @@ const DoctorView = () => {
               <tbody className="bg-gray-100">
                 {loading ? (
                   <tr key="loading" className="text-center">
-                    <td colSpan={6} className="py-4">Loading...</td>
+                    <td colSpan={8} className="py-4">Loading...</td>
                   </tr>
                 ) : patients.length > 0 ? (
                   patients.map((patient) => (
@@ -122,19 +135,21 @@ const DoctorView = () => {
                       <td className="py-2 px-4">{patient.id}</td>
                       <td className="py-2 px-4">{patient.firstName}</td>
                       <td className="py-2 px-4">{patient.lastName}</td>
-                      <td className="py-2 px-4">{patient.appointmentTime}</td>
+                      <td className="py-2 px-4">{patient.phoneNumber}</td>
+                      <td className="py-2 px-4">{patient.paymentMethod}</td>
+                      <td className="py-2 px-4">{new Date(patient.date).toLocaleString()}</td>
                       <td className="py-2 px-4">{patient.department || "Not assigned"}</td>
                       <td className="py-2 px-4">
                         {!patient.department && (
-                          <>
+                          <div className="flex space-x-2">
                             <button
-                              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded mr-2"
+                              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded"
                               onClick={() => sendToDepartment(patient.id, "X-ray")}
                             >
                               Send to X-ray
                             </button>
                             <button
-                              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded mr-2"
+                              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded"
                               onClick={() => sendToDepartment(patient.id, "Pharmacy")}
                             >
                               Send to Pharmacy
@@ -145,14 +160,14 @@ const DoctorView = () => {
                             >
                               Send to Dental
                             </button>
-                          </>
+                          </div>
                         )}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="text-center py-4">No patients assigned</td>
+                    <td colSpan={8} className="text-center py-4">No patients assigned</td>
                   </tr>
                 )}
               </tbody>
@@ -202,7 +217,10 @@ const DoctorView = () => {
         </section>
       </main>
 
-      <Footer />
+      {/* Footer component */}
+      <footer className="bg-gray-800 text-white p-4">
+        <p className="text-center">&copy; {new Date().getFullYear()} Liwonde Private Hosipital. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 };
