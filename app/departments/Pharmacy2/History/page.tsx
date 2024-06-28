@@ -1,10 +1,9 @@
 'use client'
-// Import necessary modules from React and Next.js
 import React, { useState, useEffect } from 'react';
-import { NextPage, NextPageContext } from 'next';
+import { NextPage } from 'next';
 
-// Define the API endpoint
-const api = "";
+// Define the API endpoint (adjust as per your backend setup)
+const api = "http://localhost:3000/transactions";
 
 // Define the props interface for the component
 interface HistoryDateProps {
@@ -60,18 +59,7 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
       }
 
       if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-        const mappedData = filteredData.map((item: any) => ({
-          id: item.id,
-          FirstName: item.first_name,
-          LastName: item.last_name,
-          DrugName: item.drugname,
-          DrugType: item.drugtype,
-          Amount: item.amount,
-          MedicalScheme: item.medicalscheme,
-        }));
-
-        setData(mappedData);
+        setData(responseData);
         setAlert(null);
       } else {
         setAlert({ type: "error", message: "Invalid data received from the server." });
@@ -94,10 +82,29 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
   };
 
   // Function to update a row of data
-  const updateRow = (indexToUpdate: number, updatedRow: any) => {
-    setData(prevData =>
-      prevData.map((item, index) => (index === indexToUpdate ? updatedRow : item))
-    );
+  const updateRow = async (updatedRow: any) => {
+    try {
+      const response = await fetch(`${api}/${updatedRow.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedRow),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const updatedData = [...data];
+      const indexToUpdate = data.findIndex(item => item.id === updatedRow.id);
+      updatedData[indexToUpdate] = updatedRow;
+      setData(updatedData);
+      setAlert({ type: 'success', message: 'Transaction updated successfully!' });
+    } catch (error) {
+      console.error('Error updating transaction:', error);
+      setAlert({ type: 'error', message: 'Failed to update transaction.' });
+    }
   };
 
   // JSX rendering of the component
@@ -107,7 +114,7 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
           <div className="flex items-center">
             <div className="ml-4">
-              <h1 className="text-4xl font-bold">Phamarcy Transaction  History</h1>
+              <h1 className="text-4xl font-bold">Pharmacy Transaction History</h1>
             </div>
             <h1 className="tsiku" style={{ fontWeight: 'bolder', fontSize: '30px', marginLeft: '900px' }}>{selectedDate}</h1>
           </div>
@@ -137,10 +144,10 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                       <th className="px-4 py-2 bg-gray-200 border border-gray-300">ID</th>
                       <th className="px-4 py-2 bg-gray-200 border border-gray-300">First Name</th>
                       <th className="px-4 py-2 bg-gray-200 border border-gray-300">Last Name</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">DrugName</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">DrugType</th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Drug Name</th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Drug Type</th>
                       <th className="px-4 py-2 bg-gray-200 border border-gray-300">Amount</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">MedicalScheme</th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Medical Scheme</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -166,7 +173,7 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                               className="w-full bg-transparent focus:outline-none"
                               value={item.FirstName}
                               onChange={(event) =>
-                                updateRow(index, {
+                                updateRow({
                                   ...item,
                                   FirstName: event.target.value,
                                 })
@@ -179,7 +186,7 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                               className="w-full bg-transparent focus:outline-none"
                               value={item.LastName}
                               onChange={(event) =>
-                                updateRow(index, {
+                                updateRow({
                                   ...item,
                                   LastName: event.target.value,
                                 })
@@ -190,11 +197,24 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                             <input
                               type="text"
                               className="w-full bg-transparent focus:outline-none"
-                              value={item.Treatment}
+                              value={item.DrugName}
                               onChange={(event) =>
-                                updateRow(index, {
+                                updateRow({
                                   ...item,
-                                  Treatment: event.target.value,
+                                  DrugName: event.target.value,
+                                })
+                              }
+                            />
+                          </td>
+                          <td className="px-4 py-2 border border-gray-300">
+                            <input
+                              type="text"
+                              className="w-full bg-transparent focus:outline-none"
+                              value={item.DrugType}
+                              onChange={(event) =>
+                                updateRow({
+                                  ...item,
+                                  DrugType: event.target.value,
                                 })
                               }
                             />
@@ -205,13 +225,14 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                               className="w-full bg-transparent focus:outline-none"
                               value={item.Amount.toString()}
                               onChange={(event) =>
-                                updateRow(index, {
+                                updateRow({
                                   ...item,
                                   Amount: parseFloat(event.target.value),
                                 })
                               }
                             />
                           </td>
+                          <td className="px-4 py-2 border border-gray-300">{item.MedicalScheme}</td>
                         </tr>
                       ))
                     )}
@@ -233,4 +254,5 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
     </div>
   );
 };
-export default HistoryDate; 
+
+export default HistoryDate;

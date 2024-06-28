@@ -34,6 +34,8 @@ const Pharmacy: React.FC = () => {
     const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([]);
     const [patients, setPatients] = useState<string[]>([]);
     const [drugNames, setDrugNames] = useState<string[]>([]);
+    const [filteredPharmacy, setFilteredPharmacy] = useState<PharmacyItem[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
     const [dataModified, setDataModified] = useState(false);
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
@@ -47,6 +49,7 @@ const Pharmacy: React.FC = () => {
                 }
                 const data = await response.json();
                 setPharmacy(data);
+                setFilteredPharmacy(data); // Initialize filteredPharmacy with all data
             } catch (error) {
                 console.error("Error fetching pharmacy data:", error);
             }
@@ -90,6 +93,15 @@ const Pharmacy: React.FC = () => {
     useEffect(() => {
         calculateTotal();
     }, [pharmacy]);
+
+    useEffect(() => {
+        // Filter pharmacy data based on search term
+        const filteredData = pharmacy.filter(item =>
+            item.FirstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.LastName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredPharmacy(filteredData);
+    }, [searchTerm, pharmacy]);
 
     const addRow = () => {
         const newRow: PharmacyItem = {
@@ -201,16 +213,29 @@ const Pharmacy: React.FC = () => {
         }
     };
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
     return (
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-800 text-white p-4">
+                <div className="flex items-center justify-between bg-green-500 text-white p-4">
                     <div className="flex items-center">
                         <Image src={icon} alt="icon" width={100} height={100} />
                         <div className="ml-4">
                             <h1 className="text-4xl font-bold">Pharmacy</h1>
                         </div>
                         <h1 className="Tsiku">{formattedDate}</h1>
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            className="border border-gray-300 px-4 py-2 w-64 focus:outline-none"
+                            placeholder="Search Patient..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
                     </div>
                 </div>
                 <div className="px-4 py-2">
@@ -224,82 +249,33 @@ const Pharmacy: React.FC = () => {
                                     <th className="px-4 py-2">Drug Name</th>
                                     <th className="px-4 py-2">Drug Type</th>
                                     <th className="px-4 py-2">Amount</th>
-                                    <th className="px-4 py-2">Sold Quantity</th>
                                     <th className="px-4 py-2">Medical Scheme</th>
-                                    <th className="px-4 py-2">Sold</th>
-                                    <th className="px-4 py-2">Action</th>
+                                    <th className="px-4 py-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {pharmacy.map((row, index) => (
-                                    <tr key={index} className="border-b border-gray-300">
-                                        <td className="px-4 py-2">{row.ID}</td>
-                                        <td className="px-4 py-2">
-                                            <select
-                                                className="w-full bg-transparent focus:outline-none"
-                                                value={`${row.FirstName} ${row.LastName}`}
-                                                onChange={(event) => {
-                                                    const [firstName, lastName] = event.target.value.split(" ");
-                                                    updateRow(index, { FirstName: firstName, LastName: lastName });
-                                                }}
-                                            >
-                                                {patients.map((name, idx) => (
-                                                    <option key={idx} value={name}>{name}</option>
-                                                ))}
-                                            </select>
-                                        </td>
-                                        <td className="px-4 py-2">{row.DrugName}</td>
-                                        <td className="px-4 py-2">
-                                            <select
-                                                className="w-full bg-transparent focus:outline-none"
-                                                value={row.DrugType}
-                                                onChange={(event) =>
-                                                    updateRow(index, { DrugType: event.target.value as DrugForm })
-                                                }
-                                            >
-                                                {Object.values(DrugForm).map((form, idx) => (
-                                                    <option key={idx} value={form}>{form}</option>
-                                                ))}
-                                            </select>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <input
-                                                type="number"
-                                                className="w-full bg-transparent focus:outline-none"
-                                                placeholder="0"
-                                                value={row.Amount}
-                                                onChange={(event) =>
-                                                    updateRow(index, { Amount: Number(event.target.value) })
-                                                }
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2">{row.SoldQuantity}</td>
-                                        <td className="px-4 py-2">
-                                            <input
-                                                type="text"
-                                                className="w-full bg-transparent focus:outline-none"
-                                                placeholder="e.g. PPO"
-                                                value={row.MedicalScheme}
-                                                onChange={(event) =>
-                                                    updateRow(index, { MedicalScheme: event.target.value })
-                                                }
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {row.Sold ? (
-                                                <span className="text-green-600 font-semibold">Yes</span>
-                                            ) : (
+                                {filteredPharmacy.map((item, index) => (
+                                    <tr key={index} className="text-center">
+                                        <td className="border px-4 py-2">{item.ID}</td>
+                                        <td className="border px-4 py-2">{item.FirstName}</td>
+                                        <td className="border px-4 py-2">{item.LastName}</td>
+                                        <td className="border px-4 py-2">{item.DrugName}</td>
+                                        <td className="border px-4 py-2">{item.DrugType}</td>
+                                        <td className="border px-4 py-2">{item.Amount}</td>
+                                        <td className="border px-4 py-2">{item.MedicalScheme}</td>
+                                        <td className="border px-4 py-2">
+                                            {!item.Sold ? (
                                                 <button
-                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
                                                     onClick={() => markDrugAsSold(index)}
                                                 >
-                                                    Mark as Sold
+                                                    Sell
                                                 </button>
+                                            ) : (
+                                                <span className="text-gray-500">Sold</span>
                                             )}
-                                        </td>
-                                        <td className="px-4 py-2">
                                             <button
-                                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                                 onClick={() => deleteRow(index)}
                                             >
                                                 Delete
@@ -310,23 +286,24 @@ const Pharmacy: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="mt-4 flex justify-between">
-                        <button
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={addRow}
-                        >
-                            Add Drug
-                        </button>
-                        <div className="flex items-center">
-                            <h2 className="text-lg font-semibold">Total Amount: {totalAmount}</h2>
-                            <button
-                                className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                onClick={handleSubmit}
-                            >
-                                Save
-                            </button>
-                        </div>
-                    </div>
+                </div>
+                <div className="px-4 py-2 bg-gray-200">
+                    <button
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={addRow}
+                    >
+                        Add Row
+                    </button>
+                    <button
+                        className={`ml-2 ${dataModified ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'} text-white font-bold py-2 px-4 rounded`}
+                        onClick={handleSubmit}
+                        disabled={!dataModified}
+                    >
+                        Save Changes
+                    </button>
+                </div>
+                <div className="px-4 py-2 bg-gray-200">
+                    <h2 className="text-lg font-bold">Total Amount: ${totalAmount}</h2>
                 </div>
             </div>
         </div>
@@ -334,4 +311,3 @@ const Pharmacy: React.FC = () => {
 };
 
 export default Pharmacy;
-
