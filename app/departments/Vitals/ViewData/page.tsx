@@ -1,23 +1,23 @@
 'use client'
-import React, { useState, useEffect } from "react";
-import Header from "@/componets/navbar";
 import Footer from "@/componets/footer";
-
+import Header from "@/componets/navbar";
+import React, { useState, useEffect } from "react";
 
 interface DataItem {
   ID: number;
   FirstName: string;
   LastName: string;
-  Temperature:number;
-  Weight:number;
+  Temperature: number;
+  Weight: number;
   BloodPressure: number;
-
 }
 
-const api = "http://localhost:3000/finance";
+const api = "http://localhost:3000/vitals";
+const sendSelectedApi = "http://localhost:3000/vitals/selected";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
+  const [selectedData, setSelectedData] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
 
@@ -33,25 +33,8 @@ const ViewData = () => {
       setLoading(true);
       const response = await fetch(api);
       const responseData = await response.json();
-  
-      // Check if response data is an array
-      if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-        const mappedData = filteredData.map((item: any) => ({
-          ID: item.iD,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          Temperature:item.Temperature,
-          Weight:item.Weight,
-         BloodPressure:item.BloodPressure,
-      
-        }));
-  
-        setData(mappedData);
-        setAlert(null);
-      } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
-      }
+      setData(responseData);
+      setAlert(null);
     } catch (error) {
       console.error("Error fetching data:", error);
       setAlert({ type: "error", message: "Oops! Today's data is not available." });
@@ -60,8 +43,37 @@ const ViewData = () => {
     }
   };
 
-  const handleViewData = async () => {
-    fetchData();
+  const handleSelect = (id: number) => {
+    setSelectedData((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if (newSelected.has(id)) {
+        newSelected.delete(id);
+      } else {
+        newSelected.add(id);
+      }
+      return newSelected;
+    });
+  };
+
+  const handleSendSelected = async () => {
+    const selectedVitals = data.filter((item) => selectedData.has(item.ID));
+    try {
+      const response = await fetch(sendSelectedApi, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedVitals),
+      });
+      if (response.ok) {
+        setAlert({ type: "success", message: "Selected records sent to doctor." });
+      } else {
+        setAlert({ type: "error", message: "Failed to send selected records." });
+      }
+    } catch (error) {
+      console.error("Error sending selected data:", error);
+      setAlert({ type: "error", message: "Failed to send selected records." });
+    }
   };
 
   return (
@@ -72,42 +84,50 @@ const ViewData = () => {
         <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
         <br />
         {alert && (
-          <div className="text-center text-red-500">{alert.message}</div>
+          <div className={`text-center ${alert.type === "error" ? "text-red-500" : "text-green-500"}`}>
+            {alert.message}
+          </div>
         )}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
               <tr>
+                <th className="py-2 px-4">Select</th>
                 <th className="py-2 px-4">ID</th>
                 <th className="py-2 px-4">FirstName</th>
                 <th className="py-2 px-4">LastName</th>
                 <th className="py-2 px-4">Temperature</th>
-                <th className="py-2 px-4">weight</th>
+                <th className="py-2 px-4">Weight</th>
                 <th className="py-2 px-4">BloodPressure</th>
-           
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={7} className="text-center py-4 text-gray-600">Data is Loading...</td>
                 </tr>
               ) : (
                 data.length > 0 ? (
                   data.map((item) => (
                     <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedData.has(item.ID)}
+                          onChange={() => handleSelect(item.ID)}
+                        />
+                      </td>
                       <td className="py-2 px-4">{item.ID}</td>
                       <td className="py-2 px-4">{item.FirstName}</td>
                       <td className="py-2 px-4">{item.LastName}</td>
                       <td className="py-2 px-4">{item.Temperature}</td>
                       <td className="py-2 px-4">{item.Weight}</td>
                       <td className="py-2 px-4">{item.BloodPressure}</td>
-                   
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                    <td colSpan={7} className="text-center py-4 text-gray-600">No data available</td>
                   </tr>
                 )
               )}
@@ -117,9 +137,9 @@ const ViewData = () => {
         <div className="text-center mt-4">
           <button 
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={handleViewData}
+            onClick={handleSendSelected}
           >
-            View Data
+            Send recods to Doctor
           </button>
         </div>
       </div>

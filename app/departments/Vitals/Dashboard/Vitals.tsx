@@ -3,8 +3,7 @@ import './style.css';
 import React, { useState } from "react";
 import icon from '../../../images/icon.png';
 import Image from "next/image";
-import LogoutButton from '@/components/LogoutButton';
-
+import LogoutButton from '@/componets/LogoutButton';
 const DashboardPage: React.FC = () => {
     const [showProfile, setShowProfile] = useState(false);
 

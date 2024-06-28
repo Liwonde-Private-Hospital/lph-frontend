@@ -8,14 +8,14 @@ export enum LPHStaffRole {
     MANAGER = 'manager',
     LAB = 'Lab',
     RADIOLOGIST = 'radiologist',
-    XRAY_TECHNICIAN = 'xray_technician',
-    SURGEON = 'surgeon',
+    XRAY_TECHNICIAN = 'X-Ray',
     CLINICAL_OFFICER = 'clinical_officer',
     FINANCE = 'Finance',
     BACKSTORE = 'Backstore',
     DENTAL = 'Dental',
     MARTENITY = 'Martenity',
     OPD = 'OPD',
-    PHARMACY2 = 'Pharmacy2',
+  PHARMACY2 = 'Pharmacy2',
+    VITALS = 'Vitals'
   }
   

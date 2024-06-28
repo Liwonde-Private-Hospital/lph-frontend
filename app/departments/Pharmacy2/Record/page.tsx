@@ -1,6 +1,5 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
-import './style.css'; // Make sure this CSS file aligns with the Pharmacy component styles
 import Image from "next/image";
 import icon from '../../../images/icon.png';
 
@@ -23,36 +22,70 @@ interface PharmacyItem {
     DrugName: string;
     DrugType: DrugForm; // Using the DrugForm enum here
     Amount: number;
+    SoldQuantity: number; // New field to track quantity sold
     MedicalScheme: string;
+    Sold: boolean; // New field to track whether drug has been sold
 }
 
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
 const Pharmacy: React.FC = () => {
-    const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([
-        { ID: 1, FirstName: '', LastName: '', DrugName: '', DrugType: DrugForm.Tablet, Amount: 0, MedicalScheme: '' }
-    ]);
-
+    const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([]);
+    const [patients, setPatients] = useState<string[]>([]);
+    const [drugNames, setDrugNames] = useState<string[]>([]);
     const [dataModified, setDataModified] = useState(false);
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
     useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (dataModified) {
-                const confirmationMessage = "You have unsaved changes. Are you sure you want to leave?";
-                event.preventDefault();
-                event.returnValue = confirmationMessage;
-                return confirmationMessage;
+        // Fetch pharmacy data from backend
+        const fetchPharmacyData = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/pharmacy"); // Adjust API endpoint as per your backend
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setPharmacy(data);
+            } catch (error) {
+                console.error("Error fetching pharmacy data:", error);
             }
         };
 
-        window.addEventListener("beforeunload", handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
+        // Fetch patient names from backend
+        const fetchPatients = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/patients"); // Adjust API endpoint as per your backend
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const names = data.map((patient: any) => `${patient.FirstName} ${patient.LastName}`);
+                setPatients(names);
+            } catch (error) {
+                console.error("Error fetching patient data:", error);
+            }
         };
-    }, [dataModified]);
+
+        // Fetch drug names from backend
+        const fetchDrugNames = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/drugs"); // Adjust API endpoint as per your backend
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const names = data.map((drug: any) => drug.DrugName);
+                setDrugNames(names);
+            } catch (error) {
+                console.error("Error fetching drug data:", error);
+            }
+        };
+
+        fetchPharmacyData();
+        fetchPatients();
+        fetchDrugNames();
+    }, []);
 
     useEffect(() => {
         calculateTotal();
@@ -66,7 +99,9 @@ const Pharmacy: React.FC = () => {
             DrugName: '',
             DrugType: DrugForm.Tablet,
             Amount: 0,
-            MedicalScheme: ''
+            SoldQuantity: 0,
+            MedicalScheme: '',
+            Sold: false
         };
         setPharmacy(prevData => [...prevData, newRow]);
         setDataModified(true);
@@ -101,30 +136,34 @@ const Pharmacy: React.FC = () => {
     }
 
     const calculateTotal = () => {
-        const total = pharmacy.reduce((acc, curr) => acc + curr.Amount, 0);
+        const total = pharmacy.reduce((acc, curr) => acc + (curr.Amount * curr.SoldQuantity), 0);
         setTotalAmount(total);
     }
 
-    const API_URL = "http://localhost:3000/pharmacy-sales"; // Assuming a similar API endpoint
+    const markDrugAsSold = async (index: number) => {
+        const updatedData = [...pharmacy];
+        updatedData[index].Sold = true;
+        updatedData[index].SoldQuantity = updatedData[index].Amount; // Assuming sold quantity equals amount sold
 
-    const postData = async (url: string, data: PharmacyItem) => {
+        // Update backend to mark drug as sold and remove from database
         try {
-            const response = await fetch(url, {
-                method: "POST",
+            const response = await fetch(`http://localhost:3000/pharmacy/${updatedData[index].ID}`, {
+                method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(updatedData[index]),
             });
 
-            if (response.ok) {
-                alert("Data saved successfully");
-            } else {
-                alert("Failed to save data");
+            if (!response.ok) {
+                throw new Error(`Failed to mark drug as sold and remove from database: ${response.status}`);
             }
+
+            setPharmacy(updatedData);
+            setDataModified(true);
         } catch (error) {
-            console.log("Error connecting to server:", error);
-            alert("Failed to save data");
+            console.error("Error marking drug as sold and removing from database:", error);
+            alert("Failed to mark drug as sold and remove from database");
         }
     };
 
@@ -141,11 +180,23 @@ const Pharmacy: React.FC = () => {
                     return;
                 }
 
-                await postData(API_URL, item);
+                // Update backend with each pharmacy item
+                const response = await fetch(`http://localhost:3000/pharmacy/${item.ID}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(item),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to save data for ID ${item.ID}: ${response.status}`);
+                }
             }
+
             setDataModified(false); // Reset dataModified after successful submission
         } catch (error) {
-            console.log("Error connecting to server:", error);
+            console.error("Error connecting to server:", error);
             alert("Failed to save data");
         }
     };
@@ -173,7 +224,9 @@ const Pharmacy: React.FC = () => {
                                     <th className="px-4 py-2">Drug Name</th>
                                     <th className="px-4 py-2">Drug Type</th>
                                     <th className="px-4 py-2">Amount</th>
+                                    <th className="px-4 py-2">Sold Quantity</th>
                                     <th className="px-4 py-2">Medical Scheme</th>
+                                    <th className="px-4 py-2">Sold</th>
                                     <th className="px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -182,38 +235,20 @@ const Pharmacy: React.FC = () => {
                                     <tr key={index} className="border-b border-gray-300">
                                         <td className="px-4 py-2">{row.ID}</td>
                                         <td className="px-4 py-2">
-                                            <input
-                                                type="text"
+                                            <select
                                                 className="w-full bg-transparent focus:outline-none"
-                                                placeholder="e.g. John"
-                                                value={row.FirstName}
-                                                onChange={(event) =>
-                                                    updateRow(index, { FirstName: event.target.value })
-                                                }
-                                            />
+                                                value={`${row.FirstName} ${row.LastName}`}
+                                                onChange={(event) => {
+                                                    const [firstName, lastName] = event.target.value.split(" ");
+                                                    updateRow(index, { FirstName: firstName, LastName: lastName });
+                                                }}
+                                            >
+                                                {patients.map((name, idx) => (
+                                                    <option key={idx} value={name}>{name}</option>
+                                                ))}
+                                            </select>
                                         </td>
-                                        <td className="px-4 py-2">
-                                            <input
-                                                type="text"
-                                                className="w-full bg-transparent focus:outline-none"
-                                                placeholder="e.g. Doe"
-                                                value={row.LastName}
-                                                onChange={(event) =>
-                                                    updateRow(index, { LastName: event.target.value })
-                                                }
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <input
-                                                type="text"
-                                                className="w-full bg-transparent focus:outline-none"
-                                                placeholder="Drug Name"
-                                                value={row.DrugName}
-                                                onChange={(event) =>
-                                                    updateRow(index, { DrugName: event.target.value })
-                                                }
-                                            />
-                                        </td>
+                                        <td className="px-4 py-2">{row.DrugName}</td>
                                         <td className="px-4 py-2">
                                             <select
                                                 className="w-full bg-transparent focus:outline-none"
@@ -234,30 +269,37 @@ const Pharmacy: React.FC = () => {
                                                 placeholder="0"
                                                 value={row.Amount}
                                                 onChange={(event) =>
-                                                    updateRow(index, { Amount: parseInt(event.target.value) })
+                                                    updateRow(index, { Amount: Number(event.target.value) })
                                                 }
                                             />
                                         </td>
+                                        <td className="px-4 py-2">{row.SoldQuantity}</td>
                                         <td className="px-4 py-2">
-                                            <select
+                                            <input
+                                                type="text"
                                                 className="w-full bg-transparent focus:outline-none"
+                                                placeholder="e.g. PPO"
                                                 value={row.MedicalScheme}
                                                 onChange={(event) =>
                                                     updateRow(index, { MedicalScheme: event.target.value })
                                                 }
-                                            >
-                                                <option value="">None</option>
-                                                <option value="MASM">MASM</option>
-                                                <option value="LibertyHealth">LibertyHealth</option>
-                                                <option value="MedHealth">MedHealth</option>
-                                                <option value="NationalBank">NationalBank</option>
-                                                <option value="MRA">MRA</option>
-                                                <option value="ReserveBank">ReserveBank</option>
-                                            </select>
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {row.Sold ? (
+                                                <span className="text-green-600 font-semibold">Yes</span>
+                                            ) : (
+                                                <button
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                                                    onClick={() => markDrugAsSold(index)}
+                                                >
+                                                    Mark as Sold
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="px-4 py-2">
                                             <button
-                                                className="bg-green-500 text-white hover:bg-red-600 focus:outline-none px-2 py-1 rounded"
+                                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
                                                 onClick={() => deleteRow(index)}
                                             >
                                                 Delete
@@ -268,23 +310,23 @@ const Pharmacy: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="mt-4 flex justify-center">
+                    <div className="mt-4 flex justify-between">
                         <button
-                            className="bg-green-500 text-white hover:bg-orange-600 focus:outline-none px-4 py-2 rounded mr-2"
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                             onClick={addRow}
                         >
-                            Add Row
+                            Add Drug
                         </button>
-                        <button
-                            className="bg-green-500 text-white hover:bg-orange-600 focus:outline-none px-4 py-2 rounded"
-                            onClick={handleSubmit}
-                        >
-                            Save
-                        </button>
+                        <div className="flex items-center">
+                            <h2 className="text-lg font-semibold">Total Amount: {totalAmount}</h2>
+                            <button
+                                className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={handleSubmit}
+                            >
+                                Save
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className="flex justify-end p-4 bg-gray-800 text-white">
-                    <p className="font-bold text-lg">Total Amount: {totalAmount}</p>
                 </div>
             </div>
         </div>
@@ -292,3 +334,4 @@ const Pharmacy: React.FC = () => {
 };
 
 export default Pharmacy;
+

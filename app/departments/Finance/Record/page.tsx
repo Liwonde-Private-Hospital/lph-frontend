@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import './style.css';
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -13,6 +13,7 @@ interface FinanceItem {
   Treatment: string;
   Amount: number;
   PaymentMethod: string;
+  Balance: number; // New field
 }
 
 const Finance: React.FC = () => {
@@ -52,6 +53,7 @@ const Finance: React.FC = () => {
       Treatment: "",
       Amount: 0,
       PaymentMethod: "",
+      Balance: 0, // Initialize balance
     };
     setFinance((prevData) => [...prevData, newRow]);
     setIdCounter(idCounter + 1);
@@ -155,6 +157,7 @@ const Finance: React.FC = () => {
                   <th className="px-4 py-2">Treatment</th>
                   <th className="px-4 py-2">Amount</th>
                   <th className="px-4 py-2">Payment Method</th>
+                  <th className="px-4 py-2">Balance</th> {/* New column */}
                   <th className="px-4 py-2">Action</th>
                 </tr>
               </thead>
@@ -229,6 +232,7 @@ const Finance: React.FC = () => {
                         <option value="Bank">Bank</option>
                       </select>
                     </td>
+                    <td className="px-4 py-2">{row.Balance}</td> {/* Display balance */}
                     <td className="px-4 py-2">
                       <button
                         className="bg-green-500 text-white hover:bg-red-500 hover:text-white focus:outline-none px-4 py-2 rounded"
