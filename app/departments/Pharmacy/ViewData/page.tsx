@@ -1,7 +1,23 @@
 'use client'
 import React, { useState, useEffect } from "react";
+import Header from "@/componets/navbar";
+import Footer from "@/componets/footer";
+
 import { AiOutlineMessage } from "react-icons/ai";
-import ChatDrawer from "../ChatDrawer";
+import ChatDrawer from "../../ChatDrawer";
+
+interface DataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  DrugName: string;
+  DrugType: string
+  Amount: number;
+  MedicalScheme: string;
+
+}
+
+const api = "http://localhost:3000/finance";
 interface Patient {
   id: number;
   firstName: string;
@@ -17,13 +33,17 @@ const apiPharmacyPatients = "http://localhost:3000/pharmacy/patients"; // Endpoi
 const apiTransferPatient = "http://localhost:3000/transfer"; // Endpoint to transfer patient to another department or schedule appointment
 const apiAddNotes = "http://localhost:3000/patients/add-notes"; // Endpoint to add notes for a patient
 
-const PharmacyPage = () => {
+const ViewData = () => {
+  const [data, setData] = useState<DataItem[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [notesInput, setNotesInput] = useState<string>("");
+
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
     fetchPharmacyPatients();
@@ -104,8 +124,50 @@ const PharmacyPage = () => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(api);
+      const responseData = await response.json();
+
+      // Check if response data is an array
+      if (Array.isArray(responseData)) {
+        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
+        const mappedData = filteredData.map((item: any) => ({
+          ID: item.iD,
+          FirstName: item.FirstName,
+          LastName: item.LastName,
+          DrugName: item.DrugName,
+          DrugType: item.DrugType,
+          Amount: item.Amount,
+          MedicalScheme: item.MedicalScheme,
+
+        }));
+
+        setData(mappedData);
+        setAlert(null);
+      } else {
+        setAlert({ type: "error", message: "Invalid data received from the server." });
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleViewData = async () => {
+    fetchData();
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <Header />
       <header className="bg-green-500 text-white p-4">
         <h1 className="text-2xl font-bold text-center">Pharmacy</h1>
       </header>
@@ -116,7 +178,64 @@ const PharmacyPage = () => {
             {alert.message}
           </div>
         )}
+ <div className="flex-grow">
+        <br />
+        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
+        <br />
+        {alert && (
+          <div className="text-center text-red-500">{alert.message}</div>
+        )}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">DrugName</th>
+                <th className="py-2 px-4">DrugType</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">MedicalScheme</th>
 
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                </tr>
+              ) : (
+                data.length > 0 ? (
+                  data.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.DrugName}</td>
+                      <td className="py-2 px-4">{item.DrugType}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.MedicalScheme}</td>
+
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={handleViewData}
+          >
+            View Data
+          </button>
+        </div>
+      </div>
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Patients Ready for Pharmacy</h2>
           <div className="overflow-x-auto">
@@ -199,8 +318,9 @@ const PharmacyPage = () => {
           <AiOutlineMessage className="text-3xl" />
         </button>
       </div>
+     
     </div>
   );
 };
 
-export default PharmacyPage;
+export default ViewData;
