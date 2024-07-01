@@ -33,11 +33,11 @@ interface Patient {
   department?: string; // New field to track department assignment
 }
 
-const apiVitals = "http://localhost:3000/vitals";
-const apiPatients = "http://localhost:3000/reception/patients"; // Update with your actual API endpoints
+const apiVitals = "http://lph-backend.onrender.com/vitals";
+const apiPatients = "http://lph-backend.onrender.comr/reception/patients"; // Update with your actual API endpoints
 
 
-const api = "http://localhost:3000/finance";
+const api = "http://lph-backend.onrender.com/finance";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
@@ -158,7 +158,7 @@ const ViewData = () => {
       <Header />
       {/* Header component */}
       <header className="bg-green-500 text-white p-4">
-        <h1 className="text-2xl font-bold text-center">Doctor's Dashboard</h1>
+        <h1 className="text-2xl font-bold text-center">Doctors Dashboard</h1>
       </header>
 
       <main className="flex-grow mx-auto p-6">

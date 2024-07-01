@@ -13,11 +13,11 @@ interface Patient {
   xrayImage?: File;
 }
 
-const apiXrayPatients = "http://localhost:3000/xray/patients";
-const apiTransferPatient = "http://localhost:3000/transfer";
-const apiUploadXrayImage = "http://localhost:3000/xray/upload";
-const apiSaveNotes = "http://localhost:3000/xray/notes";
-const apiChat = "http://localhost:3000/chat";
+const apiXrayPatients = "http://lph-backend.onrender.com/xray/patients";
+const apiTransferPatient = "http://lph-backend.onrender.com/transfer";
+const apiUploadXrayImage = "http://lph-backend.onrender.com/xray/upload";
+const apiSaveNotes = "http://lph-backend.onrender.com/xray/notes";
+const apiChat = "http://lph-backend.onrender.com/chat";
 
 const XrayDepartment = () => {
   const [patients, setPatients] = useState<Patient[]>([]);

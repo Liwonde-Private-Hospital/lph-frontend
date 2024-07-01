@@ -44,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       }
 
       // Send login request
-      const response = await fetch("http://localhost:3000/Staff/login", {
+      const response = await fetch("http://lph-backend.onrender.com/Staff/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

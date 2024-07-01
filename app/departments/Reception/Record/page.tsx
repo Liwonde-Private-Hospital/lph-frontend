@@ -70,7 +70,7 @@ const Reception: React.FC = () => {
         setDataModified(true);
     }
 
-    const API_URL = "http://localhost:3000/reception"; // Replace with your API endpoint
+    const API_URL = "http://lph-backend.onrender.com/reception"; // Replace with your API endpoint
 
     const postData = async (url: string, data: ReceptionItem) => {
         try {

@@ -3,7 +3,7 @@ import { LPHStaffRole } from "@/app/enums";
 import Header from "@/componets/navbar";
 import React, { useState, useEffect } from "react";
 
-const API_BASE_URL = "http://localhost:3000/Staff";
+const API_BASE_URL = "http://lph-backend.onrender.com/Staff";
 
 export default function MembersTable() {
   const [staffList, setStaffList] = useState<any[]>([]);

@@ -94,7 +94,7 @@ const OPD: React.FC = () => {
         setTotalAmount(total);
     }
 
-    const API_URL = "http://localhost:3000/opd/add"; // Assuming a similar API endpoint
+    const API_URL = "http://lph-backend.onrender.com/opd/add"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: OPDItem) => {
         try {

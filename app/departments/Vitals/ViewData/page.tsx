@@ -12,8 +12,8 @@ interface DataItem {
   BloodPressure: number;
 }
 
-const api = "http://localhost:3000/vitals";
-const sendSelectedApi = "http://localhost:3000/vitals/selected";
+const api = "http://lph-backend.onrender.com/vitals";
+const sendSelectedApi = "http://lph-backend.onrender.com/vitals/selected";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

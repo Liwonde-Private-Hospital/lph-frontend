@@ -16,8 +16,8 @@ interface Doctor {
   name: string;
 }
 
-const financeApi = "http://localhost:3000/finance";
-const doctorsApi = "http://localhost:3000/doctors";
+const financeApi = "http://lph-backend.onrender.com/finance";
+const doctorsApi = "http://lph-backend.onrender.comdoctors";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
