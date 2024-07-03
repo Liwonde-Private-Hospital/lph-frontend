@@ -25,7 +25,7 @@ interface BackstoreItem {
     ExpiryDate: string;
 }
 
-const Backstore: React.FC = () => {
+const Backstore = () => {
     const [backstore, setBackstore] = useState<BackstoreItem[]>([
         { DrugID: 1, DrugName: '', DrugType: DrugType.Syrup, Quantity: 0, DateCreated: '', ExpiryDate: '' }
     ]);

@@ -6,7 +6,7 @@ import Image from "next/image";
 import icon from "../../../images/icon.png";
 import axios from "axios"; // Import axios for HTTP requests
 
-const API_URL = "http://localhost:3000/laboratory";
+const API_URL = "http://lph-backend.onrender.com/laboratory";
 
 export interface LabItem {
   ID: number;
@@ -17,7 +17,7 @@ export interface LabItem {
   Date: string;
 }
 
-const Lab: React.FC = () => {
+const Lab = () => {
   const [lab, setLab] = useState<LabItem[]>([
     {
       ID: 1,

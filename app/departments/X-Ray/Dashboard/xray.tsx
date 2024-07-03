@@ -5,8 +5,7 @@ import React from "react";
 import './style.css'
 import icon from '../../../images/icon.png'
 import Image from "next/image";
-import LogoutButton from "@/components/LogoutButton";
-
+import LogoutButton from "@/componets/LogoutButton";
 
 export default function Finance(){
     

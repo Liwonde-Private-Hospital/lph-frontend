@@ -12,7 +12,7 @@ interface HistoryDateProps {
 }
 
 // Define the HistoryDate functional component
-const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
+const HistoryDate = ({ initialDate }:any) => {
   // State hooks for managing component state
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

@@ -11,9 +11,9 @@ interface DataItem {
   testOrdered: string;
 }
 
-const API_URL = "http://localhost:3000/laboratory/getallpatient";
+const API_URL = "http://lph-backend.onrender.com/laboratory/getallpatient";
 
-const ViewData: React.FC = () => {
+const ViewData  = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);

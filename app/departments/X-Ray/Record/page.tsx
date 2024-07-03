@@ -17,7 +17,7 @@ interface OPDItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const OPD: React.FC = () => {
+const OPD = () => {
     const [opd, setOpd] = useState<OPDItem[]>([
         { ID: 1, firstName: '', LastName: '', Treatment: '', Amount: '', MedicalScheme: '', Date: '' }
     ]);
@@ -94,7 +94,7 @@ const OPD: React.FC = () => {
         setTotalAmount(total);
     }
 
-    const API_URL = "http://localhost:3000/opd/add"; // Assuming a similar API endpoint
+    const API_URL = "http://lph-backend.onrender.com/opd/add"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: OPDItem) => {
         try {

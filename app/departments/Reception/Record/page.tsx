@@ -17,7 +17,7 @@ interface ReceptionItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const Reception: React.FC = () => {
+const Reception = () => {
     const [reception, setReception] = useState<ReceptionItem[]>([
         { ID: 1, FirstName: '', LastName: '', PhoneNumber: '', PaymentMethod: '',Returned:"", Date: '' }
     ]);

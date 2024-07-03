@@ -17,7 +17,7 @@ interface MaternityItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const Maternity: React.FC = () => {
+const Maternity = () => {
     const [maternity, setMaternity] = useState<MaternityItem[]>([
         { ID: 1, firstName: '', LastName: '', Amount: '', MedicalScheme: '', Date: '' }
     ]);
@@ -71,7 +71,7 @@ const Maternity: React.FC = () => {
         setDataModified(true);
     }
 
-    const API_URL = "http://localhost:3000/maternity/add"; // Assuming a similar API endpoint
+    const API_URL = "http://lph-backend.onrender.com/maternity/add"; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: MaternityItem) => {
         try {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 
-const api = "http://localhost:3000/finance/add";
+const api = "http://lph-backend.onrender.com/finance/add";
 
 interface FinanceItem {
   id: number;
@@ -16,7 +16,7 @@ interface FinanceItem {
   Balance: number; // New field
 }
 
-const Finance: React.FC = () => {
+const Finance = () => {
   const [finance, setFinance] = useState<FinanceItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [dataModified, setDataModified] = useState<boolean>(false);

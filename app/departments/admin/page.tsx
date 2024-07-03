@@ -1,7 +1,8 @@
 "use client";
-import { LPHStaffRole } from "@/app/enums";
-import Header from "@/componets/navbar";
 import React, { useState, useEffect } from "react";
+
+import { LPHStaffRole } from "@/app/enums";
+import Header from "../../../componets/navbar";
 
 const API_BASE_URL = "http://lph-backend.onrender.com/Staff";
 

@@ -18,7 +18,7 @@ interface VitalsItem {
 }
 
 // React functional component Vitals
-const Vitals: React.FC = () => {
+const Vitals = () => {
     const [vitals, setVitals] = useState<VitalsItem[]>([
         { ID: 1, FirstName: '', LastName: '', Temperature: 0, Height: 0, Weight: 0, BloodPressure: 0, BMI: '0' }
     ]);
@@ -87,7 +87,7 @@ const Vitals: React.FC = () => {
         return '0';
     };
 
-    const API_URL="http://localhost:3000/vitals"
+    const API_URL = "http://lph-backend.onrender.com/vitals";
 
     // Function to handle form submission
     const handleSubmit = async () => {

@@ -1,11 +1,11 @@
 'use client'
-import Dental from "./Pharmacy";
-import PrivateRoute from "@/app/context/PrivateRoute";
+import React from 'react'
 
-const VitalsDashboardPage: React.FC = () => {
+import Pharmacy from "./Pharmacy";
+export default function page() {
   return (
-      <Dental/>
-  );
-};
-
-export default VitalsDashboardPage;
+    <div>
+      <Pharmacy/>
+    </div>
+  )
+}

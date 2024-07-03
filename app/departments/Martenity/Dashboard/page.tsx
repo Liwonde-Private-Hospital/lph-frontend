@@ -1,9 +1,15 @@
 'use client'
-import Backstore from "./Martenity";
-const VitalsDashboardPage: React.FC = () => {
-  return (
-      <Backstore/>
-  );
-};
+    
+import React from "react";
 
-export default VitalsDashboardPage;
+import Matenity from "./Martenity";
+
+function page() {
+  return (
+    <div>
+      <Matenity/>
+    </div>
+  );
+}
+
+export default page

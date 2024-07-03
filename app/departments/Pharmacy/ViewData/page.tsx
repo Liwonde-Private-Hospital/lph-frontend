@@ -17,7 +17,7 @@ interface DataItem {
 
 }
 
-const api = "http://localhost:3000/finance";
+const api = "http://lph-backend.onrender.com/finance";
 interface Patient {
   id: number;
   firstName: string;
@@ -29,9 +29,9 @@ interface Patient {
   notes?: string;
 }
 
-const apiPharmacyPatients = "http://localhost:3000/pharmacy/patients"; // Endpoint for Pharmacy department patients
-const apiTransferPatient = "http://localhost:3000/transfer"; // Endpoint to transfer patient to another department or schedule appointment
-const apiAddNotes = "http://localhost:3000/patients/add-notes"; // Endpoint to add notes for a patient
+const apiPharmacyPatients = "http://lph-backend.onrender.com/pharmacy/patients"; // Endpoint for Pharmacy department patients
+const apiTransferPatient = "http://lph-backend.onrender.com/transfer"; // Endpoint to transfer patient to another department or schedule appointment
+const apiAddNotes = "http://lph-backend.onrender.com/patients/add-notes"; // Endpoint to add notes for a patient
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

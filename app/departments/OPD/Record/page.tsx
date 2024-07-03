@@ -17,7 +17,7 @@ interface OPDItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const OPD: React.FC = () => {
+const OPD = () => {
     const [opd, setOpd] = useState<OPDItem[]>([
         { ID: 1, firstName: '', LastName: '', Treatment: '', Amount: '', MedicalScheme: '', Date: '' }
     ]);

@@ -1,9 +1,12 @@
 'use client'
-import Backstore from "./xray";
-const VitalsDashboardPage: React.FC = () => {
-  return (
-      <Backstore/>
-  );
-};
 
-export default VitalsDashboardPage;
+import React from "react";
+import XRAY from "./xray";
+
+export default function page() {
+  return (
+    <div>
+      <XRAY/>
+    </div>
+  )
+}

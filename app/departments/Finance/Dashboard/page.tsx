@@ -1,10 +1,14 @@
 'use client'
+
+import React from "react";
 import Finances from "./Finance";
 
-const Finance: React.FC = () => {;
+function page() {
+  return (
+    <div>
+      <Finances/>
+    </div>
+  )
+}
 
-  return (<Finances/>
-  );
-};
-
-export default Finance;
+export default page

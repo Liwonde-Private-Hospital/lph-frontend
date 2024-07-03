@@ -16,12 +16,12 @@ interface DentalItem {
     Treatment: string;
 }
 
-const API_URL = "http://localhost:3000/dental";
+const API_URL = "http://lph-backend.onrender.com/dental";
 
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const Dental: React.FC = () => {
+const Dental = () => {
     const [dental, setDental] = useState<DentalItem[]>([
         { ID: 1, FirstName: '', LastName: '', PhoneNumber: '', Address: '', Diagnosis: '', Amount: '', MedicalScheme: '', Treatment: ''}
     ]);

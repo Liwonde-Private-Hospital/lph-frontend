@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";// Adjust the import path as per you
 import "./style.css"; // Adjust the import path as per your project structure
 import LoginForm from "@/componets/LoginForm";
 
-const Login: React.FC = () => {
+const Login= () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [departmentId, setDepartmentId] = useState<string | null>(null);

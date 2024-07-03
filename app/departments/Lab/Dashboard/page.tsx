@@ -1,10 +1,16 @@
 'use client'
-import Finance from "./Lab";
+import React from "react";
 
-const VitalsDashboardPage: React.FC = () => {
+import  Lab from "./Lab";
+
+   
+
+function page() {
   return (
-      <Finance/>
+    <div>
+      <Lab/>
+    </div>
   );
-};
+}
 
-export default VitalsDashboardPage;
+export default page

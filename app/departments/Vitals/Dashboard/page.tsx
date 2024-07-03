@@ -1,9 +1,12 @@
 'use client'
-import Backstore from "./Vitals";
-const VitalsDashboardPage: React.FC = () => {
-  return (
-      <Backstore/>
-  );
-};
 
-export default VitalsDashboardPage;
+import React from "react";
+import Vitals from "./Vitals";
+
+export default function page() {
+  return (
+    <div>
+      <Vitals/>
+    </div>
+  )
+}

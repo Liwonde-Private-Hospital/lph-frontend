@@ -30,7 +30,7 @@ interface PharmacyItem {
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-const Pharmacy: React.FC = () => {
+const Pharmacy = () => {
     const [pharmacy, setPharmacy] = useState<PharmacyItem[]>([]);
     const [patients, setPatients] = useState<string[]>([]);
     const [drugNames, setDrugNames] = useState<string[]>([]);
@@ -43,7 +43,9 @@ const Pharmacy: React.FC = () => {
         // Fetch pharmacy data from backend
         const fetchPharmacyData = async () => {
             try {
-                const response = await fetch("http://localhost:3000/pharmacy"); // Adjust API endpoint as per your backend
+                const response = await fetch(
+                  "http://lph-backend.onrender.com/pharmacy"
+                ); // Adjust API endpoint as per your backend
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -73,7 +75,9 @@ const Pharmacy: React.FC = () => {
         // Fetch drug names from backend
         const fetchDrugNames = async () => {
             try {
-                const response = await fetch("http://localhost:3000/drugs"); // Adjust API endpoint as per your backend
+                const response = await fetch(
+                  "http://lph-backend.onrender.com/drugs"
+                ); // Adjust API endpoint as per your backend
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -159,13 +163,16 @@ const Pharmacy: React.FC = () => {
 
         // Update backend to mark drug as sold and remove from database
         try {
-            const response = await fetch(`http://localhost:3000/pharmacy/${updatedData[index].ID}`, {
+            const response = await fetch(
+              `http://lph-backend.onrender.com/pharmacy/${updatedData[index].ID}`,
+              {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json",
+                  "Content-Type": "application/json",
                 },
                 body: JSON.stringify(updatedData[index]),
-            });
+              }
+            );
 
             if (!response.ok) {
                 throw new Error(`Failed to mark drug as sold and remove from database: ${response.status}`);
@@ -193,13 +200,16 @@ const Pharmacy: React.FC = () => {
                 }
 
                 // Update backend with each pharmacy item
-                const response = await fetch(`http://localhost:3000/pharmacy/${item.ID}`, {
+                const response = await fetch(
+                  `http://lph-backend.onrender.com/pharmacy/${item.ID}`,
+                  {
                     method: "PUT",
                     headers: {
-                        "Content-Type": "application/json",
+                      "Content-Type": "application/json",
                     },
                     body: JSON.stringify(item),
-                });
+                  }
+                );
 
                 if (!response.ok) {
                     throw new Error(`Failed to save data for ID ${item.ID}: ${response.status}`);

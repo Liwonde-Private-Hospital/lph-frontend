@@ -17,7 +17,7 @@ interface Props {
   setNotesInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ChatDrawer: React.FC<Props> = ({ patient, onClose, onAddNotes, notesInput, setNotesInput }:any) => {
+const ChatDrawer = ({ patient, onClose, onAddNotes, notesInput, setNotesInput }:any) => {
   return (
     <div className="fixed bottom-0 right-0 w-1/2 h-1/2 bg-white shadow-lg border border-gray-200">
       <div className="flex justify-between items-center bg-green-500 text-white p-4">y

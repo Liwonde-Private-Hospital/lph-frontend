@@ -12,7 +12,9 @@ interface HistoryDateProps {
 }
 
 // Define the HistoryDate functional component
-const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
+const HistoryDate= ({
+  initialDate,
+}: any) => {
   // State hooks for managing component state
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,7 +23,9 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
   const [searchText, setSearchText] = useState<string>(initialDate);
   const [historyDates, setHistoryDates] = useState<string[]>([]);
   const [filteredDates, setFilteredDates] = useState<string[]>([]);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [alert, setAlert] = useState<{ type: string; message: string } | null>(
+    null
+  );
 
   // useEffect to initialize historyDates and filteredDates
   useEffect(() => {
@@ -31,12 +35,15 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
     const today = currentDate.getDate();
 
     const buttons: string[] = [];
-    for (let i = 0; i < 5; i++) { // Generate dates for the next 5 days
+    for (let i = 0; i < 5; i++) {
+      // Generate dates for the next 5 days
       const targetDate = new Date(year, month - 1, today + i);
       const targetYear = targetDate.getFullYear();
       const targetMonth = targetDate.getMonth() + 1;
       const targetDay = targetDate.getDate();
-      const dateString = `${targetYear}-${targetMonth < 10 ? '0' + targetMonth : targetMonth}-${targetDay < 10 ? '0' + targetDay : targetDay}`;
+      const dateString = `${targetYear}-${
+        targetMonth < 10 ? "0" + targetMonth : targetMonth
+      }-${targetDay < 10 ? "0" + targetDay : targetDay}`;
       buttons.push(dateString);
     }
     setHistoryDates(buttons);
@@ -60,20 +67,24 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
       }
 
       if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
+        const filteredData = responseData.filter(
+          (item: any) => item.test_ordered === "use client"
+        );
         const mappedData = filteredData.map((item: any) => ({
           DrugID: item.id,
           DrugName: item.first_name,
-          DrugType:item.drugtype,
-          Quantity:item.quantity,
-          ExpiryDate:item.expirydate
-   
+          DrugType: item.drugtype,
+          Quantity: item.quantity,
+          ExpiryDate: item.expirydate,
         }));
 
         setData(mappedData);
         setAlert(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setAlert({
+          type: "error",
+          message: "Invalid data received from the server.",
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -88,14 +99,18 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
     const searchText = event.target.value;
     setSearchText(searchText);
     setSelectedDate(searchText); // Update selectedDate based on the searchText
-    const filteredDates = historyDates.filter(date => date.includes(searchText));
+    const filteredDates = historyDates.filter((date) =>
+      date.includes(searchText)
+    );
     setFilteredDates(filteredDates);
   };
 
   // Function to update a row of data
   const updateRow = (indexToUpdate: number, updatedRow: any) => {
-    setData(prevData =>
-      prevData.map((item, index) => (index === indexToUpdate ? updatedRow : item))
+    setData((prevData) =>
+      prevData.map((item, index) =>
+        index === indexToUpdate ? updatedRow : item
+      )
     );
   };
 
@@ -106,15 +121,29 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
           <div className="flex items-center">
             <div className="ml-4">
-              <h1 className="text-4xl font-bold">DrugStore  Transaction History</h1>
+              <h1 className="text-4xl font-bold">
+                DrugStore Transaction History
+              </h1>
             </div>
-            <h1 className="tsiku" style={{ fontWeight: 'bolder', fontSize: '30px', marginLeft: '900px' }}>{selectedDate}</h1>
+            <h1
+              className="tsiku"
+              style={{
+                fontWeight: "bolder",
+                fontSize: "30px",
+                marginLeft: "900px",
+              }}
+            >
+              {selectedDate}
+            </h1>
           </div>
         </div>
         <div className="px-4 py-2">
           <div className="flex">
             <div className="w-1/2">
-              <p>You can search the date you want to view by selecting a date in the search box below</p>
+              <p>
+                You can search the date you want to view by selecting a date in
+                the search box below
+              </p>
               <h2 className="text-xl font-bold mb-2">Search</h2>
               <div className="flex">
                 <input
@@ -133,31 +162,54 @@ const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">DrugID</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">DrugName</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">DrugType</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Quantity</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">ExpiryDate</th>
-           
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                        DrugID
+                      </th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                        DrugName
+                      </th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                        DrugType
+                      </th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                        Quantity
+                      </th>
+                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                        ExpiryDate
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {loading ? (
                       <tr>
-                        <td colSpan={6} className="text-center py-4">Loading...</td>
+                        <td colSpan={6} className="text-center py-4">
+                          Loading...
+                        </td>
                       </tr>
                     ) : error ? (
                       <tr>
-                        <td colSpan={6} className="text-center py-4 text-red-500">Error: {error}</td>
+                        <td
+                          colSpan={6}
+                          className="text-center py-4 text-red-500"
+                        >
+                          Error: {error}
+                        </td>
                       </tr>
                     ) : data.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="text-center py-4 text-red-500">No data available for this date.</td>
+                        <td
+                          colSpan={6}
+                          className="text-center py-4 text-red-500"
+                        >
+                          No data available for this date.
+                        </td>
                       </tr>
                     ) : (
                       data.map((item, index) => (
                         <tr key={item.id}>
-                          <td className="px-4 py-2 border border-gray-300">{item.id}</td>
+                          <td className="px-4 py-2 border border-gray-300">
+                            {item.id}
+                          </td>
                           <td className="px-4 py-2 border border-gray-300">
                             <input
                               type="text"

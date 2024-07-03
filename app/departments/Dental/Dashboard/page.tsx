@@ -1,9 +1,14 @@
 'use client'
-import Dental from "./Dental";
-const VitalsDashboardPage: React.FC = () => {
-  return (
-      <Dental/>
-  );
-};
 
-export default VitalsDashboardPage;
+import React from "react";
+import Dental from "./Dental";
+
+function page() {
+  return (
+    <div>
+      <Dental/>
+    </div>
+  )
+}
+
+export default page

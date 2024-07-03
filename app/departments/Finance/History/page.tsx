@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 // Define the API endpoint
-const api = "http://localhost:3000/finance";
+const api = "http://lph-backend.onrender.com/finance";
 
 // Define the props interface for the component
 interface HistoryDateProps {
@@ -12,7 +12,7 @@ interface HistoryDateProps {
 }
 
 // Define the HistoryDate functional component
-const HistoryDate: NextPage<HistoryDateProps> = ({ initialDate }) => {
+const HistoryDate = ({ initialDate }:any) => {
   // State hooks for managing component state
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

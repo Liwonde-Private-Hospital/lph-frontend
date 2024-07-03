@@ -13,7 +13,7 @@ interface DaySummaryItem {
  
 }
 
-const DaySummary: React.FC = () => {
+const DaySummary = () => {
     const [daySummary, setDaySummary] = useState<DaySummaryItem[]>([
         { ID: 1, DayTotal: 0, Expenditure: 0, Banking: 0, CashInHand: 0, }
     ]);

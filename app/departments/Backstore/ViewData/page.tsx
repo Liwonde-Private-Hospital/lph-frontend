@@ -14,7 +14,7 @@ interface DataItem {
 
 }
 
-const api = "http://localhost:3000/finance";
+const api = "http://lph-backend.onrender.com/finance";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

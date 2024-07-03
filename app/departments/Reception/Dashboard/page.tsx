@@ -1,10 +1,13 @@
 'use client'
-import Finance from "./Reception";
+import React from "react";
+import Reception from "./Reception";
 
-const VitalsDashboardPage: React.FC = () => {
 
+
+export default function page() {
   return (
-      <Finance/>)
-};
-
-export default VitalsDashboardPage;
+    <div>
+      <Reception/>
+    </div>
+  )
+}
