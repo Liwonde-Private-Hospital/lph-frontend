@@ -16,20 +16,15 @@ interface LoginFormProps {
   redirectToDepartment: (departmentId: string) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({
-  redirectToDepartment,
-}) => {
-  // State variables
+const LoginForm: React.FC<LoginFormProps> = ({ redirectToDepartment }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showEnterFieldsMessage, setShowEnterFieldsMessage] = useState(false);
 
-  // Access authentication context
   const { login } = useAuth();
 
-  // Handle form submission
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -37,14 +32,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
     setShowEnterFieldsMessage(false);
 
     try {
-      // Validate username and password
       if (!username || !password) {
         setShowEnterFieldsMessage(true);
         throw new Error("Username and password are required.");
       }
 
-      // Send login request
-      const response = await fetch("http://lph-backend.onrender.com/Staff/login", {
+      const api = "http://localhost:3000/Staff/login";
+      const response = await fetch(api, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,28 +46,41 @@ const LoginForm: React.FC<LoginFormProps> = ({
         body: JSON.stringify({ username, password }),
       });
 
-      // Handle successful login response
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
       if (response.ok) {
         const data = await response.json();
-        const userRoles = data.user.roles;
-        const userDepartment = findUserDepartment(userRoles);
-        if (userDepartment) {
-          login(userDepartment);
-          redirectToDepartment(userDepartment);
+        console.log('Login data:', data);
+        
+        if (data.user && data.user.roles) {
+          const userRoles = data.user.roles;
+          const userDepartment = findUserDepartment(userRoles);
+          if (userDepartment) {
+            login(userDepartment);
+            redirectToDepartment(userDepartment);
+          } else {
+            throw new Error("User does not have access to assigned department.");
+          }
         } else {
-          throw new Error("User does not have access to assigned department.");
+          throw new Error("User roles data not found in response.");
         }
       } else {
-        throw new Error("Invalid username or password. Please try again.");
+        const errorData = await response.json();
+        console.log('Error data:', errorData);
+        throw new Error(errorData.message || "Invalid username or password. Please try again.");
       }
-    } catch (error) {
-      setErrorMessage("Login failed. Please check your internet connection.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("An unknown error occurred.");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Find user's department based on roles
   const findUserDepartment = (userRoles: string[]) => {
     const departmentRoles = Object.values(LPHStaffRole).filter(
       (role) => typeof role === "string"
@@ -98,7 +105,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
               />
             </div>
             <h1>Staff Login Portal</h1>
-            {/* Login form */}
             <form onSubmit={handleLogin}>
               <FormControl isRequired>
                 <FormLabel className="name">Username</FormLabel>
@@ -122,19 +128,16 @@ const LoginForm: React.FC<LoginFormProps> = ({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </FormControl>
-              {/* Show message if fields are empty */}
               {showEnterFieldsMessage && (
                 <Text color="red" mt="0.5rem">
                   Please enter both username and password
                 </Text>
               )}
-              {/* Show error message if login fails */}
               {errorMessage && (
                 <Text color="red" mt="0.5rem">
                   {errorMessage}
                 </Text>
               )}
-              {/* Login button with loading state */}
               <Button
                 className="button1"
                 type="submit"
