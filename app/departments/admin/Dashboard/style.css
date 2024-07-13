@@ -15,6 +15,14 @@ body {
    
     
 }
+.mutu{
+     padding-right:2500px; 
+     padding-top:1px;
+    padding: auto;
+    align-items: center;
+    justify-content: center;
+
+}
 
 #dash {
     position: fixed;

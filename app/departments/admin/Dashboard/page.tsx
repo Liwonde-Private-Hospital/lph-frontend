@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect } from "react";
 import './style.css';
 import PowerBIEmbed from "../PowerBIEmbed/page";
 
@@ -9,6 +9,26 @@ export default function Backstore() {
     const reportId = "";
     const groupId = "";
 
+    useEffect(() => {
+        // Check if the user is online
+        if (!navigator.onLine) {
+            alert("Unable to open report: no internet connection");
+        }
+
+        // Add event listener for when the user goes offline
+        const handleOffline = () => {
+            
+            alert("check your connection and try again later");
+        };
+
+        window.addEventListener('offline', handleOffline);
+
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
+
     return (
         <div>
             <div id="dash">
@@ -16,20 +36,28 @@ export default function Backstore() {
                 <ul>
                     <li><a href="AddStaff">Add Staff</a></li>
                     <li><a href="DeleteStaff">Delete Staff</a></li>
-                    <li><a href="PowerBIEmbed">New Reports</a></li>
-                    <li><a href="">Report History</a></li>
-             
+                    <li><a href="ReportHistory">New Reports</a></li>
+                    <li><a href="PowerBIEmbed">Report History</a></li>
                 </ul>
             </div>
-
-            <h1>REPORTS AND DASHBOARD</h1>
+            <h1 className="mutu">REPORTS AND DASHBOARD</h1>
+            
+            <div className="flex justify-center">
+                <iframe 
+                    src="https://playground.powerbi.com/sampleReportEmbed" 
+                    width="90%" 
+                    height="1000px" 
+                    frameBorder="0"
+                    allowFullScreen={true}
+                ></iframe>
+            </div>
 
             {/* Place PowerBIEmbed component where you want the report to appear */}
-            <PowerBIEmbed
-                accessToken={accessToken}
-                reportId={reportId}
-                groupId={groupId}
-            />
+            {/* <PowerBIEmbed */}
+                {/* accessToken={accessToken} */}
+                {/* reportId={reportId} */}
+                {/* groupId={groupId} */}
+            {/* /> */}
         </div>
     );
 }
