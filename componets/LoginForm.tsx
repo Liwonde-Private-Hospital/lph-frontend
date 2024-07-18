@@ -24,19 +24,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectToDepartment }) => {
   const [showEnterFieldsMessage, setShowEnterFieldsMessage] = useState(false);
 
   const { login } = useAuth();
-
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
     setShowEnterFieldsMessage(false);
-
+  
     try {
       if (!username || !password) {
         setShowEnterFieldsMessage(true);
         throw new Error("Username and password are required.");
       }
-
+  
       const api = "http://localhost:3000/Staff/login";
       const response = await fetch(api, {
         method: "POST",
@@ -45,10 +44,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectToDepartment }) => {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);
-
+  
       if (response.ok) {
         const data = await response.json();
         console.log('Login data:', data);
@@ -66,9 +65,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectToDepartment }) => {
           throw new Error("User roles data not found in response.");
         }
       } else {
-        const errorData = await response.json();
-        console.log('Error data:', errorData);
-        throw new Error(errorData.message || "Invalid username or password. Please try again.");
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          console.log('Error data:', errorData);
+          throw new Error(errorData.message || "Invalid username or password. Please try again.");
+        } else {
+          // Handle non-JSON response (like HTML)
+          throw new Error("Unable to connect to Server . Please try again later.");
+        }
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -80,6 +86,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ redirectToDepartment }) => {
       setIsLoading(false);
     }
   };
+  
 
   const findUserDepartment = (userRoles: string[]) => {
     const departmentRoles = Object.values(LPHStaffRole).filter(

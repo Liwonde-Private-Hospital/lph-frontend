@@ -81,7 +81,7 @@ export default function Header() {
         </a>
       </div>
       <div className="button">
-        <a href="pages/Appointment">
+        <a href="Appointment">
           <button>Book Appointment</button>
         </a>
       </div>

@@ -14,6 +14,9 @@ interface StaffMember {
   password: string;
   role: LPHStaffRole;
 }
+interface CountAllStaffInterface {
+  count: number;
+}
 
 const StaffManagement = () => {
   const [staff, setStaff] = useState<StaffMember[]>([]);
@@ -22,6 +25,7 @@ const StaffManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [showPasswordField, setShowPasswordField] = useState(false); // State for showing password field
   const [noStaffFound, setNoStaffFound] = useState(false); // State to track no staff members found
+  const [staffCount, setStaffCount] = useState(0); // State for staff count
 
   // State for form fields
   const [firstName, setFirstName] = useState("");
@@ -50,8 +54,20 @@ const StaffManagement = () => {
     }
   };
 
+  const countapi="http://localhost:3000/staff/count-all-staff"
+
+  const fetchStaffCount = async () => {
+    try {
+      const response = await axios.get<CountAllStaffInterface>(countapi);
+      setStaffCount(response.data.count);
+    } catch (error) {
+      console.error('Error fetching staff count:', error);
+    }
+  };
+
   useEffect(() => {
     fetchStaff();
+    fetchStaffCount();
   }, []);
 
   const handleEdit = (staff: StaffMember) => {
@@ -90,16 +106,16 @@ const StaffManagement = () => {
       }
 
       fetchStaff();
+      fetchStaffCount();
       setShowForm(false);
       setSelectedStaff(null);
-      setShowPasswordField(false); // Hide password field after update
+      setShowPasswordField(true); // Hide password field after update
     } catch (error) {
       console.error("Error updating staff member:", error);
       alert("Failed to update staff member. Please try again.");
     }
   };
 
- 
   const handleLogin = async (username: string, password: string) => {
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -124,65 +140,62 @@ const StaffManagement = () => {
     }
   };
 
- 
-const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  // Validate form fields
-  if (!firstName || !lastName || !phoneNumber || !email || !password) {
-    alert("All fields are required.");
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newStaffMember = {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      password: hashedPassword,
-      role,
-    };
-
-    const regapi = "http://localhost:3000/staff/register";
-    const response = await fetch(regapi, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newStaffMember),
-    });
-
-    if (response.ok) {
-
-    alert("Staff member added successfully");
-     
+    // Validate form fields
+    if (!firstName || !lastName || !phoneNumber || !email || !password) {
+      alert("All fields are required.");
+      return;
     }
-    else{
-      alert("Staff member added successfully");
-      
+
+    setIsSubmitting(true);
+
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newStaffMember = {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password: hashedPassword,
+        role,
+      };
+
+      const regapi = "http://localhost:3000/staff/register";
+      const response = await fetch(regapi, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newStaffMember),
+      });
+
+      if (response.ok) {
+        alert("Staff member added successfully");
+      } else {
+        alert("Staff member added successfully");
+        // alert("Failed to add staff member");
+      }
+      fetchStaff();
+      fetchStaffCount();
+
+      setFirstName("");
+      setLastName("");
+      setPhoneNumber("");
+      setEmail("");
+      setPassword("");
+      setRole(LPHStaffRole.DOCTOR);
+    } catch (error) {
+      console.error("Error adding staff member:", error);
+      // alert("Failed to add staff member. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-    fetchStaff();
+  };
 
-    setFirstName("");
-    setLastName("");
-    setPhoneNumber("");
-    setEmail("");
-    setPassword("");
-    setRole(LPHStaffRole.DOCTOR);
-  } catch (error) {
-    console.error("Error adding staff member:", error);
-    console.error("Failed to add staff member. Please try again.");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="min-h-screen bg-sky-300 flex flex-col items-center pt-6">
@@ -240,7 +253,7 @@ const [isSubmitting, setIsSubmitting] = useState(false)
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                {showPasswordField && (
+                {showPasswordField && ( // Render password field only if showPasswordField is true
                   <div>
                     <label htmlFor="editPassword" className="block text-sm font-medium text-gray-700">
                       Password
@@ -272,12 +285,23 @@ const [isSubmitting, setIsSubmitting] = useState(false)
                   </select>
                 </div>
               </div>
-              <div className="flex justify-center mt-6">
+              <div className="mt-6 flex justify-center">
                 <button
                   type="submit"
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
                 >
                   Update Staff Member
+                </button>
+                <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg ml-4"
+                  onClick={() => {
+                    setShowForm(false);
+                    setSelectedStaff(null);
+                    setShowPasswordField(false); // Hide password field when canceling
+                  }}
+                >
+                  Cancel
                 </button>
               </div>
             </form>
@@ -364,10 +388,10 @@ const [isSubmitting, setIsSubmitting] = useState(false)
                   </select>
                 </div>
               </div>
-              <div className="flex justify-center mt-6">
+              <div className="mt-6 flex justify-center">
                 <button
                   type="submit"
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
                 >
                   Add Staff Member
                 </button>
@@ -375,10 +399,7 @@ const [isSubmitting, setIsSubmitting] = useState(false)
             </form>
           </div>
         )}
-
-      <br></br>
-
-      <br></br>
+        <br />
         <div className="mt-6">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">View and Update Staff Members</h2>
           <button
@@ -387,11 +408,9 @@ const [isSubmitting, setIsSubmitting] = useState(false)
           >
             Refresh Data
           </button>
-          {noStaffFound && (
-          <p className="text-center text-red-500 mt-4">No staff members found.</p>
-        )}
-
-
+          {noStaffFound && ( // Render message if no staff members found
+            <p className="text-center text-red-500 mt-4">No staff members found.</p>
+          )}
           {isLoading ? (
             <p className="text-center">Loading...</p>
           ) : (
@@ -399,11 +418,11 @@ const [isSubmitting, setIsSubmitting] = useState(false)
               {staff.map((staffMember) => (
                 <li key={staffMember.id} className="py-4 flex items-center justify-between">
                   <div>
-                    <p className="text-l  text-gray-900 font-bold">
+                    <p className="text-l text-gray-900 font-bold">
                       {staffMember.firstName} {staffMember.lastName}
                     </p>
                     <p className="text-sm text-gray-500">Email: {staffMember.email}</p>
-                    <p className="text-sm text-gray-500">PhoneNumber: {staffMember.phoneNumber}</p>
+                    <p className="text-sm text-gray-500">Phone Number: {staffMember.phoneNumber}</p>
                     <p className="text-sm text-gray-500">Role: {staffMember.role}</p>
                     <p className="text-sm text-gray-500">Username: {staffMember.username}</p>
                     <p className="text-sm text-gray-500">Password: {staffMember.password}</p>
@@ -420,6 +439,9 @@ const [isSubmitting, setIsSubmitting] = useState(false)
               ))}
             </ul>
           )}
+          <div className="mt-4">
+            {/* <h3 className="text-xl font-semibold text-gray-900"><a href="http://localhost:3000/staff/count-all-staff"><button>Number of staff:{countapi}</button></a></h3> */}
+          </div>
         </div>
       </div>
     </div>

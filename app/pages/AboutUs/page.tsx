@@ -17,7 +17,7 @@ const AboutUs = () => {
 
   const links = [
     { name: "vacancies", onClick: handleClickVacancies },
-    { name: "Take a look at the hospital", href: "More" },
+    { name: "Take a look at the hospital", href: "#" },
     { name: "Our values", href: "#" },
     { name: "Meet our leadership", href: "Leader" },
   ];

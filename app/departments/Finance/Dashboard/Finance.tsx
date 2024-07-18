@@ -13,6 +13,7 @@ export default function Finance(){
                     <li><a href="#">Profile</a></li>
                     <li><a href="Summary">Day Summary</a></li>
                     <li><a href="History">Transaction History</a></li>
+                    <li><a href="#">Creditors</a></li>
                     <li>
                         <LogoutButton/>
                     </li>
