@@ -4,16 +4,15 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 
-const api = "http://lph-backend.onrender.com/finance/add";
+const api = "http://localhost:3000/finance";
 
 interface FinanceItem {
-  id: number;
+  ID: number;
   FirstName: string;
   LastName: string;
   Treatment: string;
   Amount: number;
   PaymentMethod: string;
-  Balance: number; // New field
 }
 
 const Finance = () => {
@@ -47,25 +46,88 @@ const Finance = () => {
 
   const addRow = () => {
     const newRow: FinanceItem = {
-      id: idCounter,
+      ID: idCounter,
       FirstName: "",
       LastName: "",
       Treatment: "",
       Amount: 0,
       PaymentMethod: "",
-      Balance: 0, // Initialize balance
     };
     setFinance((prevData) => [...prevData, newRow]);
     setIdCounter(idCounter + 1);
     setDataModified(true);
   };
 
-  const deleteRow = (index: number) => {
-    setFinance((prevData) => {
-      const newData = [...prevData.slice(0, index), ...prevData.slice(index + 1)];
-      setDataModified(true);
-      return newData;
+  const deleteRow = async (index: number) => {
+    const adminPassword = prompt("Enter admin password to delete:");
+
+    if (!adminPassword) {
+      alert("Deletion cancelled. Admin password is required.");
+      return;
+    }
+
+    try {
+      const isValidPassword = await verifyAdminPassword(adminPassword);
+
+      if (!isValidPassword) {
+        alert("Invalid admin password. Deletion cancelled.");
+        return;
+      }
+
+      const rowToDelete = finance[index];
+
+      const deleteSuccess = await deleteData(`http://localhost:3000/finance${rowToDelete.ID}`);
+
+      if (deleteSuccess) {
+        setFinance((prevData) => {
+          const newData = [...prevData.slice(0, index), ...prevData.slice(index + 1)];
+          setDataModified(true);
+          return newData;
+        });
+      } else {
+        alert("Failed to delete data");
+      }
+    } catch (error) {
+      console.error("Error verifying admin password or deleting data:", error);
+      alert("incorrect admin  password ,please ask password from admin to delete data");
+    }
+  };
+
+  const verifyAdminPassword = async (password: string): Promise<boolean> => {
+    const response = await fetch('/api/verifyAdminPassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password }),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to verify admin password');
+    }
+
+    const result = await response.json();
+    return result.isValid;
+  };
+
+  const deleteData = async (url: string): Promise<boolean> => {
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        return true;
+      } else {
+        throw new Error('Failed to delete data');
+      }
+    } catch (error) {
+      console.error('Error connecting to server:', error);
+      throw new Error('Failed to delete data');
+    }
   };
 
   const updateRow = (index: number, newData: Partial<FinanceItem>) => {
@@ -80,14 +142,50 @@ const Finance = () => {
     setTotalAmount(total);
   };
 
+  const handleSubmit = async () => {
+    try {
+      const allFieldsEntered = finance.every(
+        (item) =>
+          item.FirstName.trim() !== "" &&
+          item.LastName.trim() !== "" &&
+          item.PaymentMethod.trim() !== "" &&
+          item.Treatment.trim() !== "" &&
+          item.Amount.toString().trim() !== ""
+      );
+
+      if (!allFieldsEntered) {
+        alert("Enter all fields!");
+        return;
+      }
+
+      console.log("Submitting data:", JSON.stringify(finance, null, 2));
+
+      const success = await postData(`${api}/add`, finance);
+
+      if (success) {
+        setDataModified(false);
+        alert("All data saved successfully");
+      } else {
+        setError("Failed to save data");
+      }
+    } catch (error) {
+      console.error("Error handling submit:", error);
+      alert("Failed to save data");
+    }
+  };
+
   const postData = async (url: string, data: FinanceItem[]): Promise<boolean> => {
     try {
+      const formattedData = data.map(item => ({
+        ...item,
+      }));
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formattedData),
       });
 
       if (response.ok) {
@@ -101,41 +199,8 @@ const Finance = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const allFieldsEntered = finance.every(
-        (item) =>
-          item.FirstName.trim() !== "" &&
-          item.LastName.trim() !== "" &&
-          item.PaymentMethod.trim() !== "" &&
-          item.Treatment.trim() !== "" &&
-          item.Amount.toString().trim() !== ""
-      );
-  
-      if (!allFieldsEntered) {
-        alert("Enter all fields!");
-        return;
-      }
-  
-      console.log("Submitting data:", finance);  // Add this line to log the data
-  
-      const success = await postData(api, finance);
-  
-      if (success) {
-        setDataModified(false);
-        alert("All data saved successfully");
-      } else {
-        setError("Failed to save data");
-      }
-    } catch (error) {
-      console.error("Error handling submit:", error);
-      alert("Failed to save data");
-    }
-  };
-  
-
   return (
-    <div className="container mx-auto p-4 bg-opacity-75">
+    <div className="container mx-auto p-4 bg-opacity-75 relative">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
           <div className="flex items-center">
@@ -157,14 +222,13 @@ const Finance = () => {
                   <th className="px-4 py-2">Treatment</th>
                   <th className="px-4 py-2">Amount</th>
                   <th className="px-4 py-2">Payment Method</th>
-                  <th className="px-4 py-2">Balance</th> {/* New column */}
                   <th className="px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {finance.map((row, index) => (
                   <tr key={index} className="border-b border-gray-300">
-                    <td className="px-4 py-2">{row.id}</td>
+                    <td className="px-4 py-2">{row.ID}</td>
                     <td className="px-4 py-2">
                       <input
                         type="text"
@@ -172,10 +236,7 @@ const Finance = () => {
                         placeholder="e.g. John"
                         value={row.FirstName}
                         onChange={(event) =>
-                          updateRow(index, {
-                            ...row,
-                            FirstName: event.target.value,
-                          })
+                          updateRow(index, { FirstName: event.target.value })
                         }
                       />
                     </td>
@@ -186,10 +247,7 @@ const Finance = () => {
                         placeholder="e.g. Doe"
                         value={row.LastName}
                         onChange={(event) =>
-                          updateRow(index, {
-                            ...row,
-                            LastName: event.target.value,
-                          })
+                          updateRow(index, { LastName: event.target.value })
                         }
                       />
                     </td>
@@ -220,9 +278,7 @@ const Finance = () => {
                         className="w-full bg-transparent focus:outline-none"
                         value={row.PaymentMethod}
                         onChange={(event) =>
-                          updateRow(index, {
-                            PaymentMethod: event.target.value,
-                          })
+                          updateRow(index, { PaymentMethod: event.target.value })
                         }
                       >
                         <option value="">Select Payment Method</option>
@@ -232,42 +288,41 @@ const Finance = () => {
                         <option value="Bank">Bank</option>
                       </select>
                     </td>
-                    <td className="px-4 py-2">{row.Balance}</td> {/* Display balance */}
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 flex items-center space-x-2">
                       <button
-                        className="bg-green-500 text-white hover:bg-red-500 hover:text-white focus:outline-none px-4 py-2 rounded"
+                        className="bg-red-500 text-white hover:bg-red-700 focus:outline-none px-4 py-2"
                         onClick={() => deleteRow(index)}
                       >
                         Delete
                       </button>
+                      <button
+                        className="bg-green-500 text-white hover:bg-orange-700 focus:outline-none px-4 py-2"
+                        onClick={() => handleSubmit()}
+                      >
+                        Save
+                      </button>
                     </td>
                   </tr>
                 ))}
+                <tr>
+                  <td colSpan={7} className="px-4 py-2 relative">
+                    <div className="flex justify-center mb-2">
+                      <button
+                        className="bg-green-500 text-white hover:bg-green-700 focus:outline-none px-4 py-2"
+                        onClick={addRow}
+                      >
+                        Add Row
+                      </button>
+                    </div>
+                    <div className="absolute bottom-0 right-0 px-4 py-2 text-xl font-bold">
+                      Total Amount: {totalAmount}
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
-
-          <div className="flex justify-end mt-4">
-            <div className="px-4 py-2 font-bold">Day Total:</div>
-            <div className="px-4 py-2 font-bold">{totalAmount}</div>
-          </div>
-
-          {error && <div className="text-red-1000 px-4 py-2">{error}</div>}
-
-          <div className="flex justify-center mt-4">
-            <button
-              className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
-              onClick={addRow}
-            >
-              Add Row
-            </button>
-            <button
-              className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={handleSubmit}
-            >
-              Save
-            </button>
-          </div>
+          {error && <div className="mt-4 text-red-500">{error}</div>}
         </div>
       </div>
     </div>

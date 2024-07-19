@@ -16,13 +16,21 @@ body {
     
 }
 
+.mutu {
+    padding-right: 2500px; 
+    padding-top: 1px;
+    padding: auto;
+    align-items: center;
+    justify-content: center;
+}
+
 #dash {
     position: fixed;
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: darkgreen;
-    margin-top: 0px;
+    background-color: darkgreen; 
+    margin-top: -80px;
 }
 
 #table {
@@ -69,29 +77,32 @@ div ul li:hover a {
     padding-left: 50px;
 }
 
-
-#searchbar{
+#searchbar {
     height: 50px;
     width: 450px;
     border-color: 1px darkgreen;
     border-radius: 10px;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 5px;
+    padding-right: 50px;
     margin-top: 8px;
     font-size: larger;
     border: 0px;
     outline: none;
-    
 }
-div ul li{
+
+div ul li {
     list-style: none;
 }
 
 .button-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.button {
+.button, .button2 {
     outline: none;
     background-color: green;
     border: none;
@@ -100,19 +111,7 @@ div ul li{
     color: white;
     font-size: 16px;
     border-radius: 10px;
-    margin-right: 90px;
-    margin-top: 60px;
-}
-
-.button2 {
-    outline: none;
-    background-color: green;
-    border: none;
-    width: 100px;
-    height: 40px;
-    color: white;
-    font-size: 16px;
-    border-radius: 10px;
+    margin: 0 10px;
     margin-top: 60px;
 }
 
@@ -122,46 +121,42 @@ div ul li{
     cursor: pointer;
     transition: all 400ms linear;
 }
-@media(max-width:500px){
-    body{
+
+.search-container {
+    margin-left: auto; /* Pushes the container to the right */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Adjust alignment as needed */
+}
+
+@media(max-width: 500px) {
+    body {
         background-size: cover;
         background-repeat: no-repeat; 
         height: 667px;
     }
-    #dash{
-       display: none;
+    #dash {
+        display: none;
     }
-    div header{
+    div header {
         font-size: 100%;
+        padding-top: 4px;
     }
     div ul a {
-      font-size: 80%;
-      font-weight: 300;
+        font-size: 80%;
+        font-weight: 300;
     }
-    #table{
+    #table {
         width: 375px;
         margin-left: 0px;
     }
-    #searchbar{
+    #searchbar {
         width: 250px;
         font-size: 100%;
         padding-left: 10px;
     }
-    .button{
-        margin-right: 10px;
+    .button, .button2 {
+        margin: 0 5px;
         font-size: 80%;
-      
-    }
-    .button2{
-        margin-left: 50px;
-        font-size: 80%;
-        
-      
     }
 }
-
-
-
-
-
-

@@ -11,8 +11,9 @@ interface DataItem {
   Amount: number;
   PaymentMethod: string;
 }
+//http://localhost:3000/finance/add
 
-const api = "http://lph-backend.onrender.com/finance/day";
+const api = "http://localhost:3000/finance/day";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
