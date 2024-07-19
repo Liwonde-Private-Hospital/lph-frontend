@@ -1,10 +1,8 @@
-'use client'
-// use client"; // Mark the component as a Client Component
+'use client';
 import React, { useState, useEffect } from "react";
-//import './style.css';
 import Image from "next/image";
 import icon from "../../../images/icon.png";
-import axios from "axios"; // Import axios for HTTP requests
+import axios from "axios";
 
 const API_URL = "http://lph-backend.onrender.com/laboratory";
 
@@ -30,6 +28,9 @@ const Lab = () => {
   ]);
 
   const [dataModified, setDataModified] = useState(false);
+  const [passwordPromptVisible, setPasswordPromptVisible] = useState<boolean>(false);
+  const [adminPassword, setAdminPassword] = useState<string>("");
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -48,27 +49,24 @@ const Lab = () => {
 
   const postData = async (url: string, data: LabItem) => {
     try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-        if (response.ok) {
-            alert("Data saved successfully");
-        } else {
-            alert("Failed to save data");
-        }
-    } catch (error) {
-        console.log("Error connecting to server:", error);
+      if (response.ok) {
+        alert("Data saved successfully");
+      } else {
         alert("Failed to save data");
+      }
+    } catch (error) {
+      console.log("Error connecting to server:", error);
+      alert("Failed to save data");
     }
-};
-    
-    
-   
+  };
 
   const handleSubmit = async () => {
     try {
@@ -101,8 +99,58 @@ const Lab = () => {
   };
 
   const deleteRow = (index: number) => {
-    setLab((prevData) => prevData.filter((_, i) => i !== index));
-    setDataModified(true);
+    setDeleteIndex(index);
+    setPasswordPromptVisible(true);
+  };
+
+  const handlePasswordSubmit = async () => {
+    if (!adminPassword) {
+      alert("Admin password is required.");
+      return;
+    }
+
+    try {
+      const isValidPassword = await verifyAdminPassword(adminPassword);
+
+      if (!isValidPassword) {
+        alert("Invalid admin password. Deletion cancelled.");
+        return;
+      }
+
+      if (deleteIndex !== null) {
+        setLab((prevData) => prevData.filter((_, i) => i !== deleteIndex));
+        setDataModified(true);
+      }
+    } catch (error) {
+      console.error("Error verifying admin password:", error);
+      alert("An error occurred while verifying the admin password.");
+    } finally {
+      setPasswordPromptVisible(false);
+      setAdminPassword("");
+      setDeleteIndex(null);
+    }
+  };
+
+  const verifyAdminPassword = async (password: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/verifyAdminPassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to verify admin password');
+      }
+
+      const result = await response.json();
+      return result.isValid;
+    } catch (error) {
+      console.error('Error verifying admin password:', error);
+      return false;
+    }
   };
 
   const updateRow = (index: number, newData: Partial<LabItem>) => {
@@ -117,7 +165,7 @@ const Lab = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen py-8">
-      <div className="max-w-5xl mx-auto bg-white shadow-md rounded-lg overflow-hidden"> {/* Increased max-w-4xl to max-w-5xl */}
+      <div className="max-w-5xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div className="p-6 bg-gray-800 text-white flex items-center justify-between">
           <div className="flex items-center">
             <Image src={icon} alt="" width={80} height={80} />
@@ -134,10 +182,10 @@ const Lab = () => {
               <thead>
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
-                  <th className="px-4 py-2 text-left">FirstName</th>
-                  <th className="px-4 py-2 text-left">LastName</th>
-                  <th className="px-4 py-2 text-left">PaymentMethod</th>
-                  <th className="px-4 py-2 text-left">TestOrdered</th>
+                  <th className="px-4 py-2 text-left">First Name</th>
+                  <th className="px-4 py-2 text-left">Last Name</th>
+                  <th className="px-4 py-2 text-left">Payment Method</th>
+                  <th className="px-4 py-2 text-left">Test Ordered</th>
                   <th className="px-4 py-2 text-left">Action</th>
                 </tr>
               </thead>
@@ -190,7 +238,7 @@ const Lab = () => {
                         value={row.TestOrdered}
                         onChange={(e) => updateRow(index, { TestOrdered: e.target.value })}
                       >
-                        <option value="">Select</option>
+                        <option value="">Select Test</option>
                         <option value="MRDT">MRDT</option>
                         <option value="FBC">FBC</option>
                         <option value="Urine">Urine</option>
@@ -198,7 +246,12 @@ const Lab = () => {
                       </select>
                     </td>
                     <td className="border px-4 py-2">
-                      <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md" onClick={() => deleteRow(index)}>Delete</button>
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md"
+                        onClick={() => deleteRow(index)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -206,16 +259,55 @@ const Lab = () => {
             </table>
           </div>
 
-          <div className="flex justify-end mt-4">
-            {/* Calculate and display total if needed */}
-          </div>
-
           <div className="flex justify-center mt-4">
-            <button className="bg-green-500 hover:bg-orange-600 text-white py-2 px-4 rounded-md mr-2" onClick={addRow}>Add Row</button>
-            <button className="bg-green-500 hover:bg-orange-600 text-white py-2 px-4 rounded-md" onClick={handleSubmit}>Save</button>
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mr-2"
+              onClick={addRow}
+            >
+              Add Row
+            </button>
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
+
+      {passwordPromptVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Enter Admin Password</h2>
+            <input
+              type="password"
+              className="w-full border border-gray-300 p-2 rounded mb-4"
+              placeholder="••••••••"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded"
+                onClick={handlePasswordSubmit}
+              >
+                DELETE
+              </button>
+              <button
+                className="bg-gray-500 text-white hover:bg-gray-600 px-4 py-2 rounded"
+                onClick={() => {
+                  setPasswordPromptVisible(false);
+                  setAdminPassword("");
+                  setDeleteIndex(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -21,6 +21,9 @@ const Finance = () => {
   const [dataModified, setDataModified] = useState<boolean>(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [idCounter, setIdCounter] = useState<number>(1);
+  const [passwordPromptVisible, setPasswordPromptVisible] = useState<boolean>(false);
+  const [adminPassword, setAdminPassword] = useState<string>("");
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
@@ -58,11 +61,14 @@ const Finance = () => {
     setDataModified(true);
   };
 
-  const deleteRow = async (index: number) => {
-    const adminPassword = prompt("Enter admin password to delete:");
+  const deleteRow = (index: number) => {
+    setDeleteIndex(index);
+    setPasswordPromptVisible(true);
+  };
 
+  const handlePasswordSubmit = async () => {
     if (!adminPassword) {
-      alert("Deletion cancelled. Admin password is required.");
+      alert("Admin password is required.");
       return;
     }
 
@@ -74,22 +80,28 @@ const Finance = () => {
         return;
       }
 
-      const rowToDelete = finance[index];
+      if (deleteIndex !== null) {
+        const rowToDelete = finance[deleteIndex];
 
-      const deleteSuccess = await deleteData(`http://localhost:3000/finance${rowToDelete.ID}`);
+        const deleteSuccess = await deleteData(`http://localhost:3000/finance${rowToDelete.ID}`);
 
-      if (deleteSuccess) {
-        setFinance((prevData) => {
-          const newData = [...prevData.slice(0, index), ...prevData.slice(index + 1)];
-          setDataModified(true);
-          return newData;
-        });
-      } else {
-        alert("Failed to delete data");
+        if (deleteSuccess) {
+          setFinance((prevData) => {
+            const newData = [...prevData.slice(0, deleteIndex), ...prevData.slice(deleteIndex + 1)];
+            setDataModified(true);
+            return newData;
+          });
+        } else {
+          alert("Failed to delete data");
+        }
       }
     } catch (error) {
       console.error("Error verifying admin password or deleting data:", error);
-      alert("incorrect admin  password ,please ask password from admin to delete data");
+      alert("Invalid Admin password please ask for password from Admin to delete data.");
+    } finally {
+      setPasswordPromptVisible(false);
+      setAdminPassword("");
+      setDeleteIndex(null);
     }
   };
 
@@ -325,6 +337,38 @@ const Finance = () => {
           {error && <div className="mt-4 text-red-500">{error}</div>}
         </div>
       </div>
+
+      {passwordPromptVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Enter Admin Password</h2>
+            <input
+              type="password"
+              className="w-full border border-gray-300 p-2 rounded mb-4"
+              placeholder="••••••••"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                className="bg-red-500 text-white hover:bg-orange-700 px-4 py-2 rounded"
+                onClick={handlePasswordSubmit}
+              >
+                DELETE
+              </button>
+              <button
+                className="bg-gray-500 text-white hover:bg-gray-700 px-4 py-2 rounded"
+                onClick={() => {
+                  setPasswordPromptVisible(false);
+                  setAdminPassword("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

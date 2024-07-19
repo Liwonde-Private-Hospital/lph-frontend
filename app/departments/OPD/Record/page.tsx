@@ -24,6 +24,9 @@ const OPD = () => {
 
     const [dataModified, setDataModified] = useState(false);
     const [totalAmount, setTotalAmount] = useState<number>(0);
+    const [passwordPromptVisible, setPasswordPromptVisible] = useState<boolean>(false);
+    const [adminPassword, setAdminPassword] = useState<string>("");
+    const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -61,12 +64,8 @@ const OPD = () => {
     }
 
     const deleteRow = (index: number) => {
-        setOpd(prevData => {
-            const newData = prevData.filter((row, i) => i !== index);
-            calculateTotal(newData); // Recalculate total after row deletion
-            setDataModified(true);
-            return newData;
-        });
+        setDeleteIndex(index);
+        setPasswordPromptVisible(true);
     }
 
     const updateRow = (index: number, newData: Partial<OPDItem>) => {
@@ -117,20 +116,69 @@ const OPD = () => {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSaveRow = async (index: number) => {
         try {
-            for (const item of opd) {
-                if (!item.firstName || !item.LastName || !item.Treatment || (!item.Amount && !item.MedicalScheme)) {
-                    alert("Enter all required fields and either Amount or Medical Scheme!");
-                    return;
-                }
-
-                await postData(API_URL, item);
+            const item = opd[index];
+            if (!item.firstName || !item.LastName || !item.Treatment || (!item.Amount && !item.MedicalScheme)) {
+                alert("Enter all required fields and either Amount or Medical Scheme!");
+                return;
             }
+
+            await postData(API_URL, item);
             setDataModified(false); // Reset dataModified after successful submission
         } catch (error) {
             console.log("Error connecting to server:", error);
             alert("Failed to save data");
+        }
+    };
+
+    const handlePasswordSubmit = async () => {
+        if (!adminPassword) {
+            alert("Admin password is required.");
+            return;
+        }
+
+        try {
+            const isValidPassword = await verifyAdminPassword(adminPassword);
+
+            if (!isValidPassword) {
+                alert("Invalid admin password. Deletion cancelled.");
+                return;
+            }
+
+            if (deleteIndex !== null) {
+                setOpd(prevData => prevData.filter((_, i) => i !== deleteIndex));
+                setDataModified(true);
+            }
+        } catch (error) {
+            console.error("Error verifying admin password:", error);
+            alert("An error occurred while verifying the admin password.");
+        } finally {
+            setPasswordPromptVisible(false);
+            setAdminPassword("");
+            setDeleteIndex(null);
+        }
+    };
+
+    const verifyAdminPassword = async (password: string): Promise<boolean> => {
+        try {
+            const response = await fetch('/api/verifyAdminPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to verify admin password');
+            }
+
+            const result = await response.json();
+            return result.isValid;
+        } catch (error) {
+            console.error('Error verifying admin password:', error);
+            return false;
         }
     };
 
@@ -227,10 +275,16 @@ const OPD = () => {
                                         </td>
                                         <td className="px-4 py-2">
                                             <button
-                                                className="bg-green-500 text-white hover:bg-red-500 hover:text-white focus:outline-none px-4 py-2 rounded"
+                                                className="bg-green-500 text-white hover:bg-red-500 hover:text-white focus:outline-none px-4 py-2 rounded mr-2"
                                                 onClick={() => deleteRow(index)}
                                             >
                                                 Delete
+                                            </button>
+                                            <button
+                                                className="bg-green-500 text-white hover:bg-orange-700 focus:outline-none px-4 py-2 rounded"
+                                                onClick={() => handleSaveRow(index)}
+                                            >
+                                                Save
                                             </button>
                                         </td>
                                     </tr>
@@ -246,21 +300,47 @@ const OPD = () => {
 
                     <div className="flex justify-center mt-4">
                         <button
-                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none
-                            focus:shadow-outline mr-4"
+                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
                             onClick={addRow}
                         >
                             Add Row
                         </button>
-                        <button
-                            className="bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            onClick={handleSubmit}
-                        >
-                            Save
-                        </button>
                     </div>
                 </div>
             </div>
+
+            {passwordPromptVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded shadow-md">
+                        <h2 className="text-lg font-bold mb-4">Enter Admin Password</h2>
+                        <input
+                            type="password"
+                            className="w-full border border-gray-300 p-2 rounded mb-4"
+                            placeholder="••••••••"
+                            value={adminPassword}
+                            onChange={(e) => setAdminPassword(e.target.value)}
+                        />
+                        <div className="flex justify-end space-x-2">
+                            <button
+                                className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded"
+                                onClick={handlePasswordSubmit}
+                            >
+                                DELETE
+                            </button>
+                            <button
+                                className="bg-gray-500 text-white hover:bg-gray-600 px-4 py-2 rounded"
+                                onClick={() => {
+                                    setPasswordPromptVisible(false);
+                                    setAdminPassword("");
+                                    setDeleteIndex(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
