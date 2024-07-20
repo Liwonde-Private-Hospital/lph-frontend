@@ -1,190 +1,276 @@
 'use client'
+
 import React, { useState, useEffect } from "react";
-import Header from "@/componets/navbar";
-import Footer from "@/componets/footer";
 
-import { AiOutlineMessage } from "react-icons/ai";
-import ChatDrawer from "../../ChatDrawer";
-
-interface DataItem {
+interface PhamarcyDataItem {
   ID: number;
   FirstName: string;
   LastName: string;
   DrugName: string;
-  DrugType: string
+  DrugType: string;
+  Amount: string;
+  MedicalScheme:string
+}
+
+interface OPDDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
   Amount: number;
   MedicalScheme: string;
-
 }
 
-const api = "http://lph-backend.onrender.com/finance";
-interface Patient {
-  id: number;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  paymentMethod: string;
-  date: string;
-  department?: string;
-  notes?: string;
+interface FinanceDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: number;
+  PaymentMethod: string;
+  Status:"paid🟢"
 }
 
-const apiPharmacyPatients = "http://lph-backend.onrender.com/pharmacy/patients"; // Endpoint for Pharmacy department patients
-const apiTransferPatient = "http://lph-backend.onrender.com/transfer"; // Endpoint to transfer patient to another department or schedule appointment
-const apiAddNotes = "http://lph-backend.onrender.com/patients/add-notes"; // Endpoint to add notes for a patient
+const apiEndpoints = {
+  Phamarcy: "http://localhost:3000/pharmacy-sales",
+  opd: "http://localhost:3000/opd/day",
+  finance: "http://localhost:3000/finance/day",
+};
 
 const ViewData = () => {
-  const [data, setData] = useState<DataItem[]>([]);
-  const [patients, setPatients] = useState<Patient[]>([]);
+  const [PhamarcyData, setPhamarcyData] = useState<PhamarcyDataItem[]>([]);
+  const [opdData, setOPDData] = useState<OPDDataItem[]>([]);
+  const [financeData, setFinanceData] = useState<FinanceDataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [notesInput, setNotesInput] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
-    fetchPharmacyPatients();
+    RefreshPhamarcyData();
+    refreshOPDData();
+    refreshFinanceData();
   }, []);
 
-  const fetchPharmacyPatients = async () => {
+  const RefreshPhamarcyData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(apiPharmacyPatients);
+      const response = await fetch(apiEndpoints.Phamarcy);
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error('Failed to fetch Phamarcy data');
       }
-      const responseData = await response.json();
-      setPatients(responseData);
-      setAlert(null);
-    } catch (error) {
-      console.error("Error fetching Pharmacy patients data:", error);
-      setAlert({ type: "error", message: "Oops! Pharmacy patients data is not available." });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleTransfer = async (patientId: number, destination: string) => {
-    try {
-      // Simulate transferring patient to the destination
-      const response = await fetch(apiTransferPatient, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ patientId, destination }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      // Remove patient from the current list
-      setPatients(patients.filter(patient => patient.id !== patientId));
-      setAlert({ type: "success", message: `Patient transferred to ${destination}.` });
-    } catch (error) {
-      console.error("Error transferring patient:", error);
-      setAlert({ type: "error", message: "Failed to transfer patient." });
-    }
-  };
-
-  const openChatDrawer = (patient: Patient) => {
-    setSelectedPatient(patient);
-    setDrawerOpen(true);
-  };
-
-  const closeChatDrawer = () => {
-    setSelectedPatient(null);
-    setDrawerOpen(false);
-  };
-
-  const handleAddNotes = async () => {
-    if (!selectedPatient || !notesInput.trim()) return;
-    try {
-      const response = await fetch(apiAddNotes, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ patientId: selectedPatient.id, notes: notesInput }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const updatedPatients = patients.map(patient =>
-        patient.id === selectedPatient.id ? { ...patient, notes: notesInput } : patient
-      );
-      setPatients(updatedPatients);
-      setAlert({ type: "success", message: "Notes added successfully." });
-      setNotesInput("");
-    } catch (error) {
-      console.error("Error adding notes:", error);
-      setAlert({ type: "error", message: "Failed to add notes." });
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(api);
-      const responseData = await response.json();
-
-      // Check if response data is an array
-      if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-        const mappedData = filteredData.map((item: any) => ({
-          ID: item.iD,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          DrugName: item.DrugName,
-          DrugType: item.DrugType,
-          Amount: item.Amount,
-          MedicalScheme: item.MedicalScheme,
-
-        }));
-
-        setData(mappedData);
-        setAlert(null);
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setPhamarcyData(uniqueData.map(mapToPhamarcyDataItem));
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setError("Invalid data received from the phamarcy server.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      console.error("Error fetching phamarcy data:", error);
+      setError("Oops! phamarcy data is not available.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleViewData = async () => {
-    fetchData();
+  const refreshOPDData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(apiEndpoints.opd);
+      if (!response.ok) {
+        throw new Error('Failed to fetch OPD data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setOPDData(data.map(mapToOPDDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the OPD server.");
+      }
+    } catch (error) {
+      console.error("Error fetching OPD data:", error);
+      setError("Oops! OPD data is not available.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const refreshFinanceData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(apiEndpoints.finance);
+      if (!response.ok) {
+        throw new Error('Failed to fetch finance data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setFinanceData(data.map(mapToFinanceDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the finance server.");
+      }
+    } catch (error) {
+      console.error("Error fetching finance data:", error);
+      setError("Oops! Finance data is not available.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
+    );
+  };
+
+  const mapToPhamarcyDataItem = (item: any): PhamarcyDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    DrugName: item.DrugName,
+    DrugType: item.DrugType,
+    Amount:item.Amount,
+    MedicalScheme:item.MedicalScheme,
+  });
+
+  const mapToOPDDataItem = (item: any): OPDDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
+  });
+
+  const mapToFinanceDataItem = (item: any): FinanceDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    PaymentMethod: item.PaymentMethod,
+    Status:item.Status,
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <header className="bg-green-500 text-white p-4">
-        <h1 className="text-2xl font-bold text-center">Pharmacy</h1>
-      </header>
+      <div className="flex-grow">
+        <br />
+       
+        </div>
+         {/* Finance Data Section */}
+         <h1 className="date text-2xl font-bold text-center">Finance Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">Status</th>
 
-      <main className="flex-grow mx-auto p-6">
-        {alert && (
-          <div className={`text-center text-white p-3 mb-4 ${alert.type === "error" ? "bg-red-500" : "bg-green-500"}`}>
-            {alert.message}
-          </div>
-        )}
- <div className="flex-grow">
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : financeData.length > 0 ? (
+                financeData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+                    <td className="py-2 px-4">paid 🟢</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshFinanceData}
+            disabled={loading}
+          >
+            Refresh Finance Data
+          </button>
+          <hr />
+          <br /><br /><br />
+
+        {/* OPD Data Section */}
+        <h1 className="date text-2xl font-bold text-center">2.OPD Data {formattedDate}</h1>
         <br />
-        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">MedicalScheme</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : opdData.length > 0 ? (
+                opdData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.MedicalScheme}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshOPDData}
+            disabled={loading}
+          >
+            Refresh OPD Data
+          </button>
+          <hr />
+          <br /><br /><br />
+        </div>
+
+       
+          <h1 className="date text-2xl font-bold text-center">3.Phamarcy Data {formattedDate}</h1>
         <br />
-        {alert && (
-          <div className="text-center text-red-500">{alert.message}</div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
@@ -196,33 +282,29 @@ const ViewData = () => {
                 <th className="py-2 px-4">DrugType</th>
                 <th className="py-2 px-4">Amount</th>
                 <th className="py-2 px-4">MedicalScheme</th>
-
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
-              ) : (
-                data.length > 0 ? (
-                  data.map((item) => (
-                    <tr key={item.ID} className="text-gray-800">
-                      <td className="py-2 px-4">{item.ID}</td>
-                      <td className="py-2 px-4">{item.FirstName}</td>
-                      <td className="py-2 px-4">{item.LastName}</td>
-                      <td className="py-2 px-4">{item.DrugName}</td>
-                      <td className="py-2 px-4">{item.DrugType}</td>
-                      <td className="py-2 px-4">{item.Amount}</td>
-                      <td className="py-2 px-4">{item.MedicalScheme}</td>
-
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+              ) : PhamarcyData.length > 0 ? (
+                PhamarcyData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.DrugName}</td>
+                    <td className="py-2 px-4">{item.DrugType}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.MedicalScheme}</td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -230,95 +312,15 @@ const ViewData = () => {
         <div className="text-center mt-4">
           <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={handleViewData}
+            onClick={RefreshPhamarcyData}
+            disabled={loading}
           >
-            View Data
+            Refresh Phamarcy Data
           </button>
+          <hr />
+          <br /><br /><br />
         </div>
       </div>
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Patients Ready for Pharmacy</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white rounded-md shadow-md overflow-hidden">
-              <thead className="bg-green-500 text-white">
-                <tr>
-                  <th className="py-2 px-4">ID</th>
-                  <th className="py-2 px-4">First Name</th>
-                  <th className="py-2 px-4">Last Name</th>
-                  <th className="py-2 px-4">Phone Number</th>
-                  <th className="py-2 px-4">Payment Method</th>
-                  <th className="py-2 px-4">Appointment Time</th>
-                  <th className="py-2 px-4">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-100">
-                {loading ? (
-                  <tr key="loading" className="text-center">
-                    <td colSpan={7} className="py-4">Loading...</td>
-                  </tr>
-                ) : patients.length > 0 ? (
-                  patients.map((patient) => (
-                    <tr key={patient.id} className="text-gray-800">
-                      <td className="py-2 px-4">{patient.id}</td>
-                      <td className="py-2 px-4">{patient.firstName}</td>
-                      <td className="py-2 px-4">{patient.lastName}</td>
-                      <td className="py-2 px-4">{patient.phoneNumber}</td>
-                      <td className="py-2 px-4">{patient.paymentMethod}</td>
-                      <td className="py-2 px-4">{new Date(patient.date).toLocaleString()}</td>
-                      <td className="py-2 px-4">
-                        <div className="flex space-x-2">
-                          <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded"
-                            onClick={() => handleTransfer(patient.id, "X-ray")}
-                          >
-                            Send to X-ray
-                          </button>
-                          <button
-                            className="bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 rounded"
-                            onClick={() => openChatDrawer(patient)}
-                          >
-                            Open Chat AI
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7} className="text-center py-4">No patients ready for Pharmacy</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </main>
-
-      <footer className="bg-gray-800 text-white p-4">
-        <p className="text-center">&copy; {new Date().getFullYear()} Your Hospital Name. All Rights Reserved.</p>
-      </footer>
-
-      {/* Chat AI Drawer */}
-      {drawerOpen && selectedPatient && (
-        <ChatDrawer
-          patient={selectedPatient}
-          onClose={closeChatDrawer}
-          onAddNotes={handleAddNotes}
-          notesInput={notesInput}
-          setNotesInput={setNotesInput}
-        />
-      )}
-
-      {/* Floating Chat AI Button */}
-      <div className="fixed bottom-6 right-6">
-        <button
-          className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600"
-          onClick={() => setDrawerOpen(true)}
-        >
-          <AiOutlineMessage className="text-3xl" />
-        </button>
-      </div>
-     
     </div>
   );
 };

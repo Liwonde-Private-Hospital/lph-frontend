@@ -38,6 +38,7 @@ export default function Backstore() {
                     <li><a href="DeleteStaff">Delete Staff</a></li>
                     <li><a href="ReportHistory">New Reports</a></li>
                     <li><a href="PowerBIEmbed">Report History</a></li>
+                    <li><a href="ViewData">View TodaysData</a></li>
                 </ul>
             </div>
             <h1 className="mutu">REPORTS AND DASHBOARD</h1>

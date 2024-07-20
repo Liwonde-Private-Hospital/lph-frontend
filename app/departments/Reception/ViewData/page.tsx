@@ -1,221 +1,320 @@
-'use client';
-import Footer from "@/componets/footer";
-import Header from "@/componets/navbar";
+'use client'
+
 import React, { useState, useEffect } from "react";
-interface DataItem {
+
+interface ReceptionDataItem {
   ID: number;
   FirstName: string;
   LastName: string;
   PhoneNumber: string;
   PaymentMethod: string;
-  Balance: number;
+  Returned:string
 }
 
-interface Doctor {
-  id: number;
-  name: string;
+interface OPDDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: number;
+  MedicalScheme: string;
 }
 
-const financeApi = "http://lph-backend.onrender.com/finance";
-const doctorsApi = "http://lph-backend.onrender.comdoctors";
+interface FinanceDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: number;
+  PaymentMethod: string;
+}
+
+const apiEndpoints = {
+  reception: "http://localhost:3000/reception",
+  opd: "http://localhost:3000/opd/day",
+  finance: "http://localhost:3000/finance/day",
+};
 
 const ViewData = () => {
-  const [data, setData] = useState<DataItem[]>([]);
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
-  const [selectedPatients, setSelectedPatients] = useState<number[]>([]);
+  const [receptionData, setReceptionData] = useState<ReceptionDataItem[]>([]);
+  const [opdData, setOPDData] = useState<OPDDataItem[]>([]);
+  const [financeData, setFinanceData] = useState<FinanceDataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
-    fetchData();
-    fetchDoctors();
+    refreshReceptionData();
+    refreshOPDData();
+    refreshFinanceData();
   }, []);
 
-  const fetchData = async () => {
+  const refreshReceptionData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(financeApi);
-      const responseData = await response.json();
-
-      if (Array.isArray(responseData)) {
-        const mappedData = responseData.map((item: any) => ({
-          ID: item.id,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          Treatment: item.Treatment,
-          PhoneNumber: item.PhoneNumber,
-          PaymentMethod: item.PaymentMethod,
-          Balance: item.balance,
-        }));
-
-        setData(mappedData);
-        setAlert(null);
+      const response = await fetch(apiEndpoints.reception);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reception data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setReceptionData(uniqueData.map(mapToReceptionDataItem));
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setError("Invalid data received from the reception server.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      console.error("Error fetching reception data:", error);
+      setError("Oops! Reception data is not available.");
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchDoctors = async () => {
+  const refreshOPDData = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(doctorsApi);
-      const doctorData = await response.json();
-
-      if (Array.isArray(doctorData)) {
-        setDoctors(doctorData);
-        setAlert(null);
+      const response = await fetch(apiEndpoints.opd);
+      if (!response.ok) {
+        throw new Error('Failed to fetch OPD data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setOPDData(data.map(mapToOPDDataItem));
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setError("Invalid data received from the OPD server.");
       }
     } catch (error) {
-      console.error("Error fetching doctors:", error);
-      setAlert({ type: "error", message: "Failed to fetch doctors." });
+      console.error("Error fetching OPD data:", error);
+      setError("Oops! OPD data is not available.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handlePatientSelection = (patientId: number) => {
-    setSelectedPatients(prevSelected =>
-      prevSelected.includes(patientId)
-        ? prevSelected.filter(id => id !== patientId)
-        : [...prevSelected, patientId]
+  const refreshFinanceData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(apiEndpoints.finance);
+      if (!response.ok) {
+        throw new Error('Failed to fetch finance data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setFinanceData(data.map(mapToFinanceDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the finance server.");
+      }
+    } catch (error) {
+      console.error("Error fetching finance data:", error);
+      setError("Oops! Finance data is not available.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
     );
   };
 
-  const handleSendToDoctor = async () => {
-    if (!selectedDoctor) {
-      setAlert({ type: 'error', message: 'Please select a doctor.' });
-      return;
-    }
+  const mapToReceptionDataItem = (item: any): ReceptionDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    PhoneNumber: item.PhoneNumber,
+    PaymentMethod: item.PaymentMethod,
+    Returned:item.Returned
+  });
 
-    try {
-      const promises = selectedPatients.map(patientId =>
-        fetch(`${financeApi}/${patientId}/send/${selectedDoctor}`, {
-          method: 'PATCH',
-        }).then(response => response.json())
-      );
+  const mapToOPDDataItem = (item: any): OPDDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
+  });
 
-      const results = await Promise.all(promises);
-
-      const successMessages = results.filter(result => result.message.includes('Patient sent')).map(result => result.message);
-      const errorMessages = results.filter(result => result.message.includes('outstanding balance')).map(result => result.message);
-
-      if (successMessages.length > 0) {
-        setAlert({ type: 'success', message: successMessages.join(', ') });
-      }
-
-      if (errorMessages.length > 0) {
-        setAlert({ type: 'error', message: errorMessages.join(', ') });
-      }
-
-      fetchData();
-      setSelectedPatients([]);
-    } catch (error) {
-      console.error('Error sending patients to doctor:', error);
-      setAlert({ type: 'error', message: 'Failed to send patients to doctor.' });
-    }
-  };
+  const mapToFinanceDataItem = (item: any): FinanceDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    PaymentMethod: item.PaymentMethod,
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <div className="flex-grow">
         <br />
-        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
+        
+        </div>
+
+        {/* OPD Data Section */}
+        <h1 className="date text-2xl font-bold text-center">1 OPD Data {formattedDate}</h1>
         <br />
-        {alert && (
-          <div className={`text-center text-${alert.type === 'error' ? 'red' : 'green'}-500`}>
-            {alert.message}
-          </div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
               <tr>
-                <th className="py-2 px-4">Select</th>
                 <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">First Name</th>
-                <th className="py-2 px-4">Last Name</th>
-                <th className="py-2 px-4">Phone Number</th>
-                <th className="py-2 px-4">Payment Method</th>
-                <th className="py-2 px-4">Balance</th>
-                <th className="py-2 px-4">Status</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">MedicalScheme</th>
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={8} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
-              ) : (
-                data.length > 0 ? (
-                  data.map((item) => (
-                    <tr key={item.ID} className="text-gray-800">
-                      <td className="py-2 px-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedPatients.includes(item.ID)}
-                          onChange={() => handlePatientSelection(item.ID)}
-                        />
-                      </td>
-                      <td className="py-2 px-4">{item.ID}</td>
-                      <td className="py-2 px-4">{item.FirstName}</td>
-                      <td className="py-2 px-4">{item.LastName}</td>
-                      <td className="py-2 px-4">{item.PhoneNumber}</td>
-                      <td className="py-2 px-4">{item.PaymentMethod}</td>
-                      <td className="py-2 px-4">{item.Balance}</td>
-                      <td className="py-2 px-4">
-                        {item.Balance === 0 ? "Paid" : "Pending"}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={8} className="text-center py-4 text-gray-600">No data available</td>
+              ) : opdData.length > 0 ? (
+                opdData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.MedicalScheme}</td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center items-center mt-4">
-          <select
-            className="bg-transparent focus:outline-none"
-            onChange={(e) => setSelectedDoctor(parseInt(e.target.value))}
-          >
-            <option value="">Select Doctor</option>
-            {doctors.map((doctor) => (
-              <option key={doctor.id} value={doctor.id}>
-                {doctor.name}
-              </option>
-            ))}
-          </select>
+        <div className="text-center mt-4">
           <button
-            className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleSendToDoctor}
-            disabled={selectedPatients.length === 0 || !selectedDoctor}
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshOPDData}
+            disabled={loading}
           >
-            Send to Doctor
+            Refresh OPD Data
           </button>
+          <hr />
+          <br /><br /><br />
+        </div>
+
+        {/* Finance Data Section */}
+        <h1 className="date text-2xl font-bold text-center">2. Finance Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">Status</th>
+
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : financeData.length > 0 ? (
+                financeData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+                    <td className="py-2 px-4">paid🟢
+</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
         <div className="text-center mt-4">
           <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={fetchData}
+            onClick={refreshFinanceData}
+            disabled={loading}
           >
-            Refresh Data
+            Refresh Finance Data
           </button>
+          <hr />
+          <br /><br /><br />
+          <h1 className="date text-2xl font-bold text-center">3. Reception Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">PhoneNumber</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">Returned</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={5} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : receptionData.length > 0 ? (
+                receptionData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.PhoneNumber}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+                    <td className="py-2 px-4">{item.Returned}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshReceptionData}
+            disabled={loading}
+          >
+            Refresh Reception Data
+          </button>
+          <hr />
+          <br /><br /><br />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

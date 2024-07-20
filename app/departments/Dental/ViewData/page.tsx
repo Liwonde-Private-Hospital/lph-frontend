@@ -1,87 +1,99 @@
-'use client'
+"use client"
 import React, { useState, useEffect } from "react";
-import Header from "@/componets/navbar";
-import Footer from "@/componets/footer";
 
 
-interface DataItem {
+
+
+interface DentalDataItem {
   ID: number;
   FirstName: string;
   LastName: string;
-  PhoneNumber:string;
-  Address:string;
+  PhoneNumber: string;
+  Address: number;
   Diagnosis:string;
   Amount:number;
-  MedicalScheme:string;
+  MedicalScheme: string;
   Treatment:string;
-
-
 }
 
-const api = "http://lph-backend.onrender.com/finance";
+
+
+const dentalapi = "http://localhost:3000/finance/day";
+
 
 const ViewData = () => {
-  const [data, setData] = useState<DataItem[]>([]);
+
+  const [DentalData, setDentalData] = useState<DentalDataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
-    fetchData();
+   
+    refreshDentalData();
   }, []);
 
-  const fetchData = async () => {
+
+  const mapToDentalDataItem = (item: any): DentalDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    PhoneNumber: item.PhoneNumber,
+    Address:item.Address,
+    Diagnosis:item.Diagnosis,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
+    Treatment:item.Treatment,
+  });
+
+
+
+  const refreshDentalData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(api);
-      const responseData = await response.json();
-  
-      // Check if response data is an array
-      if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-        const mappedData = filteredData.map((item: any) => ({
-          ID: item.iD,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          PhoneNumber:item.PhoneNumber,
-          Address:item.Address,
-          Diagnosis:item.Diagnosis,
-          Amount:item.Amount,
-          MedicalScheme:item.MedicalScheme,
-          Treatment:item.Treatment
- 
-      
-        }));
-  
-        setData(mappedData);
-        setAlert(null);
+      const response = await fetch(dentalapi);
+      if (!response.ok) {
+        throw new Error('Failed to fetch OPD data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setDentalData(data.map(mapToDentalDataItem));
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setError("Invalid data received from the Dental server.");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      console.error("Error fetching Dental data:", error);
+      setError("Oops! Dental data is not available.");
     } finally {
       setLoading(false);
     }
   };
+  
+
+
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
+    );
+  };
+
+
 
   const handleViewData = async () => {
-    fetchData();
+    // fetchData();
   };
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="flex-grow">
+         
+
+        {/* OPD Data Section */}
+        <h1 className="date text-2xl font-bold text-center">1.Dental Data {formattedDate}</h1>
         <br />
-        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
-        <br />
-        {alert && (
-          <div className="text-center text-red-500">{alert.message}</div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
@@ -89,62 +101,52 @@ const ViewData = () => {
                 <th className="py-2 px-4">ID</th>
                 <th className="py-2 px-4">FirstName</th>
                 <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">PhoneNumber</th>
-                <th className="py-2 px-4">Address</th>
-                <th className="py-2 px-4">Diagnosis</th>
+                <th className="py-2 px-4">Treatment</th>
                 <th className="py-2 px-4">Amount</th>
                 <th className="py-2 px-4">MedicalScheme</th>
-                <th className="py-2 px-4">Treatment</th>
-           
-           
-           
-           
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
-              ) : (
-                data.length > 0 ? (
-                  data.map((item) => (
-                    <tr key={item.ID} className="text-gray-800">
-                      <td className="py-2 px-4">{item.ID}</td>
-                      <td className="py-2 px-4">{item.FirstName}</td>
-                      <td className="py-2 px-4">{item.LastName}</td>
-                      <td className="py-2 px-4">{item.PhoneNumber}</td>
-                      <td className="py-2 px-4">{item.Address}</td>
-                      <td className="py-2 px-4">{item.Diagnosis}</td>
-                      <td className="py-2 px-4">{item.Amount}</td>
-                             
-                      <td className="py-2 px-4">{item.MedicalScheme}</td>
-                      
-                      <td className="py-2 px-4">{item.Treatment}</td>
-           
-
-                   
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+              ) : DentalData.length > 0 ? (
+                DentalData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.MedicalScheme}</td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
         <div className="text-center mt-4">
-          <button 
+          <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={handleViewData}
+            onClick={refreshDentalData}
+            disabled={loading}
           >
-            View Data
+            Refresh Dental Data
           </button>
-        </div>
+          <hr />
+          <br /><br /><br />
+      {/* <Header /> */}
+      <div className="flex-grow">
+        <br />
+       
       </div>
-      <Footer />
+      </div>
+      {/* <Footer /> */}
     </div>
   );
 };
