@@ -18,7 +18,7 @@ interface DentalDataItem {
 
 
 
-const dentalapi = "http://localhost:3000/finance/day";
+const dentalapi = "http://localhost:3000/dental/day";
 
 
 const ViewData = () => {

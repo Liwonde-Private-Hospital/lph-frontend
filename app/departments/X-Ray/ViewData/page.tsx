@@ -24,7 +24,7 @@ interface XrayDataItem {
 
 const api = "http://localhost:3000/finance/day";
 
-const  xrayapi="http://localhost:3000/x-ray";
+const  xrayapi="http://localhost:3000/x-ray/day";
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

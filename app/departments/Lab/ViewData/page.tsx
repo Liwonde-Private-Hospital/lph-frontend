@@ -1,117 +1,262 @@
 'use client'
-import Footer from "@/componets/footer";
-import Header from "@/componets/navbar";
-import React, { useState, useEffect, useCallback } from "react";
 
-interface DataItem {
-  id: number;
-  firstName: string;
-  lastName: string;
-  paymentMethod: string;
-  testOrdered: string;
+import React, { useState, useEffect } from "react";
+
+
+interface LabDataItem{
+    ID:number;
+    FirstName:string;
+    LastName:string;
+    PaymentMethod:string;
+    TestOrdered:string
+
+
 }
 
-const API_URL = "http://lph-backend.onrender.com/laboratory/getallpatient";
 
-const ViewData  = () => {
-  const [data, setData] = useState<DataItem[]>([]);
+
+
+interface OPDDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: number;
+  MedicalScheme: string;
+}
+
+
+const apiEndpoints = {
+
+  opd: "http://localhost:3000/opd/day",
+
+  Lab:"http://localhost:3000/laboratory/day",
+};
+
+const ViewData = () => {
+
+  const [opdData, setOPDData] = useState<OPDDataItem[]>([]);
+
+  const [LabData, setLabData] = useState<LabDataItem[]>([]);
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-  const fetchData = useCallback(async () => {
+  useEffect(() => {
+
+    refreshOPDData();
+  
+    refreshLabData();
+ 
+  }, []);
+
+ 
+
+
+  const refreshLabData = async () => {
     setLoading(true);
-    setAlert(null);
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(apiEndpoints.Lab);
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+        throw new Error('Failed to fetch lab data');
       }
-      
-      const responseData = await response.json();
-      if (!Array.isArray(responseData)) {
-        throw new Error("Invalid data format");
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setLabData(uniqueData.map(mapToLabDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the Lab server.");
       }
-
-      const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
-      const mappedData = filteredData.map((item: any) => ({
-        id: item.id,
-        firstName: item.first_name,
-        lastName: item.last_name,
-        paymentMethod: item.payment_method,
-        testOrdered: item.test_ordered,
-      }));
-
-      setData(mappedData);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+        console.error("Error fetching Lab data:", error);
+        setError("Oops! Lab data is not available.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+
+
+  const refreshOPDData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(apiEndpoints.opd);
+      if (!response.ok) {
+        throw new Error('Failed to fetch OPD data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setOPDData(data.map(mapToOPDDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the OPD server.");
+      }
+    } catch (error) {
+      console.error("Error fetching OPD data:", error);
+      setError("Oops! OPD data is not available.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
+  
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
+    );
+  };
+
+  const mapToOPDDataItem = (item: any): OPDDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
+  });
+
+
+  const mapToLabDataItem = (item: any): LabDataItem => ({
+    ID:item.ID,
+    FirstName:item.FirstName,
+    LastName:item.LastName,
+    PaymentMethod:item.PaymentMethod,
+    TestOrdered:item.TestOrdered,
+
+  });
+
+
+
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-grow">
+      <div className="flex-grow">
         <br />
-        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
+      
+
+        {/* OPD Data Section */}
+        <h1 className="date text-2xl font-bold text-center">1.OPD Data {formattedDate}</h1>
         <br />
-        {alert && (
-          <div className="text-center text-red-500">{alert.message}</div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
               <tr>
                 <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">First Name</th>
-                <th className="py-2 px-4">Last Name</th>
-                <th className="py-2 px-4">Payment Method</th>
-                <th className="py-2 px-4">Test Ordered</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">MedicalScheme</th>
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is loading...</td>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
-              ) : data.length > 0 ? (
-                data.map((item) => (
-                  <tr key={item.id} className="text-gray-800">
-                    <td className="py-2 px-4">{item.id}</td>
-                    <td className="py-2 px-4">{item.firstName}</td>
-                    <td className="py-2 px-4">{item.lastName}</td>
-                    <td className="py-2 px-4">{item.paymentMethod}</td>
-                    <td className="py-2 px-4">{item.testOrdered}</td>
+              ) : opdData.length > 0 ? (
+                opdData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.MedicalScheme}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
         <div className="text-center mt-4">
-          <button 
+          <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={fetchData}
+            onClick={refreshOPDData}
+            disabled={loading}
           >
-            Refresh Data
+            Refresh OPD Data
           </button>
+          <hr />
+          <br /><br /><br />
         </div>
-      </main>
-      <Footer />
-    </div>
+
+        
+
+       
+             {/* laborotory Data Section */}
+        <h1 className="date text-2xl font-bold text-center">3.Laborotory Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">TestOrdered</th>
+             
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : LabData.length > 0 ? (
+                LabData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+
+                    <td className="py-2 px-4">{item.TestOrdered}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshLabData}
+            disabled={loading}
+          >
+            Refresh Lab Data
+          </button>
+          <hr />
+          <br /><br /><br />
+
+
+
+          
+          
+          </div>
+        </div>
+
+        </div>
+    
+  
+
   );
 };
 

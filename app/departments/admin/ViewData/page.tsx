@@ -73,14 +73,14 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  reception: "http://localhost:3000/reception",
-  Phamarcy: "http://localhost:3000/pharmacy-sales",
+  reception: "http://localhost:3000/reception/day",
+  Phamarcy: "http://localhost:3000/pharmacy-sales/day",
   opd: "http://localhost:3000/opd/day",
   finance: "http://localhost:3000/finance/day",
-  dental:"http://localhost:3000/dental",
-  Xray:"",
+  dental:"http://localhost:3000/dental/day",
+  Xray:"http://localhost:3000/x-ray/day",
 
-  Lab:"http://localhost:3000/laboratory/getallpatient2",
+  Lab:"http://localhost:3000/laboratory/day",
 };
 
 const ViewData = () => {

@@ -32,7 +32,7 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  Phamarcy: "http://localhost:3000/pharmacy-sales",
+  Phamarcy: "http://localhost:3000/pharmacy-sales/day",
   opd: "http://localhost:3000/opd/day",
   finance: "http://localhost:3000/finance/day",
 };

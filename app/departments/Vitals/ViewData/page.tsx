@@ -1,150 +1,245 @@
 'use client'
-import Footer from "@/componets/footer";
-import Header from "@/componets/navbar";
+
 import React, { useState, useEffect } from "react";
 
-interface DataItem {
+interface ReceptionDataItem {
   ID: number;
   FirstName: string;
   LastName: string;
-  Temperature: number;
-  Weight: number;
-  BloodPressure: number;
+  PhoneNumber: string;
+  PaymentMethod: string;
+  Returned:string
 }
 
-const api = "http://lph-backend.onrender.com/vitals";
-const sendSelectedApi = "http://lph-backend.onrender.com/vitals/selected";
+interface vitalsDataItem{
+  ID:number;
+  FirstName:string;
+  LastName:string;
+  Temperature:string;
+  Height:number;
+  Weight:number;
+  BloodPressure:number;
+  BMI:string;
+
+}
+
+
+
+const apiEndpoints = {
+  reception: "http://localhost:3000/reception/day",
+ 
+  vitals:"http://localhost:3000/vitals/day",
+  
+};
 
 const ViewData = () => {
-  const [data, setData] = useState<DataItem[]>([]);
-  const [selectedData, setSelectedData] = useState<Set<number>>(new Set());
+  const [receptionData, setReceptionData] = useState<ReceptionDataItem[]>([]);
+  const [VitalsData, setVitalsData] = useState<vitalsDataItem[]>([]);
+;
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
-    fetchData();
+    refreshReceptionData();
+ 
+    refreshVitalsData();
   }, []);
 
-  const fetchData = async () => {
+  const refreshVitalsData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(api);
-      const responseData = await response.json();
-      setData(responseData);
-      setAlert(null);
+      const response = await fetch(apiEndpoints.vitals);
+      if (!response.ok) {
+        throw new Error('Failed to fetch vitals data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setVitalsData(uniqueData.map(mapToVitalsDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the vitals server.");
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      console.error("Error fetching vitals data:", error);
+      setError("Oops! vitals data is not available.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSelect = (id: number) => {
-    setSelectedData((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.has(id)) {
-        newSelected.delete(id);
-      } else {
-        newSelected.add(id);
-      }
-      return newSelected;
-    });
-  };
-
-  const handleSendSelected = async () => {
-    const selectedVitals = data.filter((item) => selectedData.has(item.ID));
+  const refreshReceptionData = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(sendSelectedApi, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedVitals),
-      });
-      if (response.ok) {
-        setAlert({ type: "success", message: "Selected records sent to doctor." });
+      const response = await fetch(apiEndpoints.reception);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reception data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setReceptionData(uniqueData.map(mapToReceptionDataItem));
+        setError(null);
       } else {
-        setAlert({ type: "error", message: "Failed to send selected records." });
+        setError("Invalid data received from the reception server.");
       }
     } catch (error) {
-      console.error("Error sending selected data:", error);
-      setAlert({ type: "error", message: "Failed to send selected records." });
+      console.error("Error fetching reception data:", error);
+      setError("Oops! Reception data is not available.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  
+
+  const removeDuplicates = (arr: any[], key: string) => {
+    return arr.filter((obj, index, self) =>
+      index === self.findIndex((o) => o[key] === obj[key])
+    );
+  };
+
+  const mapToReceptionDataItem = (item: any): ReceptionDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    PhoneNumber: item.PhoneNumber,
+    PaymentMethod: item.PaymentMethod,
+    Returned:item.Returned
+  });
+
+
+
+  const mapToVitalsDataItem = (item: any): vitalsDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Temperature: item.Temperature,
+    Height: item.Height,
+    Weight: item.weight,
+    BloodPressure:item.BloodPressure,
+    BMI:item.BMI,
+  });
+
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
       <div className="flex-grow">
         <br />
-        <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
+        <h1 className="date text-2xl font-bold text-center">1.Reception Data {formattedDate}</h1>
         <br />
-        {alert && (
-          <div className={`text-center ${alert.type === "error" ? "text-red-500" : "text-green-500"}`}>
-            {alert.message}
-          </div>
-        )}
+        {error && <div className="text-center text-red-500">{error}</div>}
         <div className="overflow-x-auto">
           <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
             <thead className="bg-gray-800 text-white">
               <tr>
-                <th className="py-2 px-4">Select</th>
                 <th className="py-2 px-4">ID</th>
                 <th className="py-2 px-4">FirstName</th>
                 <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">Temperature</th>
-                <th className="py-2 px-4">Weight</th>
-                <th className="py-2 px-4">BloodPressure</th>
+                <th className="py-2 px-4">PhoneNumber</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">Returned</th>
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={7} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">Loading...</td>
                 </tr>
-              ) : (
-                data.length > 0 ? (
-                  data.map((item) => (
-                    <tr key={item.ID} className="text-gray-800">
-                      <td className="py-2 px-4 text-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedData.has(item.ID)}
-                          onChange={() => handleSelect(item.ID)}
-                        />
-                      </td>
-                      <td className="py-2 px-4">{item.ID}</td>
-                      <td className="py-2 px-4">{item.FirstName}</td>
-                      <td className="py-2 px-4">{item.LastName}</td>
-                      <td className="py-2 px-4">{item.Temperature}</td>
-                      <td className="py-2 px-4">{item.Weight}</td>
-                      <td className="py-2 px-4">{item.BloodPressure}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7} className="text-center py-4 text-gray-600">No data available</td>
+              ) : receptionData.length > 0 ? (
+                receptionData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.PhoneNumber}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+                    <td className="py-2 px-4">{item.Returned}</td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
         <div className="text-center mt-4">
-          <button 
+          <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={handleSendSelected}
+            onClick={refreshReceptionData}
+            disabled={loading}
           >
-            Send recods to Doctor
+            Refresh Reception Data
           </button>
+          <hr />
+          <br /><br /><br />
+        </div>
+        <h1 className="date text-2xl font-bold text-center">2. Vitals Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Temperature</th>
+                <th className="py-2 px-4">Height</th>
+                <th className="py-2 px-4">Weight</th>
+                <th className="py-2 px-4">BloodPressure</th>
+                <th className="py-2 px-4">BMI</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={5} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : VitalsData.length > 0 ? (
+                VitalsData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Temperature}</td>
+                    <td className="py-2 px-4">{item.Height}</td>
+                    <td className="py-2 px-4">{item.Weight}</td>
+                    <td className="py-2 px-4">{item.BloodPressure}</td>
+                    <td className="py-2 px-4">{item.BMI}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshVitalsData}
+            disabled={loading}
+          >
+            Refresh Vitals Data
+          </button>
+          <hr />
+          <br /><br /><br />
+       
+      
+        </div>
+
         </div>
       </div>
-      <Footer />
-    </div>
+ 
+ 
   );
 };
 

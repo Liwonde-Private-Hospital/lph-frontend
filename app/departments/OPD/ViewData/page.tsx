@@ -41,9 +41,9 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  reception: "http://localhost:3000/reception",
+  reception: "http://localhost:3000/reception/day",
   opd: "http://localhost:3000/opd/day",
-  vitals:"http://localhost:3000/vitals",
+  vitals:"http://localhost:3000/vitals/day",
   finance: "http://localhost:3000/finance/day",
 };
 
