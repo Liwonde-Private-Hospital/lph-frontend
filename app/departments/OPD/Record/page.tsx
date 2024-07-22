@@ -1,8 +1,10 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import './style.css'; // Make sure this CSS file aligns with the Pharmacy component styles
+import './style.css'; // Ensure this CSS file aligns with the Pharmacy component styles
 import Image from "next/image";
 import icon from '../../../images/icon.png';
+import CustomModal from "@/componets/CustomModal";
+
 
 interface OPDItem {
     ID: number;
@@ -13,7 +15,6 @@ interface OPDItem {
     MedicalScheme: string;
     Date: string;
 }
-
 
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
@@ -28,6 +29,7 @@ const OPD = () => {
     const [passwordPromptVisible, setPasswordPromptVisible] = useState<boolean>(false);
     const [adminPassword, setAdminPassword] = useState<string>("");
     const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+    const [modalVisible, setModalVisible] = useState<boolean>(true);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -94,7 +96,7 @@ const OPD = () => {
         setTotalAmount(total);
     }
 
-    const API_URL = "http://lph-backend.onrender.com/opd/add"; // Assuming a similar API endpoint
+    const url = "http://localhost:3000/opd"; 
 
     const postData = async (url: string, data: OPDItem) => {
         try {
@@ -125,7 +127,7 @@ const OPD = () => {
                 return;
             }
 
-            await postData(API_URL, item);
+            await postData(url, item);
             setDataModified(false); // Reset dataModified after successful submission
         } catch (error) {
             console.log("Error connecting to server:", error);
@@ -187,37 +189,36 @@ const OPD = () => {
         <div className="container mx-auto p-4">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
+
                     <div className="flex items-center">
-                        <Image src={icon} alt="icon" width={100} height={100} />
-                        <div className="ml-4">
-                            <h1 className="text-3xl font-bold">Doctors Office</h1>
-                        </div>
-                        <h1 className="tsiku text-lg">{formattedDate}</h1>
+                        <Image src={icon} alt="Logo" width={50} height={50} />
+                        <h1 className="text-xl font-bold ml-4">Doctors Office</h1>
                     </div>
+
+                    <div className="text-center text-lg font-bold">{formattedDate}</div>
                 </div>
-                <div className="px-4 py-2">
+
+                <div className="p-4">
                     <div className="overflow-x-auto">
-                        <table className="w-full table-auto">
-                            <thead className="bg-gray-200">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead>
                                 <tr>
-                                    <th className="px-4 py-2">ID</th>
-                                    <th className="px-4 py-2">First Name</th>
-                                    <th className="px-4 py-2">Last Name</th>
-                                    <th className="px-4 py-2">Treatment</th>
-                                    <th className="px-4 py-2">Amount</th>
-                                    <th className="px-4 py-2">Medical Scheme</th>
-                                    <th className="px-4 py-2">Action</th>
+                                    <th className="px-4 py-2 text-left">First Name</th>
+                                    <th className="px-4 py-2 text-left">Last Name</th>
+                                    <th className="px-4 py-2 text-left">Treatment</th>
+                                    <th className="px-4 py-2 text-left">Amount</th>
+                                    <th className="px-4 py-2 text-left">Medical Scheme</th>
+                                    <th className="px-4 py-2 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {opd.map((row, index) => (
-                                    <tr key={index} className="border-b border-gray-300">
-                                        <td className="px-4 py-2">{row.ID}</td>
+                                    <tr key={index} className="border-t border-gray-200">
                                         <td className="px-4 py-2">
                                             <input
                                                 type="text"
                                                 className="w-full bg-transparent focus:outline-none"
-                                                placeholder="e.g. John"
+                                                placeholder="John"
                                                 value={row.firstName}
                                                 onChange={(event) =>
                                                     updateRow(index, { firstName: event.target.value })
@@ -228,7 +229,7 @@ const OPD = () => {
                                             <input
                                                 type="text"
                                                 className="w-full bg-transparent focus:outline-none"
-                                                placeholder="e.g. Doe"
+                                                placeholder="Doe"
                                                 value={row.LastName}
                                                 onChange={(event) =>
                                                     updateRow(index, { LastName: event.target.value })
@@ -239,7 +240,7 @@ const OPD = () => {
                                             <input
                                                 type="text"
                                                 className="w-full bg-transparent focus:outline-none"
-                                                placeholder="Treatment"
+                                                placeholder="Consultation"
                                                 value={row.Treatment}
                                                 onChange={(event) =>
                                                     updateRow(index, { Treatment: event.target.value })
@@ -342,6 +343,8 @@ const OPD = () => {
                     </div>
                 </div>
             )}
+
+            <CustomModal visible={modalVisible} onClose={() => setModalVisible(false)} />
         </div>
     );
 };

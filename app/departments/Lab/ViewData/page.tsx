@@ -28,7 +28,7 @@ interface OPDDataItem {
 
 const apiEndpoints = {
 
-  opd: "http://localhost:3000/opd/day",
+  opd: "http://localhost:3000/opd/treatments/current-day?treatments=lab,laborotory",
 
   Lab:"http://localhost:3000/laboratory/day",
 };

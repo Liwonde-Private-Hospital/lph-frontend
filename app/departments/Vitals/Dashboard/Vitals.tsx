@@ -31,7 +31,7 @@ export default function Backstore() {
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:3000/finance/${name}`);
+      const response = await fetch(`http://localhost:3000/Vitals/${name}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -126,6 +126,7 @@ export default function Backstore() {
             </a>
           </div>
         </div>
+
         {/* Profile Popup Container */}
         {showProfile && (
           <div className="profile-popup absolute right-0 top-0 mt-2 mr-2 bg-white border border-gray-300 rounded-md shadow-lg z-10">
@@ -149,6 +150,9 @@ export default function Backstore() {
               <button onClick={toggleProfile} className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md">
                 Close
               </button>
+
+
+              
             </div>
           </div>
         )}
