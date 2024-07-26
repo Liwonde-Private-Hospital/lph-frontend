@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
+import LogoutButton from '@/componets/LogoutButton';
 
 interface SearchResult {
   ID:number;
@@ -62,7 +63,7 @@ export default function Backstore() {
         <li><a href="#">Profile</a></li>
         <li><a href="History">Take Drugs</a></li>
     <li><a href="History">History</a></li>
-     
+    <li><div ><LogoutButton/></div></li>
         </ul>
       </div>
       <div id="table">

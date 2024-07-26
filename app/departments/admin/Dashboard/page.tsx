@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import './style.css';
 import PowerBIEmbed from "../PowerBIEmbed/page";
+import LogoutButton from "@/componets/LogoutButton";
 
 export default function Backstore() {
     // Replace with actual accessToken, reportId, and groupId
@@ -39,6 +40,7 @@ export default function Backstore() {
                     <li><a href="ReportHistory">New Reports</a></li>
                     <li><a href="PowerBIEmbed">Report History</a></li>
                     <li><a href="ViewData">View TodaysData</a></li>
+                       <li><a ><LogoutButton/></a></li>
                 </ul>
             </div>
             <h1 className="mutu">REPORTS AND DASHBOARD</h1>

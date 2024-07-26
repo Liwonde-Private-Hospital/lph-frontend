@@ -1,37 +1,30 @@
-// components/LogoutButton.tsx
 import React from "react";
 import { Button } from "@chakra-ui/react";
-import { destroyCookie, parseCookies } from "nookies";
+import { destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext"; // Adjust the path as per your project structure
-import  "../app/login/style.css"; // Assuming you have a CSS module for styling
 
 const LogoutButton: React.FC = () => {
   const router = useRouter();
-  const { logout } = useAuth();
-
   const handleLogout = () => {
-    destroyCookie(null, "targetDepartment");
-
-    // Clear localStorage or sessionStorage if used
-    localStorage.clear();
-    sessionStorage.clear();
-
-    // Perform logout action from AuthContext
-    logout("/login"); // Redirect to login page after logout
-
-    // Ensure that router is used
-    router.push("/login"); // Example usage to resolve TypeScript error
+    destroyCookie(null, 'isAuthenticated-admin');
+    destroyCookie(null, 'isAuthenticated-Backstore');
+    destroyCookie(null, 'isAuthenticated-Dental');
+    destroyCookie(null, 'isAuthenticated-Finance');
+    destroyCookie(null, 'isAuthenticated-Lab');
+    destroyCookie(null, 'isAuthenticated-Maternity');
+    destroyCookie(null, 'isAuthenticated-OPD');
+    destroyCookie(null, 'isAuthenticated-pharmacist');
+    destroyCookie(null, 'isAuthenticated-Reception');
+    destroyCookie(null, 'isAuthenticated-Vitals');
+    destroyCookie(null, 'isAuthenticated-X-Ray');
+    
+    router.push('/login');
   };
 
   return (
-    <>
-      {parseCookies(null).targetDepartment && (
-        <Button  className="button1" type="button" mt={4} onClick={handleLogout}>
-          Logout
-        </Button>
-      )}
-    </>
+    <Button className="button1" onClick={handleLogout}>
+      Logout
+    </Button>
   );
 };
 
