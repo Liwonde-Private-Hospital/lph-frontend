@@ -33,7 +33,7 @@ const StaffManagement = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<LPHStaffRole>(LPHStaffRole.DOCTOR);
+  const [role, setRole] = useState<LPHStaffRole>(LPHStaffRole.OPD);
 
   const rolesOptions = Object.values(LPHStaffRole);
 
@@ -116,30 +116,6 @@ const StaffManagement = () => {
     }
   };
 
-  const handleLogin = async (username: string, password: string) => {
-    try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      // Handle successful login
-      alert("Login successful");
-      // Redirect or set state for logged in user
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed. Please try again.");
-    }
-  };
-
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -186,7 +162,7 @@ const StaffManagement = () => {
       setPhoneNumber("");
       setEmail("");
       setPassword("");
-      setRole(LPHStaffRole.DOCTOR);
+      setRole(LPHStaffRole.OPD);
     } catch (error) {
       console.error("Error adding staff member:", error);
       // alert("Failed to add staff member. Please try again.");
