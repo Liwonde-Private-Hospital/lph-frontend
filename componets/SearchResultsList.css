@@ -1,11 +1,18 @@
 .results-list {
     width: 100%;
-    background-color: white;
+    background-color:grey;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 0px 8px #ddd;
+    box-shadow: 0px 0px 8px black;
     border-radius: 10px;
     margin-top: 1rem;
     max-height: 300px;
     overflow-y: auto;
+
+  }
+  .no-results {
+    padding: 10px;
+    text-align: center;
+    color: red; /* Text color for "Name not found" */
+    font-weight: bold;
   }
