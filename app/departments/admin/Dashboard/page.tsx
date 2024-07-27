@@ -3,13 +3,14 @@ import React, { useEffect } from "react";
 import './style.css';
 import PowerBIEmbed from "../PowerBIEmbed/page";
 import LogoutButton from "@/componets/LogoutButton";
+import { redirect } from "next/navigation";
 
-export default function Backstore() {
+const Backstore = async () => {
     // Replace with actual accessToken, reportId, and groupId
     const accessToken = "";
     const reportId = "";
     const groupId = "";
-
+    
     useEffect(() => {
         // Check if the user is online
         if (!navigator.onLine) {
@@ -18,7 +19,7 @@ export default function Backstore() {
 
         // Add event listener for when the user goes offline
         const handleOffline = () => {
-            
+
             alert("check your connection and try again later");
         };
 
@@ -40,16 +41,16 @@ export default function Backstore() {
                     <li><a href="ReportHistory">New Reports</a></li>
                     <li><a href="PowerBIEmbed">Report History</a></li>
                     <li><a href="ViewData">View TodaysData</a></li>
-                       <li><a ><LogoutButton/></a></li>
+                    <li><a ><LogoutButton /></a></li>
                 </ul>
             </div>
             <h1 className="mutu">REPORTS AND DASHBOARD</h1>
-            
+
             <div className="flex justify-center">
-                <iframe 
-                    src="https://playground.powerbi.com/sampleReportEmbed" 
-                    width="90%" 
-                    height="1000px" 
+                <iframe
+                    src="https://playground.powerbi.com/sampleReportEmbed"
+                    width="90%"
+                    height="1000px"
                     frameBorder="0"
                     allowFullScreen={true}
                 ></iframe>
@@ -57,10 +58,11 @@ export default function Backstore() {
 
             {/* Place PowerBIEmbed component where you want the report to appear */}
             {/* <PowerBIEmbed */}
-                {/* accessToken={accessToken} */}
-                {/* reportId={reportId} */}
-                {/* groupId={groupId} */}
+            {/* accessToken={accessToken} */}
+            {/* reportId={reportId} */}
+            {/* groupId={groupId} */}
             {/* /> */}
         </div>
     );
 }
+export default Backstore;
