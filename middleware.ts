@@ -1,50 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { getIronSession } from "iron-session";
+import { sessionOptions } from "./lib";
+import { CustomIronSession } from './types';
 
-// Define protected paths and roles
-const protectedPaths: Record<string, string> = {
-  '/departments/admin': 'admin',
-  '/departments/Backstore': 'Backstore',
-  '/departments/Dental': 'Dental',
-  '/departments/Finance': 'Finance',
-  '/departments/Lab': 'Lab',
-  '/departments/Maternity': 'Maternity',
-  '/departments/OPD': 'OPD',
-  '/departments/Pharmacy': 'pharmacist',
-  '/departments/Reception': 'Reception',
-  '/departments/Vitals': 'Vitals',
-  '/departments/X-Ray': 'X-Ray',
-};
-
-export function middleware(request: NextRequest) {
-  const cookieHeader = request.headers.get('cookie') || '';
-  const cookies = cookieHeader.split(';').reduce((acc: Record<string, string>, cookie) => {
-    const [key, value] = cookie.split('=').map(part => part.trim());
-    if (key && value) acc[key] = value;
-    return acc;
-  }, {});
-
-  const authCookie = Object.keys(cookies).find(key => key.startsWith('isAuthenticated-'));
-  const isAuthenticated = Boolean(authCookie);
-  const userDepartment = authCookie ? authCookie.split('-')[1] : null;
-
-  const requestPath = request.nextUrl.pathname;
-  const basePath = Object.keys(protectedPaths).find(path => requestPath.startsWith(path));
-
-  if (basePath) {
-    const requiredRole = protectedPaths[basePath];
-
-    if (!isAuthenticated) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    if (userDepartment !== requiredRole) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-  }
-
-  return NextResponse.next();
-}
-
+// Define the matcher to apply middleware to all routes starting with '/departments/'
 export const config = {
-  matcher: ['/departments/:path*'],
+    matcher: '/departments/:path*',
 };
+
+export async function middleware(request: NextRequest) {
+    const url = request.nextUrl.clone();
+    const response = NextResponse.next();
+    // Extract the department from the URL
+    const department = url.pathname.split('/')[2];
+
+    // Get session data
+    const session = await getIronSession(request, response, sessionOptions(department)) as CustomIronSession;
+
+
+    const { isLoggedIn, role } = session as { isLoggedIn: boolean, role?: string };
+
+
+    // If user is not logged in, redirect to login
+    if (!isLoggedIn) {
+        url.pathname = '/login';
+        return NextResponse.redirect(url);
+    }
+
+    
+    // If user is logged in but not authorized, redirect to access denied
+    if (role !== department) {
+        url.pathname = '/access-denied';
+        return NextResponse.redirect(url);
+    }
+
+    // Allow the request to proceed if the user is authenticated and authorized
+    return response;
+}
