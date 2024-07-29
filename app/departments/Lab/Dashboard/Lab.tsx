@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
-import { getSession, logout } from '@/actions';
+import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
 
 interface SearchResult {
@@ -23,7 +23,8 @@ export default function Backstore() {
   const [error, setError] = useState('');
 
   const handleLogout = async() => {
-    logout(LPHStaffRole.ADMIN);
+    logout(LPHStaffRole.LAB);
+    
   };
   const handleSearch = async () => {
     if (!name) {

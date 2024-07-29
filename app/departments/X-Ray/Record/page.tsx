@@ -94,7 +94,7 @@ const OPD = () => {
         setTotalAmount(total);
     }
 
-    const API_URL = "http://lph-backend.onrender.com/opd/add"; // Assuming a similar API endpoint
+    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/opd/add`; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: OPDItem) => {
         try {

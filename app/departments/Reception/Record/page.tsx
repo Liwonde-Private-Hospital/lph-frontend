@@ -70,7 +70,7 @@ const Reception = () => {
         setDataModified(true);
     }
 
-    const API_URL = "http://lph-backend.onrender.com/reception"; // Replace with your API endpoint
+    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/reception`; // Replace with your API endpoint
 
     const postData = async (url: string, data: ReceptionItem) => {
         try {

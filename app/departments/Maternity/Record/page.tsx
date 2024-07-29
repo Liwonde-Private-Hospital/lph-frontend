@@ -71,7 +71,7 @@ const Maternity = () => {
         setDataModified(true);
     }
 
-    const API_URL = "http://lph-backend.onrender.com/maternity/add"; // Assuming a similar API endpoint
+    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/maternity/add`; // Assuming a similar API endpoint
 
     const postData = async (url: string, data: MaternityItem) => {
         try {

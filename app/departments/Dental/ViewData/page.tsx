@@ -18,7 +18,7 @@ interface DentalDataItem {
 
 
 
-const dentalapi = "http://localhost:3000/dental/day";
+const dentalapi = `${process.env.NEXT_PUBLIC_API_URL}/dental/day`;
 
 
 const ViewData = () => {

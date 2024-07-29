@@ -41,10 +41,10 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  reception: "http://localhost:3000/reception/day",
-  opd: "http://localhost:3000/opd/day",
-  vitals:"http://localhost:3000/vitals/day",
-  finance: "http://localhost:3000/finance/day",
+  reception: `${process.env.NEXT_PUBLIC_API_URL}/reception/day`,
+  opd:`${process.env.NEXT_PUBLIC_API_URL}/opd/day`,
+  vitals:`${process.env.NEXT_PUBLIC_API_URL}/vitals/day`,
+  finance:`${process.env.NEXT_PUBLIC_API_URL}/finance/day`,
 };
 
 const ViewData = () => {

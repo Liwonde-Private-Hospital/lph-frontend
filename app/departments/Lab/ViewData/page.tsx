@@ -28,9 +28,9 @@ interface OPDDataItem {
 
 const apiEndpoints = {
 
-  opd: "http://localhost:3000/opd/treatments/current-day?treatments=lab,laborotory",
+  opd: `${process.env.NEXT_PUBLIC_API_URL}/opd/treatments/current-day?treatments=lab,laborotory`,
 
-  Lab:"http://localhost:3000/laboratory/day",
+  Lab:`${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
 };
 
 const ViewData = () => {

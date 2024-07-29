@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 
-const api = "http://localhost:3000/finance";
+const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
 interface FinanceItem {
   ID: number;
@@ -83,7 +83,9 @@ const Finance = () => {
       if (deleteIndex !== null) {
         const rowToDelete = finance[deleteIndex];
 
-        const deleteSuccess = await deleteData(`http://localhost:3000/finance${rowToDelete.ID}`);
+        const deleteSuccess = await deleteData(
+          `${process.env.NEXT_PUBLIC_API_URL}/finance${rowToDelete.ID}`
+        );
 
         if (deleteSuccess) {
           setFinance((prevData) => {

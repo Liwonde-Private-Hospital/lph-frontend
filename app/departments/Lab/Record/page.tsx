@@ -4,7 +4,7 @@ import Image from "next/image";
 import icon from "../../../images/icon.png";
 import axios from "axios";
 
-const API_URL = "http://lph-backend.onrender.com/laboratory";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/laboratory`;
 
 export interface LabItem {
   ID: number;
@@ -133,7 +133,7 @@ const Lab = () => {
 
   const verifyAdminPassword = async (password: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/verifyAdminPassword', {
+      const response = await fetch(`${API_URL}/AdminPassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

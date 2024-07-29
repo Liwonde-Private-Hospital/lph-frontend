@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 // Define the API endpoint
-const api = "http://lph-backend.onrender.com/finance";
+const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
 // Define the props interface for the component
 interface HistoryDateProps {

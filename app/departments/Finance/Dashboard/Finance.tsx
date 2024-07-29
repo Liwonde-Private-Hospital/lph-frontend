@@ -5,6 +5,8 @@ import icon from '../../../favicon.ico';
 import Image from 'next/image';
 import { SearchResultsList } from '@/componets/searchResultsList';
 import { json } from 'stream/consumers';
+import { logout } from '@/actions';
+import { LPHStaffRole } from '@/app/enums';
 
 
 interface SearchResult {
@@ -40,7 +42,7 @@ export default function Backstore() {
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:3000/finance/${name}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -62,26 +64,37 @@ export default function Backstore() {
       }, 3000);
     }
   };
-
+ const handleLogout = async () => {
+   logout(LPHStaffRole.FINANCE);
+  
+ };
   return (
     <div>
       <div id="dash">
         <header>Finance</header>
         <ul>
-          <li><a href="#" onClick={toggleProfile}>Profile</a></li>
-          <li><a href="Summary">Day Summary</a></li>
-          <li><a href="History">Transaction History</a></li>
-          <li><a href="#">Creditors</a></li>
+          <li>
+            <a href="#" onClick={toggleProfile}>
+              Profile
+            </a>
+          </li>
+          <li>
+            <a href="Summary">Day Summary</a>
+          </li>
+          <li>
+            <a href="History">Transaction History</a>
+          </li>
+          <li>
+            <a href="#">Creditors</a>
+          </li>{" "}
+          <li>
+            <a onClick={handleLogout}>Logout</a>
+          </li>
         </ul>
       </div>
       <div id="table">
         <div>
-          <Image
-            src={icon}
-            alt="alt"
-            width={100}
-            height={100}
-          />
+          <Image src={icon} alt="alt" width={100} height={100} />
         </div>
         <div id="searchbar" className="relative w-full max-w-md mb-4">
           <div className="flex">
@@ -90,7 +103,9 @@ export default function Backstore() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Search for patients"
-              className={`flex-grow p-2 border ${isQueryEmpty ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`flex-grow p-2 border ${
+                isQueryEmpty ? "border-red-500" : "border-gray-300"
+              } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             <button
               onClick={handleSearch}
@@ -100,14 +115,12 @@ export default function Backstore() {
             </button>
           </div>
           {isQueryEmpty && (
-            <p className="text-red-700 text-sm mt-1">Please enter a search query.</p>
+            <p className="text-red-700 text-sm mt-1">
+              Please enter a search query.
+            </p>
           )}
-          {error && (
-            <p className="text-red-700 text-sm mt-1">{error}</p>
-          )}
-          {results.length > 0 && (
-            <SearchResultsList results={results} />
-          )}
+          {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
+          {results.length > 0 && <SearchResultsList results={results} />}
         </div>
         <div className="button-container">
           <a href="ViewData">
@@ -132,20 +145,38 @@ export default function Backstore() {
                       />
                     </div>
                   </div>
-                  <h2 className="text-lg font-semibold text-center">User Profile</h2>
-                  <p className="text-sm"><span className="font-semibold">Name:</span>Wakisa</p>
-                  <p className="text-sm"><span className="font-semibold">Age:</span> 25</p>
-                  <p className="text-sm"><span className="font-semibold">Position:</span>Cashier</p>
-                  <p className="text-sm"><span className="font-semibold">Phone Number:</span> 0880070673</p>
-                  <p className="text-sm"><span className="font-semibold">Email:</span> wakisa@liwondepvt.com</p>
-                  <p className="text-sm"><span className="font-semibold">Status:</span> online🟢</p>
-                  <button onClick={toggleProfile} className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md">
+                  <h2 className="text-lg font-semibold text-center">
+                    User Profile
+                  </h2>
+                  <p className="text-sm">
+                    <span className="font-semibold">Name:</span>Wakisa
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Age:</span> 25
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Position:</span>Cashier
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Phone Number:</span>{" "}
+                    0880070673
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Email:</span>{" "}
+                    wakisa@liwondepvt.com
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Status:</span> online🟢
+                  </p>
+                  <button
+                    onClick={toggleProfile}
+                    className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md"
+                  >
                     Close
                   </button>
                 </div>
               </div>
             )}
-
           </div>
         </div>
       </div>

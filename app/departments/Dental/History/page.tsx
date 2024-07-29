@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 // Define the API endpoint
-const api = "www";
+const api = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 // Define the props interface for the component
 interface HistoryDateProps {

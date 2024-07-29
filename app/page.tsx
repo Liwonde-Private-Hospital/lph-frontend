@@ -1,9 +1,6 @@
 
 import ScrollToTopButton from "./pages/Scroll/scroll";
-import Footer from "@/componets/footer";
-
 import Image from 'next/image';
-import Navbar from "@/componets/navbar";
 import Herosection from "./pages/Home/Herosection";
 import ServicesCard from "./pages/Home/servicesCard";
 import Section1 from "./pages/Home/section1";
@@ -12,6 +9,8 @@ import QuickServiceSection from "./pages/Home/quickServiceSection";
 import BriefHistory from "./pages/Home/history";
 import BottomSection from "./pages/Home/BottomSection";
 import SimpleAccordion from "./pages/Home/Faq";
+import Navbar from "@/componets/navbar";
+import Footer from "@/componets/footer";
 
 const posts = [
   {
@@ -59,8 +58,7 @@ const posts = [
 export default function Page() {
   return (
     <>
-      <Navbar />
-      <Herosection />
+      <Navbar /> <Herosection />
       <Section1 />
       <ServicesCard />
       <MissionSection />
@@ -70,14 +68,19 @@ export default function Page() {
         <div className="py-24 sm:py-32">
           <div className="bg-green mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
-              <h2 className="text-3xl font-bold tracking-tight text-green-900 sm:text-4xl">Testimonies</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-green-900 sm:text-4xl">
+                Testimonies
+              </h2>
               <p className="text-2xl mt-2 text-lg leading-8 text-gray-600">
                 Here is what our satisfied patients are saying.
               </p>
             </div>
             <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
               {posts.map((post) => (
-                <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
+                <article
+                  key={post.id}
+                  className="flex max-w-xl flex-col items-start justify-between"
+                >
                   <div className="flex items-center gap-x-4 text-xs">
                     <time dateTime={post.datetime} className="text-gray-500">
                       {post.date}
@@ -93,10 +96,18 @@ export default function Page() {
                         {post.title}
                       </a>
                     </h3>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                      {post.description}
+                    </p>
                   </div>
                   <div className="relative mt-8 flex items-center gap-x-4">
-                    <Image src={post.author.imageUrl} alt={post.author.name} width={40} height={40} className="h-10 w-10 rounded-full bg-gray-50" />
+                    <Image
+                      src={post.author.imageUrl}
+                      alt={post.author.name}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 rounded-full bg-gray-50"
+                    />
                     <div className="text-sm leading-6">
                       <p className="font-semibold text-gray-900">
                         <a href={post.author.href}>
@@ -113,7 +124,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <SimpleAccordion/>
+      <SimpleAccordion />
       <BottomSection />
       <ScrollToTopButton />
       <Footer />

@@ -32,10 +32,10 @@ interface OPDDataItem {
 
 
 
-const api = "http://localhost:3000/finance/treatments/current-day?treatments=xray,scanning";
-const opdapi="http://localhost:3000/opd/treatments/current-day?treatments=xray,scanning"
+const api = `${process.env.NEXT_PUBLIC_API_URL}/finance/treatments/current-day?treatments=xray,scanning`
+const opdapi=`${process.env.NEXT_PUBLIC_API_URL}/opd/treatments/current-day?treatments=xray,scanning`
 
-const  xrayapi="http://localhost:3000/x-ray/day";
+const  xrayapi=`${process.env.NEXT_PUBLIC_API_URL}/x-ray/day`;
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

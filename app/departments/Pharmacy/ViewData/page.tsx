@@ -32,9 +32,9 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  Phamarcy: "http://localhost:3000/pharmacy-sales/day",
-  opd: "http://localhost:3000/opd/day",
-  finance: "http://localhost:3000/finance/day",
+  Phamarcy: `${process.env.NEXT_PUBLIC_API_URL}/pharmacy-sales/day`,
+  opd: `${process.env.NEXT_PUBLIC_API_URL}opd/day`,
+  finance: `${process.env.NEXT_PUBLIC_API_URL}/finance/day`,
 };
 
 const ViewData = () => {

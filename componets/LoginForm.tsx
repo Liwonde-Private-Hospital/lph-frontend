@@ -12,6 +12,7 @@ import Image from "next/image";
 import icon from "../public/favicon.ico";
 import { LPHStaffRole } from "@/app/enums";
 import { login } from "@/actions";
+import Link from "next/link";
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -76,15 +77,17 @@ const LoginForm: React.FC = () => {
     <div className="form">
       <div className="form-wrapper">
         <div className="header1">
-          <div className="logo-container">
-            <Image
-              src={icon}
-              alt="icon"
-              width={100}
-              height={100}
-              style={{ borderRadius: "10px" }}
-            />
-          </div>
+          <Link href='/'>
+            <div className="logo-container">
+              <Image
+                src={icon}
+                alt="icon"
+                width={100}
+                height={100}
+                style={{ borderRadius: "10px" }}
+              />
+            </div>
+          </Link>
           <h1>Staff Login Portal</h1>
           <form onSubmit={handleSubmit}>
             <FormControl isRequired>
