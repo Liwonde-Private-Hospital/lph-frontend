@@ -1,12 +1,18 @@
-'use client';
-import React, { useState } from 'react';
+'use client'
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
+
 import { SearchResultsList } from '@/componets/searchResultsList';
 import { json } from 'stream/consumers';
 import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
+
+
+
+
+
 
 
 interface SearchResult {
@@ -19,27 +25,36 @@ interface SearchResult {
   Treatment: string;
 }
 
+
+
+
+
 export default function Backstore() {
-  const [name, setName] = useState('');
+  const [input, setInput] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [isQueryEmpty, setIsQueryEmpty] = useState(false);
   const [error, setError] = useState('');
   const [showProfile, setShowProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (input.trim()) {
+        fetchData(input);
+      } else {
+        setResults([]);
+        setError('Please enter a search query.');
+      }
+    }, 500); // Delay in milliseconds
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [input]);
 
   const toggleProfile = (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setShowProfile(!showProfile);
   };
 
-  const handleSearch = async () => {
-    if (!name) {
-      setIsQueryEmpty(true);
-      setError('Please enter a search query.');
-      return;
-    }
 
-    setIsQueryEmpty(false);
-    setError('');
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`);
@@ -49,25 +64,108 @@ export default function Backstore() {
       const data = await response.json();
       console.log('API Response:', data);
 
-      if (Array.isArray(data.results)) {
-        setResults(data.results);
-        
-      } else {
+
+  const fetchData = (query: string) => {
+    setIsLoading(true);
+    const queryParts = query.toLowerCase().split(' ');
+    console.log('Query Parts:', queryParts); // Debug log
+  
+    fetch(`http://localhost:3000/finance/${query}`)
+      .then((response) => response.text())
+      .then((text) => {
+        console.log('Response text:', text); // Debug log
+        try {
+          const json: SearchResult[] = JSON.parse(text);
+          console.log('Parsed JSON:', json); // Debug log
+  
+          const filteredResults = json.filter((item) => {
+            const fullName = (item.FirstName + ' ' + item.LastName).toLowerCase();
+            
+            console.log('Full Name:', fullName); // Debug log
+            return queryParts.every(part => fullName.includes(part));
+          });
+  
+          console.log('Filtered Results:', filteredResults); // Debug log
+  
+          if (filteredResults.length > 0) {
+            setResults(filteredResults);
+            setError('');
+          } else {
+            setResults([]);
+            setError('Name not found');
+          }
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          setResults([]);
+          setError('Name not found');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
         setResults([]);
-      }
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setResults([]);
-      setError('name not found');
-      setTimeout(() => {
-        setError('');
-      }, 3000);
+        setError('Error fetching data');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  
+
+
+
+  
+
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+    setError(''); // Clear error when user starts typing
+  };
+
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return 'N/A';
+
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    };
+    return date.toLocaleDateString('en-GB', options);
+  };
+
+
+
+
+
+
+  const handleResultClick = (result: SearchResult) => {
+    if (result.FirstName === 'Name not found' || result.FirstName === 'Error fetching data') {
+      alert(result.FirstName+result.LastName);
+    } else {
+      //  alert(`
+      //   SEARCH RESULTS FOR: ${result.FirstName+'    '+result.LastName}!
+      //    First Name: ${result.FirstName}
+      //    Last Name: ${result.LastName}
+      //    Treatment: ${result.Treatment}
+      //    Amount: ${result.Amount}
+      //    Payment Method: ${result.PaymentMethod}
+      //    Date: ${formatDate(result.Date)}
+      //  `);
     }
   };
+
  const handleLogout = async () => {
    logout(LPHStaffRole.FINANCE);
   
  };
+
+
+
+
+
+
+
   return (
     <div>
       <div id="dash">
@@ -100,24 +198,53 @@ export default function Backstore() {
           <div className="flex">
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={input}
+              onChange={handleChange}
               placeholder="Search for patients"
+
               className={`flex-grow p-2 border ${
                 isQueryEmpty ? "border-red-500" : "border-gray-300"
               } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+
+              className={`flex-grow p-2 pl-8 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+
             />
             <button
-              onClick={handleSearch}
+              onClick={() => fetchData(input)}
               className="p-2 bg-green-800 text-white rounded-r-md hover:bg-orange-400"
             >
               Search
             </button>
           </div>
+
           {isQueryEmpty && (
             <p className="text-red-700 text-sm mt-1">
               Please enter a search query.
             </p>
+
+          {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
+          {isLoading ? (
+            <p className="text-gray-700 text-sm mt-1">Loading...</p>
+          ) : (
+            results.length > 0 && (
+              <div className="mt-4">
+                {results.map((result, id) => (
+                  <div
+                    key={id}
+                    className="p-4 mb-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleResultClick(result)}
+                  >
+                    <div><strong>First Name:</strong> {result.FirstName || 'N/A'}</div>
+                    <div><strong>Last Name:</strong> {result.LastName || 'N/A'}</div>
+                    <div><strong>Treatment:</strong> {result.Treatment || 'N/A'}</div>
+                    <div><strong>Amount:</strong> {result.Amount || 'N/A'}</div>
+                    <div><strong>Payment Method:</strong> {result.PaymentMethod || 'N/A'}</div>
+                    <div><strong>Date:</strong> {formatDate(result.Date)}</div>
+                  </div>
+                ))}
+              </div>
+            )
+
           )}
           {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
           {results.length > 0 && <SearchResultsList results={results} />}
@@ -145,6 +272,7 @@ export default function Backstore() {
                       />
                     </div>
                   </div>
+
                   <h2 className="text-lg font-semibold text-center">
                     User Profile
                   </h2>
@@ -172,6 +300,16 @@ export default function Backstore() {
                     onClick={toggleProfile}
                     className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md"
                   >
+
+                  <h2 className="text-lg font-semibold text-center">User Profile</h2>
+                  <p className="text-sm"><span className="font-semibold">Name:</span> Wakisa</p>
+                  <p className="text-sm"><span className="font-semibold">Age:</span> 25</p>
+                  <p className="text-sm"><span className="font-semibold">Position:</span> Cashier</p>
+                  <p className="text-sm"><span className="font-semibold">Phone Number:</span> 0880070673</p>
+                  <p className="text-sm"><span className="font-semibold">Email:</span> wakisa@liwondepvt.com</p>
+                  <p className="text-sm"><span className="font-semibold">Status:</span> online🟢</p>
+                  <button onClick={toggleProfile} className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md">
+
                     Close
                   </button>
                 </div>
