@@ -14,7 +14,7 @@ interface DataItem {
 
 }
 
-const api = "http://lph-backend.onrender.com/finance";
+const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

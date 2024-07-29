@@ -20,7 +20,9 @@ const StaffManagement = () => {
  
   const fetchStaff = async () => {
     try {
-      const response = await axios.get<StaffMember[]>('http://localhost:3000/Staff/view-all-staff');
+      const response = await axios.get<StaffMember[]>(
+        `${process.env.NEXT_PUBLIC_API_URL}/Staff/view-all-staff`
+      );
       if (response.data.length === 0) {
         ('No staff members found');
         // Optionally handle no staff members found scenario here
@@ -42,7 +44,9 @@ const StaffManagement = () => {
     const confirmDelete = confirm('Are you sure you want to delete this user? This action is undoable.');
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3000/Staff/delete-staff/${staffId}`);
+        await axios.delete(
+          `${process.env.NEXT_PUBLIC_API_URL}/Staff/delete-staff/${staffId}`
+        );
         setStaff(staff.filter((member) => member.id !== staffId));
         console.log('Deleted staff ID:', staffId); // Debugging log
       } catch (error) {

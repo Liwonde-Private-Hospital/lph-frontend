@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
+import { logout } from '@/actions';
+import { LPHStaffRole } from '@/app/enums';
 
 interface SearchResult {
   ID:number;
@@ -31,7 +33,9 @@ export default function Backstore() {
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:3000/finance/${name}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -51,25 +55,29 @@ export default function Backstore() {
       }, 3000)
     }
   };
-
+ const handleLogout = async () => {
+   logout(LPHStaffRole.DENTAL);
+   
+ };
   return (
     <div>
       <div id="dash">
         <header>Dental</header>
         <ul>
-        <li><a href="#">Profile</a></li>
-         <li><a href="History">History</a></li>
-             
+          <li>
+            <a href="#">Profile</a>
+          </li>
+          <li>
+            <a href="History">History</a>
+          </li>
+          <li>
+            <a onClick={handleLogout}>Logout</a>
+          </li>
         </ul>
       </div>
       <div id="table">
         <div>
-          <Image
-            src={icon}
-            alt="alt"
-            width={100}
-            height={100}
-          />
+          <Image src={icon} alt="alt" width={100} height={100} />
         </div>
         <div id="searchbar" className="relative w-full max-w-md mb-4">
           <div className="flex">
@@ -78,7 +86,9 @@ export default function Backstore() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Search for patients"
-              className={`flex-grow p-2 border ${isQueryEmpty ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`flex-grow p-2 border ${
+                isQueryEmpty ? "border-red-500" : "border-gray-300"
+              } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             <button
               onClick={handleSearch}
@@ -91,24 +101,23 @@ export default function Backstore() {
             <p></p>
             // <p className="text-red-700 text-sm mt-1">Please enter a search query.</p>
           )}
-          {error && (
-            <p className="text-red-700 text-sm mt-1">{error}</p>
-          )}
+          {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
           {results.length > 0 && (
             <div className="grid grid-cols-3 gap-4">
-            {results.map((result, index) => (
-              <div key={index} className="p-4 border border-gray-300 rounded-md shadow-md">
-                <p>Amount: {result.Amount}</p>
-                <p>Date: {result.Date}</p>
-                <p>First Name: {result.FirstName}</p>
-                <p>Last Name: {result.LastName}</p>
-                <p>Payment Method: {result.PaymentMethod}</p>
-                <p>Treatment: {result.Treatment}</p>
-              </div>
-            ))}
-          </div>
-          
-           
+              {results.map((result, index) => (
+                <div
+                  key={index}
+                  className="p-4 border border-gray-300 rounded-md shadow-md"
+                >
+                  <p>Amount: {result.Amount}</p>
+                  <p>Date: {result.Date}</p>
+                  <p>First Name: {result.FirstName}</p>
+                  <p>Last Name: {result.LastName}</p>
+                  <p>Payment Method: {result.PaymentMethod}</p>
+                  <p>Treatment: {result.Treatment}</p>
+                </div>
+              ))}
+            </div>
           )}
         </div>
         <div className="button-container">

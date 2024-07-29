@@ -1,6 +1,6 @@
 /**
  * Enum representing the roles within the hospital management system.
- */
+ */ 
 export enum LPHStaffRole {
   ADMIN = 'admin',          // Administrator role
   BACKSTORE = 'Backstore',  // Backstore role

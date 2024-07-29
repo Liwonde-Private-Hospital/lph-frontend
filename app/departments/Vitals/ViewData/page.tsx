@@ -26,9 +26,9 @@ interface vitalsDataItem{
 
 
 const apiEndpoints = {
-  reception: "http://localhost:3000/reception/day",
+  reception:`${process.env.NEXT_PUBLIC_API_URL}/reception/day`,
  
-  vitals:"http://localhost:3000/vitals/day",
+  vitals:`${process.env.NEXT_PUBLIC_API_URL}/vitals/day`,
   
 };
 

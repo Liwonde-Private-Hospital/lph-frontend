@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 
 // Define the API endpoint (adjust as per your backend setup)
-const api = "http://lph-backend.onrender.com/transactions";
+const api = `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
 
 // Define the props interface for the component
 interface HistoryDateProps {

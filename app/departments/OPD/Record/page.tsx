@@ -96,7 +96,7 @@ const OPD = () => {
         setTotalAmount(total);
     }
 
-    const url = "http://localhost:3000/opd"; 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/opd`; 
 
     const postData = async (url: string, data: OPDItem) => {
         try {
@@ -165,7 +165,7 @@ const OPD = () => {
 
     const verifyAdminPassword = async (password: string): Promise<boolean> => {
         try {
-            const response = await fetch('/api/verifyAdminPassword', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/AdminPassword`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
+import { logout } from '@/actions';
+import { LPHStaffRole } from '@/app/enums';
 
 interface SearchResult {
   ID:number;
@@ -20,6 +22,10 @@ export default function Backstore() {
   const [isQueryEmpty, setIsQueryEmpty] = useState(false);
   const [error, setError] = useState('');
 
+  const handleLogout = async() => {
+    logout(LPHStaffRole.LAB);
+    
+  };
   const handleSearch = async () => {
     if (!name) {
       setIsQueryEmpty(true);
@@ -53,15 +59,16 @@ export default function Backstore() {
       }, 3000)
     }
   };
-
+  
   return (
     <div>
       <div id="dash">
         <header>LABOROTORY</header>
+        <h2>Welcome, </h2>
         <ul>
         <li><a href="#">Profile</a></li>
-    <li><a href="History">History</a></li>
-     
+          <li><a href="History">History</a></li>
+          <li><a onClick={handleLogout}>Logout</a></li>
         </ul>
       </div>
       <div id="table">

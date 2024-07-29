@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect, FormEvent } from "react";
 import { LPHStaffRole } from "@/app/enums";
-import bcrypt from "bcryptjs";
 import axios from "axios";
+import { Button, Spinner } from "@chakra-ui/react";
 
 interface StaffMember {
   id: number;
@@ -39,7 +39,7 @@ const StaffManagement = () => {
 
   const fetchStaff = async () => {
     try {
-      const response = await axios.get<StaffMember[]>('http://localhost:3000/Staff/view-all-staff');
+      const response = await axios.get<StaffMember[]>(`${process.env.NEXT_PUBLIC_API_URL}/Staff/view-all-staff`);
       if (response.data.length === 0) {
         setNoStaffFound(true); // Set state when no staff members are found
       } else {
@@ -54,7 +54,9 @@ const StaffManagement = () => {
     }
   };
 
-  const countapi="http://localhost:3000/staff/count-all-staff"
+  const countapi=`${process.env.NEXT_PUBLIC_API_URL}/staff/count-all-staff`
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchStaffCount = async () => {
     try {
@@ -86,20 +88,23 @@ const StaffManagement = () => {
     if (!selectedStaff) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/Staff/update-staff/${selectedStaff.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          phoneNumber,
-          email,
-          password: showPasswordField ? password : undefined, // Send password only if shown
-          role,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/Staff/update-staff/${selectedStaff.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password: showPasswordField ? password : undefined, // Send password only if shown
+            role,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update staff member");
@@ -128,18 +133,16 @@ const StaffManagement = () => {
     setIsSubmitting(true);
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const newStaffMember = {
+    const newStaffMember = {
         firstName,
         lastName,
         phoneNumber,
         email,
-        password: hashedPassword,
+        password,
         role,
       };
 
-      const regapi = "http://localhost:3000/staff/register";
+      const regapi =`${process.env.NEXT_PUBLIC_API_URL}/staff/register`;
       const response = await fetch(regapi, {
         method: "POST",
         headers: {
@@ -151,38 +154,39 @@ const StaffManagement = () => {
       if (response.ok) {
         alert("Staff member added successfully");
       } else {
-        alert("Staff member added successfully");
-        // alert("Failed to add staff member");
+        alert("Failed to add staff member");
       }
       fetchStaff();
       fetchStaffCount();
-
-      setFirstName("");
-      setLastName("");
-      setPhoneNumber("");
-      setEmail("");
-      setPassword("");
-      setRole(LPHStaffRole.OPD);
+      setFirstName  (firstName);
+      setLastName(lastName);
+      setPhoneNumber( phoneNumber);
+      setEmail(email);
+      setPassword(password);
+      setRole(role);
     } catch (error) {
       console.error("Error adding staff member:", error);
-      // alert("Failed to add staff member. Please try again.");
+      alert("Failed to add staff member. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   return (
     <div className="min-h-screen bg-sky-300 flex flex-col items-center pt-6">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Add New Staff Members</h2>
+      <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+        Add New Staff Members
+      </h2>
       <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6 border border-gray-200 mb-8">
         {showForm ? (
           <div>
             <form onSubmit={handleUpdate} className="mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="editFirstName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="editFirstName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     First Name
                   </label>
                   <input
@@ -194,7 +198,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="editLastName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="editLastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Last Name
                   </label>
                   <input
@@ -206,7 +213,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="editPhoneNumber" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="editPhoneNumber"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -218,7 +228,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="editEmail" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="editEmail"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
                   <input
@@ -231,7 +244,10 @@ const StaffManagement = () => {
                 </div>
                 {showPasswordField && ( // Render password field only if showPasswordField is true
                   <div>
-                    <label htmlFor="editPassword" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="editPassword"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Password
                     </label>
                     <input
@@ -244,7 +260,10 @@ const StaffManagement = () => {
                   </div>
                 )}
                 <div>
-                  <label htmlFor="editRole" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="editRole"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Role
                   </label>
                   <select
@@ -262,12 +281,14 @@ const StaffManagement = () => {
                 </div>
               </div>
               <div className="mt-6 flex justify-center">
-                <button
+                <Button
                   type="submit"
+                  isLoading={isLoading}
+                  mt={4}
                   className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
                 >
-                  Update Staff Member
-                </button>
+                  {isLoading ? <Spinner size="md" /> : "   Update Staff Member"}
+                </Button>{" "}
                 <button
                   type="button"
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg ml-4"
@@ -287,7 +308,10 @@ const StaffManagement = () => {
             <form onSubmit={handleAdd} className="mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     First Name
                   </label>
                   <input
@@ -299,7 +323,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Last Name
                   </label>
                   <input
@@ -311,7 +338,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="phoneNumber"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -323,7 +353,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
                   <input
@@ -335,7 +368,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
                   <input
@@ -347,7 +383,10 @@ const StaffManagement = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="role"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Role
                   </label>
                   <select
@@ -365,43 +404,67 @@ const StaffManagement = () => {
                 </div>
               </div>
               <div className="mt-6 flex justify-center">
-                <button
+                <Button
                   type="submit"
+                  isLoading={isLoading}
                   className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
+                  mt={4}
                 >
-                  Add Staff Member
-                </button>
+                  {isLoading ? <Spinner size="md" /> : " Add Staff Member"}
+                </Button>
               </div>
             </form>
           </div>
         )}
         <br />
         <div className="mt-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">View and Update Staff Members</h2>
-          <button
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            View and Update Staff Members
+          </h2>{" "}
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            mt={4}
             onClick={fetchStaff}
             className="bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-lg"
           >
-            Refresh Data
-          </button>
+            {isLoading ? <Spinner size="md" /> : " Refresh Data"}
+          </Button>{" "}
           {noStaffFound && ( // Render message if no staff members found
-            <p className="text-center text-red-500 mt-4">No staff members found.</p>
+            <p className="text-center text-red-500 mt-4">
+              No staff members found.
+            </p>
           )}
           {isLoading ? (
-            <p className="text-center">Loading...</p>
+            <p className="text-center">
+              <Spinner size="md" /> Loading...
+            </p>
           ) : (
             <ul className="divide-y divide-gray-200">
               {staff.map((staffMember) => (
-                <li key={staffMember.id} className="py-4 flex items-center justify-between">
+                <li
+                  key={staffMember.id}
+                  className="py-4 flex items-center justify-between"
+                >
                   <div>
                     <p className="text-l text-gray-900 font-bold">
                       {staffMember.firstName} {staffMember.lastName}
                     </p>
-                    <p className="text-sm text-gray-500">Email: {staffMember.email}</p>
-                    <p className="text-sm text-gray-500">Phone Number: {staffMember.phoneNumber}</p>
-                    <p className="text-sm text-gray-500">Role: {staffMember.role}</p>
-                    <p className="text-sm text-gray-500">Username: {staffMember.username}</p>
-                    <p className="text-sm text-gray-500">Password: {staffMember.password}</p>
+                    <p className="text-sm text-gray-500">
+                      Email: {staffMember.email}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Phone Number: {staffMember.phoneNumber}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Role: {staffMember.role}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Username: {staffMember.username}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Password: {staffMember.password}
+                    </p>
                   </div>
                   <div className="flex items-center space-x-4">
                     <button

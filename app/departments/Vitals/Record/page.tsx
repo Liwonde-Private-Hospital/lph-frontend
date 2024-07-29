@@ -87,7 +87,7 @@ const Vitals = () => {
         return '0';
     };
 
-    const API_URL = "http://lph-backend.onrender.com/vitals";
+    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/vitals`;
 
     // Function to handle form submission
     const handleSubmit = async () => {

@@ -73,14 +73,13 @@ interface FinanceDataItem {
 }
 
 const apiEndpoints = {
-  reception: "http://localhost:3000/reception/day",
-  Phamarcy: "http://localhost:3000/pharmacy-sales/day",
-  opd: "http://localhost:3000/opd/day",
-  finance: "http://localhost:3000/finance/day",
-  dental:"http://localhost:3000/dental/day",
-  Xray:"http://localhost:3000/x-ray/day",
-
-  Lab:"http://localhost:3000/laboratory/day",
+  reception: `${process.env.NEXT_PUBLIC_API_URL}/reception/day`,
+  Phamarcy: `${process.env.NEXT_PUBLIC_API_URL}/ pharmacy - sales / day`,
+  opd: `${process.env.NEXT_PUBLIC_API_URL}/opd/day`,
+  finance: `${process.env.NEXT_PUBLIC_API_URL}/finance/day`,
+  dental: `${process.env.NEXT_PUBLIC_API_URL}/dental/day`,
+  Xray: `${process.env.NEXT_PUBLIC_API_URL}/x-ray/day`,
+  Lab: `${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
 };
 
 const ViewData = () => {

@@ -44,7 +44,7 @@ const Pharmacy = () => {
         const fetchPharmacyData = async () => {
             try {
                 const response = await fetch(
-                  "http://lph-backend.onrender.com/pharmacy"
+                `${process.env.NEXT_PUBLIC_API_URL}/pharmacy`
                 ); // Adjust API endpoint as per your backend
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -60,7 +60,7 @@ const Pharmacy = () => {
         // Fetch patient names from backend
         const fetchPatients = async () => {
             try {
-                const response = await fetch("http://localhost:3000/patients"); // Adjust API endpoint as per your backend
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/patients`); // Adjust API endpoint as per your backend
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -76,7 +76,7 @@ const Pharmacy = () => {
         const fetchDrugNames = async () => {
             try {
                 const response = await fetch(
-                  "http://lph-backend.onrender.com/drugs"
+                 `${process.env.NEXT_PUBLIC_API_URL}/drugs`
                 ); // Adjust API endpoint as per your backend
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -164,7 +164,7 @@ const Pharmacy = () => {
         // Update backend to mark drug as sold and remove from database
         try {
             const response = await fetch(
-              `http://lph-backend.onrender.com/pharmacy/${updatedData[index].ID}`,
+              `${process.env.NEXT_PUBLIC_API_URL}/pharmacy/${updatedData[index].ID}`,
               {
                 method: "DELETE",
                 headers: {
@@ -201,7 +201,7 @@ const Pharmacy = () => {
 
                 // Update backend with each pharmacy item
                 const response = await fetch(
-                  `http://lph-backend.onrender.com/pharmacy/${item.ID}`,
+                  `${process.env.NEXT_PUBLIC_API_URL}/pharmacy/${item.ID}`,
                   {
                     method: "PUT",
                     headers: {

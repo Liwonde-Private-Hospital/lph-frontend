@@ -16,7 +16,7 @@ interface DentalItem {
     Treatment: string;
 }
 
-const API_URL = "http://lph-backend.onrender.com/dental";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/dental`;
 
 const currentDate = new Date();
 const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;

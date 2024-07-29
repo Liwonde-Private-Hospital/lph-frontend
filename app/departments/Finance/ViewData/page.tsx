@@ -22,9 +22,9 @@ interface OPDDataItem {
 
 
 
-const api = "http://localhost:3000/finance/day";
+const api = `${process.env.NEXT_PUBLIC_API_URL}/finance/day`;
 
-const  opdapi="http://localhost:3000/opd/day";
+const  opdapi=`${process.env.NEXT_PUBLIC_API_URL}/opd/day`;
 
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);

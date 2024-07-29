@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
+import { logout } from '@/actions';
+import { LPHStaffRole } from '@/app/enums';
 
 interface SearchResult {
   ID: number;
@@ -31,7 +33,7 @@ export default function Backstore() {
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:3000/Vitals/${name}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Vitals/${name}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -58,24 +60,29 @@ export default function Backstore() {
     event.preventDefault(); // Prevents the default behavior for both <a> and <button>
     setShowProfile(!showProfile);
   };
-
+ const handleLogout = async () => {
+   logout(LPHStaffRole.VITALS);
+  
+ };
   return (
     <div>
       <div id="dash">
         <header>Vitals</header>
         <ul>
-          <a href="#" onClick={toggleProfile}>Profile</a>
-          <li><a href="History">History</a></li>
+          <a href="#" onClick={toggleProfile}>
+            Profile
+          </a>
+          <li>
+            <a href="History">History</a>
+          </li>
+          <li>
+            <a onClick={handleLogout}>Logout</a>
+          </li>
         </ul>
       </div>
       <div id="table">
         <div>
-          <Image
-            src={icon}
-            alt="alt"
-            width={100}
-            height={100}
-          />
+          <Image src={icon} alt="alt" width={100} height={100} />
         </div>
         <div id="searchbar" className="relative w-full max-w-md mb-4">
           <div className="flex">
@@ -84,7 +91,9 @@ export default function Backstore() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Search for patients"
-              className={`flex-grow p-2 border ${isQueryEmpty ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`flex-grow p-2 border ${
+                isQueryEmpty ? "border-red-500" : "border-gray-300"
+              } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             <button
               onClick={handleSearch}
@@ -94,15 +103,18 @@ export default function Backstore() {
             </button>
           </div>
           {isQueryEmpty && (
-            <p className="text-red-700 text-sm mt-1">Please enter a search query.</p>
+            <p className="text-red-700 text-sm mt-1">
+              Please enter a search query.
+            </p>
           )}
-          {error && (
-            <p className="text-red-700 text-sm mt-1">{error}</p>
-          )}
+          {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
           {results.length > 0 && (
             <div className="grid grid-cols-3 gap-4">
               {results.map((result, index) => (
-                <div key={index} className="p-4 border border-gray-300 rounded-md shadow-md">
+                <div
+                  key={index}
+                  className="p-4 border border-gray-300 rounded-md shadow-md"
+                >
                   <p>Amount: {result.Amount}</p>
                   <p>Date: {result.Date}</p>
                   <p>First Name: {result.FirstName}</p>
@@ -140,19 +152,34 @@ export default function Backstore() {
                   />
                 </div>
               </div>
-              <h2 className="text-lg font-semibold text-center">User Profile</h2>
-              <p className="text-sm"><span className="font-semibold">Name:</span> Afick Mulinji</p>
-              <p className="text-sm"><span className="font-semibold">Age:</span> 30</p>
-              <p className="text-sm"><span className="font-semibold">Position:</span> Physician</p>
-              <p className="text-sm"><span className="font-semibold">Phone Number:</span> 0887261094</p>
-              <p className="text-sm"><span className="font-semibold">Email:</span> afickmulini@liwondepvt.com</p>
-              <p className="text-sm"><span className="font-semibold">Status:</span> online🟢</p>
-              <button onClick={toggleProfile} className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md">
+              <h2 className="text-lg font-semibold text-center">
+                User Profile
+              </h2>
+              <p className="text-sm">
+                <span className="font-semibold">Name:</span> Afick Mulinji
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Age:</span> 30
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Position:</span> Physician
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Phone Number:</span> 0887261094
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Email:</span>{" "}
+                afickmulini@liwondepvt.com
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Status:</span> online🟢
+              </p>
+              <button
+                onClick={toggleProfile}
+                className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md"
+              >
                 Close
               </button>
-
-
-              
             </div>
           </div>
         )}
