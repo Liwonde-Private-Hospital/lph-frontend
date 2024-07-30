@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useRef } from 'react';
 import { models } from 'powerbi-client';
+import SideBar from '../adminLayout';
 
 export type PowerBIEmbedProps = {
   accessToken: string;
@@ -93,7 +94,10 @@ const PowerBIEmbed: React.FC<PowerBIEmbedProps> = ({ accessToken, reportId, grou
     getEmbedUrl();
   }, [accessToken, reportId, groupId]);
 
-  return <div ref={embedContainer} style={{ height: '600px', width: '100%' }} />;
+  return (<SideBar>
+      <div ref={embedContainer} style={{ height: "600px", width: "100%" }} />
+    </SideBar>
+  );
 };
 
 export default PowerBIEmbed;
