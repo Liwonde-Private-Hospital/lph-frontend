@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/componets/Button";
+import Button from "@/components/Button";
 import { TypeAnimation } from "react-type-animation";
 import "./Styles/HeroSection.css";
 import { motion, useInView, useAnimation } from "framer-motion";
@@ -14,7 +14,7 @@ export default function Herosection() {
       mainControls.start("visible");
     }
   }, [isInView, mainControls]); // Include mainControls in the dependency array
-  
+
   return (
     <>
       {" "}
@@ -31,7 +31,7 @@ export default function Herosection() {
             transition={{
               duration: 1,
               delay: 0.5,
-            }} 
+            }}
             className=""
           >
             <h1 className="hospital-name">

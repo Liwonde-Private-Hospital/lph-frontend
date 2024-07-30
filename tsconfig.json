@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,19 +18,17 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@heroicons/*": ["./node_modules/@heroicons/*"],
+      "@/*": ["./*"]
     },
     "forceConsistentCasingInFileNames": true
-  },
+  },"typeRoots": ["node_modules/@types", "node_modules/@heroicons"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "no.tfggfs"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    ".next/types/**/*.ts",
+    "no.tfggfs"
+  ],
+  "exclude": ["node_modules"]
 }

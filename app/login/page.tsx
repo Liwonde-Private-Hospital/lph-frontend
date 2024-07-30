@@ -2,7 +2,7 @@
 import React from "react";
 import { Center } from "@chakra-ui/react";
 import "./style.css";
-import LoginForm from "@/componets/LoginForm";
+import LoginForm from "@/components/LoginForm";
 const Login: React.FC = () => {
   return (
     <Center h="100vh">
@@ -14,4 +14,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
- 

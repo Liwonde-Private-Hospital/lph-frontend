@@ -1,16 +1,16 @@
-import React from 'react';
-import './Service.css';
-import logo from "../../images/icon.png"
-import Image from 'next/image';
-import Link from 'next/link';
-import Header from '@/componets/navbar';
-import Footer from '@/componets/footer'
-import Button from '@/componets/Button'
+import React from "react";
+import "./Service.css";
+import logo from "../../images/icon.png";
+import Image from "next/image";
+import Link from "next/link";
+import Header from "@/components/navbar";
+import Footer from "@/components/footer";
+import Button from "@/components/Button";
 
 function Service() {
   return (
     <>
-      <Header/>
+      <Header />
       <div className="zigege">
         <div>
           {/* Replace <img> tag with <Image /> component */}
@@ -22,7 +22,7 @@ function Service() {
             height={400}
           />
         </div>
-        <div className='sevdiv'>
+        <div className="sevdiv">
           {/* Replace <img> tag with <Image /> component */}
           <Image
             src={logo}
@@ -34,16 +34,21 @@ function Service() {
 
           <div className="service-description">
             <h2 className="kulandila">WELCOME TO THE RECEPTION SERVICE</h2>
-            <p className="mawu">At our reception, we strive to provide a warm and welcoming environment for all our visitors. Our dedicated team of receptionists is here to assist you with any inquiries or assistance you may need during your visit to our facility</p>
+            <p className="mawu">
+              At our reception, we strive to provide a warm and welcoming
+              environment for all our visitors. Our dedicated team of
+              receptionists is here to assist you with any inquiries or
+              assistance you may need during your visit to our facility
+            </p>
           </div>
         </div>
         <Link href="/pages/Appointment">
-          <div className='divyabt'>
-            <Button/>
+          <div className="divyabt">
+            <Button />
           </div>
         </Link>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

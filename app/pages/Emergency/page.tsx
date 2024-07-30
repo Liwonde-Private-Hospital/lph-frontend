@@ -1,12 +1,12 @@
 "use client";
 
-import React from 'react';
-import './dept.css';
-import Image from 'next/image';
-import icon from '../../images/icon.png';
+import React from "react";
+import "./dept.css";
+import Image from "next/image";
+import icon from "../../images/icon.png";
 
-import Footer from '@/componets/footer';
-import Header from '@/componets/navbar';
+import Footer from "@/components/footer";
+import Header from "@/components/navbar";
 
 export default function Page() {
   const handleCallClick = () => {
@@ -17,21 +17,34 @@ export default function Page() {
   return (
     <>
       <Header />
-      <div className='divyadept'>
-        <div className='deptinfo'>
-          <div className='tiyikelogo'>
-            <Image src={icon} alt="zilogo" width={200} height={20} className='zitobe' />
+      <div className="divyadept">
+        <div className="deptinfo">
+          <div className="tiyikelogo">
+            <Image
+              src={icon}
+              alt="zilogo"
+              width={200}
+              height={20}
+              className="zitobe"
+            />
           </div>
-          <div className='infoija'>
-            <h1 className='deptTitle'>Emergency Department</h1>
-            <p className='deptdis'>
-              At the heart of our emergency department is a commitment to patient-centric care. Through innovative technology and a human touch, we strive to alleviate distress and instill confidence in every interaction. From initial intake to follow-up care, our goal is to empower individuals with the tools and resources needed to navigate any health challenge with resilience and assurance.
+          <div className="infoija">
+            <h1 className="deptTitle">Emergency Department</h1>
+            <p className="deptdis">
+              At the heart of our emergency department is a commitment to
+              patient-centric care. Through innovative technology and a human
+              touch, we strive to alleviate distress and instill confidence in
+              every interaction. From initial intake to follow-up care, our goal
+              is to empower individuals with the tools and resources needed to
+              navigate any health challenge with resilience and assurance.
             </p>
-            <span className='deptgcpd'>To contact the department </span>
-            <button onClick={handleCallClick}><a>call now</a></button>
+            <span className="deptgcpd">To contact the department </span>
+            <button onClick={handleCallClick}>
+              <a>call now</a>
+            </button>
           </div>
         </div>
-        <div className='deptImg'></div>
+        <div className="deptImg"></div>
       </div>
       <Footer />
     </>

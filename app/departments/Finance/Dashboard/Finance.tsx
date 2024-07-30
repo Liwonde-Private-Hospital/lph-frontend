@@ -1,13 +1,12 @@
-'use client';
-import React, { useState } from 'react';
-import './style.css';
-import icon from '../../../favicon.ico';
-import Image from 'next/image';
-import { SearchResultsList } from '@/componets/searchResultsList';
-import { json } from 'stream/consumers';
-import { logout } from '@/actions';
-import { LPHStaffRole } from '@/app/enums';
-
+"use client";
+import React, { useState } from "react";
+import "./style.css";
+import icon from "../../../favicon.ico";
+import Image from "next/image";
+import { SearchResultsList } from "@/components/searchResultsList";
+import { json } from "stream/consumers";
+import { logout } from "@/actions";
+import { LPHStaffRole } from "@/app/enums";
 
 interface SearchResult {
   ID: number;
@@ -20,13 +19,15 @@ interface SearchResult {
 }
 
 export default function Backstore() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isQueryEmpty, setIsQueryEmpty] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showProfile, setShowProfile] = useState(false);
 
-  const toggleProfile = (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>) => {
+  const toggleProfile = (
+    event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
     setShowProfile(!showProfile);
   };
@@ -34,40 +35,40 @@ export default function Backstore() {
   const handleSearch = async () => {
     if (!name) {
       setIsQueryEmpty(true);
-      setError('Please enter a search query.');
+      setError("Please enter a search query.");
       return;
     }
 
     setIsQueryEmpty(false);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`
+      );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log('API Response:', data);
+      console.log("API Response:", data);
 
       if (Array.isArray(data.results)) {
         setResults(data.results);
-        
       } else {
         setResults([]);
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      console.error("Error fetching search results:", error);
       setResults([]);
-      setError('name not found');
+      setError("name not found");
       setTimeout(() => {
-        setError('');
+        setError("");
       }, 3000);
     }
   };
- const handleLogout = async () => {
-   logout(LPHStaffRole.FINANCE);
-  
- };
+  const handleLogout = async () => {
+    logout(LPHStaffRole.FINANCE);
+  };
   return (
     <div>
       <div id="dash">
