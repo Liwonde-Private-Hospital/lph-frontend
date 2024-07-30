@@ -1,3 +1,69 @@
 @tailwind base;
-@tailwind Component;
+@tailwind components;
 @tailwind utilities;
+
+/* Custom CSS for glowing effect */
+@layer utilities {
+    .glow-on-hover {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4A90E2;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        overflow: hidden;
+        transition: background-color 0.3s ease;
+    }
+
+    .glow-on-hover::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%;
+        height: 300%;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transition: width 0.4s ease, height 0.4s ease;
+        transform: translate(-50%, -50%);
+    }
+
+    .glow-on-hover:hover::before {
+        width: 0;
+        height: 0;
+    }
+
+    .glow-on-hover:hover {
+        background-color: #357ABD;
+    }
+
+    .highlight-transition {
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .highlight-transition:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.05);
+    }
+  .glow-spinner {
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top: 8px solid #4A90E2;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  .glow-spinner-loading {
+    border-top-color: #FF5733; /* Change color when loading */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}

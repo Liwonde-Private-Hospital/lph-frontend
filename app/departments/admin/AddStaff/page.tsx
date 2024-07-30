@@ -1,8 +1,28 @@
-'use client'
+"use client";
 import { useState, useEffect, FormEvent } from "react";
 import { LPHStaffRole } from "@/app/enums";
 import axios from "axios";
-import { Button, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Spinner,
+  Select,
+  Input,
+  FormControl,
+  FormLabel,
+  IconButton,
+} from "@chakra-ui/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  MdSearch,
+  MdExpandMore,MdDelete ,
+  MdEdit,
+  MdPersonAdd,
+  MdVisibility,
+  MdVisibilityOff,
+} from "react-icons/md";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface StaffMember {
   id: number;
@@ -14,477 +34,403 @@ interface StaffMember {
   password: string;
   role: LPHStaffRole;
 }
+
 interface CountAllStaffInterface {
   count: number;
 }
 
-const StaffManagement = () => {
+const TABS = [
+  { label: "All", value: "all" },
+  { label: "Admin", value: "admin" },
+  { label: "Doctors", value: "doctors" },
+];
+
+export default function LIwondePrivateHospitalStaffManagement() {
+  const TABLE_HEAD = [
+    "ID",
+    "Name",
+    "Username",
+    "Phone Number",
+    "Email",
+    "Role",
+    "Actions",
+  ];
+
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedStaff, setSelectedStaff] = useState<StaffMember | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [showPasswordField, setShowPasswordField] = useState(false); // State for showing password field
-  const [noStaffFound, setNoStaffFound] = useState(false); // State to track no staff members found
-  const [staffCount, setStaffCount] = useState(0); // State for staff count
-
-  // State for form fields
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState<LPHStaffRole>(LPHStaffRole.OPD);
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [noStaffFound, setNoStaffFound] = useState(false);
+  const [staffCount, setStaffCount] = useState(0);
+  const [formFields, setFormFields] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    role: LPHStaffRole.OPD,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [staffPerPage] = useState(4); // Number of staff members per page
+  const [adminPassword, setAdminPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const rolesOptions = Object.values(LPHStaffRole);
 
+  useEffect(() => {
+    fetchStaff();
+    fetchStaffCount();
+  }, [currentPage]);
+
   const fetchStaff = async () => {
     try {
-      const response = await axios.get<StaffMember[]>(`${process.env.NEXT_PUBLIC_API_URL}/Staff/view-all-staff`);
-      if (response.data.length === 0) {
-        setNoStaffFound(true); // Set state when no staff members are found
-      } else {
-        setNoStaffFound(false); // Reset state if staff members are found
-        setStaff(response.data);
-        console.log('Fetched staff:', response.data); // Debugging log
-      }
+      const { data } = await axios.get<StaffMember[]>(
+        `${API_URL}/Staff/view-all-staff`,
+        { params: { page: currentPage, limit: staffPerPage } }
+      );
+      setStaff(data);
+      setNoStaffFound(data.length === 0);
     } catch (error) {
-      console.error('Error fetching staff data:', error);
+      console.error("Error fetching staff data:", error);
+      toast.error("Failed to fetch staff data.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const countapi=`${process.env.NEXT_PUBLIC_API_URL}/staff/count-all-staff`
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const fetchStaffCount = async () => {
     try {
-      const response = await axios.get<CountAllStaffInterface>(countapi);
-      setStaffCount(response.data.count);
+      const { data } = await axios.get<CountAllStaffInterface>(
+        `${API_URL}/staff/count-all-staffs`
+      );
+      setStaffCount(data.count);
     } catch (error) {
-      console.error('Error fetching staff count:', error);
+      console.error("Error fetching staff count:", error);
+      toast.error("Failed to fetch staff count.");
     }
   };
 
-  useEffect(() => {
-    fetchStaff();
-    fetchStaffCount();
-  }, []);
-
   const handleEdit = (staff: StaffMember) => {
     setSelectedStaff(staff);
-    setFirstName(staff.firstName);
-    setLastName(staff.lastName);
-    setPhoneNumber(staff.phoneNumber);
-    setEmail(staff.email);
-    setRole(staff.role);
+    setFormFields({
+      firstName: staff.firstName,
+      lastName: staff.lastName,
+      phoneNumber: staff.phoneNumber,
+      email: staff.email,
+      password: "",
+      role: staff.role,
+    });
     setShowForm(true);
-    setShowPasswordField(true); // Show password field when editing
+    setShowPasswordField(true);
   };
 
-  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedStaff) return;
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Staff/update-staff/${selectedStaff.id}`,
+        `${API_URL}/Staff/update-staff/${selectedStaff.id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            firstName,
-            lastName,
-            phoneNumber,
-            email,
-            password: showPasswordField ? password : undefined, // Send password only if shown
-            role,
+            ...formFields,
+            password: showPasswordField ? formFields.password : undefined,
           }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to update staff member");
-      }
+      if (!response.ok) throw new Error("Failed to update staff member");
 
+      toast.success("Staff member updated successfully.");
       fetchStaff();
       fetchStaffCount();
-      setShowForm(false);
-      setSelectedStaff(null);
-      setShowPasswordField(true); // Hide password field after update
+      resetForm();
     } catch (error) {
       console.error("Error updating staff member:", error);
-      alert("Failed to update staff member. Please try again.");
+      toast.error("Failed to update staff member. Please try again.");
     }
   };
 
-  const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAdd = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Validate form fields
+    const { firstName, lastName, phoneNumber, email, password } = formFields;
     if (!firstName || !lastName || !phoneNumber || !email || !password) {
-      alert("All fields are required.");
+      toast.error("All fields are required.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-    const newStaffMember = {
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        password,
-        role,
-      };
-
-      const regapi =`${process.env.NEXT_PUBLIC_API_URL}/staff/register`;
-      const response = await fetch(regapi, {
+      const response = await fetch(`${API_URL}/staff/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newStaffMember),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formFields),
       });
 
       if (response.ok) {
-        alert("Staff member added successfully");
+        toast.success("Staff member added successfully.");
+        fetchStaff();
+        fetchStaffCount();
+        resetForm();
       } else {
-        alert("Failed to add staff member");
+        toast.error("Failed to add staff member.");
       }
-      fetchStaff();
-      fetchStaffCount();
-      setFirstName  (firstName);
-      setLastName(lastName);
-      setPhoneNumber( phoneNumber);
-      setEmail(email);
-      setPassword(password);
-      setRole(role);
     } catch (error) {
       console.error("Error adding staff member:", error);
-      alert("Failed to add staff member. Please try again.");
+      toast.error("Failed to add staff member. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleDelete = async (staffId: number) => {
+    try {
+      const response = await fetch(`${API_URL}/Staff/delete-staff/${staffId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) throw new Error("Failed to delete staff member");
+
+      toast.success("Staff member deleted successfully.");
+      fetchStaff();
+      fetchStaffCount();
+      resetForm();
+    } catch (error) {
+      console.error("Error deleting staff member:", error);
+      toast.error("Failed to delete staff member. Please try again.");
+    }
+  };
+
+  const resetForm = () => {
+    setFormFields({
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      email: "",
+      password: "",
+      role: LPHStaffRole.OPD,
+    });
+    setSelectedStaff(null);
+    setShowForm(false);
+    setShowPasswordField(false);
+    setAdminPassword("");
+    setShowPassword(false);
+  };
+
+  const totalPages = Math.ceil(staffCount / staffPerPage);
+
   return (
-    <div className="min-h-screen bg-sky-300 flex flex-col items-center pt-6">
+    <div className="min-h-screen bg-white flex flex-col items-center pt-6">
       <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
-        Add New Staff Members
+        Liwonde Private Hospital Staff Members
       </h2>
-      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6 border border-gray-200 mb-8">
+      <div className="w-full max-w-7xl bg-white shadow-md rounded-lg p-6 border border-gray-200 mb-8">
         {showForm ? (
-          <div>
-            <form onSubmit={handleUpdate} className="mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="editFirstName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    id="editFirstName"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="editLastName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    id="editLastName"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="editPhoneNumber"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    id="editPhoneNumber"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="editEmail"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="editEmail"
-                    type="email"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                {showPasswordField && ( // Render password field only if showPasswordField is true
-                  <div>
-                    <label
-                      htmlFor="editPassword"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <input
-                      id="editPassword"
-                      type="password"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                )}
-                <div>
-                  <label
-                    htmlFor="editRole"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Role
-                  </label>
-                  <select
-                    id="editRole"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value as LPHStaffRole)}
-                  >
-                    {rolesOptions.map((roleOption) => (
-                      <option key={roleOption} value={roleOption}>
-                        {roleOption}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="mt-6 flex justify-center">
-                <Button
-                  type="submit"
-                  isLoading={isLoading}
-                  mt={4}
-                  className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
-                >
-                  {isLoading ? <Spinner size="md" /> : "   Update Staff Member"}
-                </Button>{" "}
-                <button
-                  type="button"
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg ml-4"
-                  onClick={() => {
-                    setShowForm(false);
-                    setSelectedStaff(null);
-                    setShowPasswordField(false); // Hide password field when canceling
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <div>
-            <form onSubmit={handleAdd} className="mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    id="lastName"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="phoneNumber"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    id="phoneNumber"
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="role"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Role
-                  </label>
-                  <select
-                    id="role"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 sm:text-sm"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value as LPHStaffRole)}
-                  >
-                    {rolesOptions.map((roleOption) => (
-                      <option key={roleOption} value={roleOption}>
-                        {roleOption}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="mt-6 flex justify-center">
-                <Button
-                  type="submit"
-                  isLoading={isLoading}
-                  className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
-                  mt={4}
-                >
-                  {isLoading ? <Spinner size="md" /> : " Add Staff Member"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        )}
-        <br />
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
-            View and Update Staff Members
-          </h2>{" "}
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            mt={4}
-            onClick={fetchStaff}
-            className="bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-lg"
+          <form
+            onSubmit={selectedStaff ? handleUpdate : handleAdd}
+            className="mb-6"
           >
-            {isLoading ? <Spinner size="md" /> : " Refresh Data"}
-          </Button>{" "}
-          {noStaffFound && ( // Render message if no staff members found
-            <p className="text-center text-red-500 mt-4">
-              No staff members found.
-            </p>
-          )}
-          {isLoading ? (
-            <p className="text-center">
-              <Spinner size="md" /> Loading...
-            </p>
-          ) : (
-            <ul className="divide-y divide-gray-200">
-              {staff.map((staffMember) => (
-                <li
-                  key={staffMember.id}
-                  className="py-4 flex items-center justify-between"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.entries(formFields).map(
+                ([key, value]) =>
+                  key !== "role" &&
+                  key !== "password" && (
+                    <FormControl key={key}>
+                      <FormLabel
+                        htmlFor={`edit${
+                          key.charAt(0).toUpperCase() + key.slice(1)
+                        }`}
+                        className="text-gray-700"
+                      >
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </FormLabel>
+                      <Input
+                        id={`edit${key.charAt(0).toUpperCase() + key.slice(1)}`}
+                        type={key === "email" ? "email" : "text"}
+                        className="mt-1 border border-green-500 rounded-md"
+                        value={value}
+                        onChange={(e) =>
+                          setFormFields((prev) => ({
+                            ...prev,
+                            [key]: e.target.value,
+                          }))
+                        }
+                      />
+                    </FormControl>
+                  )
+              )}
+              <FormControl>
+                <FormLabel htmlFor="editPassword" className="text-gray-700">
+                  Password
+                </FormLabel>
+                <div className="relative">
+                  <Input
+                    id="editPassword"
+                    type={showPassword ? "text" : "password"}
+                    className="mt-1 border border-green-500 rounded-md"
+                    value={formFields.password}
+                    onChange={(e) =>
+                      setFormFields((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
+                  />
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    icon={showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                    size="sm"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  />
+                </div>
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="editRole" className="text-gray-700">
+                  Role
+                </FormLabel>
+                <Select
+                  id="editRole"
+                  className="mt-1 border border-green-500 rounded-md"
+                  value={formFields.role}
+                  onChange={(e) =>
+                    setFormFields((prev) => ({
+                      ...prev,
+                      role: e.target.value as LPHStaffRole,
+                    }))
+                  }
                 >
-                  <div>
-                    <p className="text-l text-gray-900 font-bold">
-                      {staffMember.firstName} {staffMember.lastName}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Email: {staffMember.email}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Phone Number: {staffMember.phoneNumber}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Role: {staffMember.role}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Username: {staffMember.username}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Password: {staffMember.password}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={() => handleEdit(staffMember)}
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-          <div className="mt-4">
-            {/* <h3 className="text-xl font-semibold text-gray-900"><a href="http://localhost:3000/staff/count-all-staff"><button>Number of staff:{countapi}</button></a></h3> */}
+                  {rolesOptions.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div className="flex justify-end mt-6">
+              <Button
+                type="submit"
+                className="mr-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                isLoading={isSubmitting}
+              >
+                {selectedStaff ? "Update Staff" : "Add Staff"}
+              </Button>
+              <Button
+                onClick={resetForm}
+                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <Button
+            onClick={() => setShowForm(true)}
+            className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600"
+          >
+            <MdPersonAdd className="mr-2" />
+            Add New Staff
+          </Button>
+        )}
+
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <Spinner size="xl" color="green.500" />
           </div>
-        </div>
+        ) : noStaffFound ? (
+          <p className="text-center text-gray-500 mt-6">
+            No staff members found.
+          </p>
+        ) : (
+          <>
+            <table className="w-full bg-white mt-6 border border-gray-200 rounded-lg">
+              <thead>
+                <tr className="bg-green-500 text-white">
+                  {TABLE_HEAD.map((head) => (
+                    <th
+                      key={head}
+                      className="px-4 py-2 text-left text-sm font-medium text-gray-200 border-b border-gray-200"
+                    >
+                      {head}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {staff.map((staffMember) => (
+                  <tr key={staffMember.id}>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.id}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.firstName} {staffMember.lastName}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.username}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.phoneNumber}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.email}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200">
+                      {staffMember.role}
+                    </td>
+                    <td className="px-4 py-2 border-b border-gray-200 flex justify-end space-x-2">
+                      <IconButton
+                        onClick={() => handleEdit(staffMember)}
+                        className="text-gray-500 hover:text-gray-700"
+                        icon={<MdEdit />}
+                        size="sm"
+                        aria-label="Edit staff"
+                      />
+                      <IconButton
+                        onClick={() => handleDelete(staffMember.id)}
+                        className="text-red-500 hover:text-red-700"
+                        icon={<MdDelete />}
+                        size="sm"
+                        aria-label="Delete staff"
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex justify-between mt-4">
+              <Button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                isDisabled={currentPage === 1}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+              >
+                Previous
+              </Button>
+              <span className="text-gray-500">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                isDisabled={currentPage === totalPages}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+              >
+                Next
+              </Button>
+            </div>
+          </>
+        )}
       </div>
+      <ToastContainer />
     </div>
   );
-};
-
-export default StaffManagement;
+}

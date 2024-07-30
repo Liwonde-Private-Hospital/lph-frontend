@@ -1,53 +1,52 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
-import { RadioGroup } from '@headlessui/react';
+import { RadioGroup } from "@headlessui/react";
 
-
-import Header from '@/componets/navbar';
-import Footer from '@/componets/footer';
-import { StarIcon } from '@chakra-ui/icons';
-import Navbar from '@/componets/navbar';
-import ScrollToTopButton from '../Scroll/scroll';
+import Header from "@/components/navbar";
+import Footer from "@/components/footer";
+import { StarIcon } from "@chakra-ui/icons";
+import Navbar from "@/components/navbar";
+import ScrollToTopButton from "../Scroll/scroll";
 
 // Define the phone number
 const phoneNumber = "0888597087"; // Replace with the actual phone number
 
 const product = {
-  name: 'Ambulance',
-  price: 'Service Rating',
+  name: "Ambulance",
+  price: "Service Rating",
 
   breadcrumbs: [
-    { id: 1, name: 'Fast'},
-    { id: 2, name: 'Efficient'},
+    { id: 1, name: "Fast" },
+    { id: 2, name: "Efficient" },
   ],
-  
+
   colors: [
-    { name: 'White', class: 'bg-red', selectedClass: 'ring-gray-400' },
-    { name: 'Gray', class: 'bg-yellow-200', selectedClass: 'ring-gray-400' },
-    { name: 'Black', class: 'bg-green-900', selectedClass: 'ring-gray-900' },
+    { name: "White", class: "bg-red", selectedClass: "ring-gray-400" },
+    { name: "Gray", class: "bg-yellow-200", selectedClass: "ring-gray-400" },
+    { name: "Black", class: "bg-green-900", selectedClass: "ring-gray-900" },
   ],
   sizes: [
-    { name: 'Urban', inStock: true },
-    { name: 'Rural', inStock: true },
-    { name: 'Village', inStock: true },
-    { name: 'We There', inStock: true },
+    { name: "Urban", inStock: true },
+    { name: "Rural", inStock: true },
+    { name: "Village", inStock: true },
+    { name: "We There", inStock: true },
   ],
   description:
-    'Book Fast and reliable ambulance services from Liwonde Private Hospital. Contact us from wherever you are by following the below simple steps:',
+    "Book Fast and reliable ambulance services from Liwonde Private Hospital. Contact us from wherever you are by following the below simple steps:",
   highlights: [
-    'Call via our numbers',
-    'Describe your location or share',
-    'Keep in touch with the driver',
-    'You will be at the hospital safe and sound',
+    "Call via our numbers",
+    "Describe your location or share",
+    "Keep in touch with the driver",
+    "You will be at the hospital safe and sound",
   ],
   details:
-    'Choose your method of payment at the finance office department. There are a lot of payment options.',
+    "Choose your method of payment at the finance office department. There are a lot of payment options.",
 };
-const reviews = {  average: 4, totalCount: 117 };
+const reviews = { average: 4, totalCount: 117 };
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
@@ -65,11 +64,17 @@ export default function Example() {
       <div className="bg-white">
         <div className="pt-6">
           <nav aria-label="Breadcrumb">
-            <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            <ol
+              role="list"
+              className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
+            >
               {product.breadcrumbs.map((breadcrumb) => (
                 <li key={breadcrumb.id}>
                   <div className="flex items-center">
-                    <a href="#" className="mr-2 text-sm font-medium text-gray-900">
+                    <a
+                      href="#"
+                      className="mr-2 text-sm font-medium text-gray-900"
+                    >
                       {breadcrumb.name}
                     </a>
                     <svg
@@ -86,7 +91,11 @@ export default function Example() {
                 </li>
               ))}
               <li className="text-sm">
-                <a href="#" aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
+                <a
+                  href="#"
+                  aria-current="page"
+                  className="font-medium text-gray-500 hover:text-gray-600"
+                >
                   {product.name}
                 </a>
               </li>
@@ -96,28 +105,41 @@ export default function Example() {
           {/* Image gallery */}
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-              <img src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/442467873_847654704047957_8346954052644180733_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG8VOENo0iUVLl0SSqQWQ_WLiOkLMoeSDkuI6Qsyh5IORSUlrwiWW4CVliScexYhlwfin1NsbTlKLPOk4xGECiz&_nc_ohc=Xs9Jn0NYRgoQ7kNvgEbspGa&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYB8yf15m_6Kbqq3NteQaFhyBnNKUSmqkDYJ8FcxLZe8IA&oe=667CBCF8' alt="Ambulance" />
+              <img
+                src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/442467873_847654704047957_8346954052644180733_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG8VOENo0iUVLl0SSqQWQ_WLiOkLMoeSDkuI6Qsyh5IORSUlrwiWW4CVliScexYhlwfin1NsbTlKLPOk4xGECiz&_nc_ohc=Xs9Jn0NYRgoQ7kNvgEbspGa&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYB8yf15m_6Kbqq3NteQaFhyBnNKUSmqkDYJ8FcxLZe8IA&oe=667CBCF8"
+                alt="Ambulance"
+              />
             </div>
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
               <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                <img src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441966287_847654050714689_7336397440920767764_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHFuh0QzdCHy7-8UnKy2t8eu8aU3IDau0-7xpTcgNq7T67BUfFFwVBuWGy27AyFILgGoC8eo5UHPm8sOB_np7zL&_nc_ohc=2tqxrRik86wQ7kNvgFS3Txl&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYD9SBxMjhx2yg3hXL0CWi-XxN4veSZKahpwDx2jAh9MbA&oe=667C9C76' alt="Ambulance" />
+                <img
+                  src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/441966287_847654050714689_7336397440920767764_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHFuh0QzdCHy7-8UnKy2t8eu8aU3IDau0-7xpTcgNq7T67BUfFFwVBuWGy27AyFILgGoC8eo5UHPm8sOB_np7zL&_nc_ohc=2tqxrRik86wQ7kNvgFS3Txl&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYD9SBxMjhx2yg3hXL0CWi-XxN4veSZKahpwDx2jAh9MbA&oe=667C9C76"
+                  alt="Ambulance"
+                />
               </div>
             </div>
             <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-              <img src='https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/436367698_848299100650184_456765348499889004_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFLHMW-lMTsONF8kfmC0VT4EQbAF--0vUwRBsAX77S9TPtb3JjJr9TECEndSgY5jbBxj8DMjoszz50kSrYFal0p&_nc_ohc=Fk35agWCd3QQ7kNvgGtSQTy&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYD_7l_0_roo5XBTRcf222wYT9T7GrzxmWrSMBoMR7c1xw&oe=667CB9FF' alt="Ambulance" />
+              <img
+                src="https://scontent.fblz1-1.fna.fbcdn.net/v/t39.30808-6/436367698_848299100650184_456765348499889004_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFLHMW-lMTsONF8kfmC0VT4EQbAF--0vUwRBsAX77S9TPtb3JjJr9TECEndSgY5jbBxj8DMjoszz50kSrYFal0p&_nc_ohc=Fk35agWCd3QQ7kNvgGtSQTy&_nc_pt=5&_nc_zt=23&_nc_ht=scontent.fblz1-1.fna&oh=00_AYD_7l_0_roo5XBTRcf222wYT9T7GrzxmWrSMBoMR7c1xw&oe=667CB9FF"
+                alt="Ambulance"
+              />
             </div>
           </div>
 
           {/* Product info */}
           <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                {product.name}
+              </h1>
             </div>
 
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+              <p className="text-3xl tracking-tight text-gray-900">
+                {product.price}
+              </p>
 
               {/* Reviews */}
               <div className="mt-6">
@@ -128,15 +150,20 @@ export default function Example() {
                       <StarIcon
                         key={rating}
                         className={classNames(
-                          reviews.average > rating ? 'text-gray-900' : 'text-gray-200',
-                          'h-5 w-5 flex-shrink-0'
+                          reviews.average > rating
+                            ? "text-gray-900"
+                            : "text-gray-200",
+                          "h-5 w-5 flex-shrink-0"
                         )}
                         aria-hidden="true"
                       />
                     ))}
                   </div>
                   <p className="sr-only">{reviews.average} out of 5 stars</p>
-                  <a href="#" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  >
                     {reviews.totalCount} reviews
                   </a>
                 </div>
@@ -145,10 +172,18 @@ export default function Example() {
               <form className="mt-10">
                 {/* Colors */}
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Stages Mark</h3>
+                  <h3 className="text-sm font-medium text-gray-900">
+                    Stages Mark
+                  </h3>
 
-                  <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                    <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
+                  <RadioGroup
+                    value={selectedColor}
+                    onChange={setSelectedColor}
+                    className="mt-4"
+                  >
+                    <RadioGroup.Label className="sr-only">
+                      Choose a color
+                    </RadioGroup.Label>
                     <div className="flex items-center space-x-3">
                       {product.colors.map((color) => (
                         <RadioGroup.Option
@@ -157,9 +192,9 @@ export default function Example() {
                           className={({ active, checked }) =>
                             classNames(
                               color.selectedClass,
-                              active && checked ? 'ring ring-offset-1' : '',
-                              !active && checked ? 'ring-2' : '',
-                              'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
+                              active && checked ? "ring ring-offset-1" : "",
+                              !active && checked ? "ring-2" : "",
+                              "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
                             )
                           }
                         >
@@ -170,7 +205,7 @@ export default function Example() {
                             aria-hidden="true"
                             className={classNames(
                               color.class,
-                              'h-8 w-8 rounded-full border border-black border-opacity-10'
+                              "h-8 w-8 rounded-full border border-black border-opacity-10"
                             )}
                           />
                         </RadioGroup.Option>
@@ -182,12 +217,19 @@ export default function Example() {
                 {/* Sizes */}
                 <div className="mt-10">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-gray-900">Locations</h3>
-                   
+                    <h3 className="text-sm font-medium text-gray-900">
+                      Locations
+                    </h3>
                   </div>
 
-                  <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
-                    <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
+                  <RadioGroup
+                    value={selectedSize}
+                    onChange={setSelectedSize}
+                    className="mt-4"
+                  >
+                    <RadioGroup.Label className="sr-only">
+                      Choose a size
+                    </RadioGroup.Label>
                     <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                       {product.sizes.map((size) => (
                         <RadioGroup.Option
@@ -197,22 +239,26 @@ export default function Example() {
                           className={({ active }) =>
                             classNames(
                               size.inStock
-                                ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-                                : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                              active ? 'ring-2 ring-indigo-500' : '',
-                              'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
+                                ? "cursor-pointer bg-white text-gray-900 shadow-sm"
+                                : "cursor-not-allowed bg-gray-50 text-gray-200",
+                              active ? "ring-2 ring-indigo-500" : "",
+                              "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
                             )
                           }
                         >
                           {({ active, checked }) => (
                             <>
-                              <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
+                              <RadioGroup.Label as="span">
+                                {size.name}
+                              </RadioGroup.Label>
                               {size.inStock ? (
                                 <span
                                   className={classNames(
-                                    active ? 'border' : 'border-2',
-                                    checked ? 'border-indigo-500' : 'border-transparent',
-                                    'pointer-events-none absolute -inset-px rounded-md'
+                                    active ? "border" : "border-2",
+                                    checked
+                                      ? "border-indigo-500"
+                                      : "border-transparent",
+                                    "pointer-events-none absolute -inset-px rounded-md"
                                   )}
                                   aria-hidden="true"
                                 />
@@ -227,7 +273,13 @@ export default function Example() {
                                     preserveAspectRatio="none"
                                     stroke="currentColor"
                                   >
-                                    <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                    <line
+                                      x1={0}
+                                      y1={100}
+                                      x2={100}
+                                      y2={0}
+                                      vectorEffect="non-scaling-stroke"
+                                    />
                                   </svg>
                                 </span>
                               )}
@@ -256,12 +308,16 @@ export default function Example() {
                 <h3 className="sr-only">Description</h3>
 
                 <div className="space-y-6">
-                  <p className="text-base text-gray-900">{product.description}</p>
+                  <p className="text-base text-gray-900">
+                    {product.description}
+                  </p>
                 </div>
               </div>
 
               <div className="mt-10">
-                <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
+                <h3 className="text-sm font-medium text-gray-900">
+                  Highlights
+                </h3>
 
                 <div className="mt-4">
                   <ul role="list" className="list-disc space-y-2 pl-4 text-sm">

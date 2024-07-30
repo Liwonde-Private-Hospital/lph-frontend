@@ -1,14 +1,14 @@
-'use client'
-import React, { useState } from 'react';
-import './style.css';
-import icon from '../../../favicon.ico';
-import Image from 'next/image';
-import LogoutButton from '@/componets/LogoutButton';
-import { logout } from '@/actions';
-import { LPHStaffRole } from '@/app/enums';
+"use client";
+import React, { useState } from "react";
+import "./style.css";
+import icon from "../../../favicon.ico";
+import Image from "next/image";
+import LogoutButton from "@/components/LogoutButton";
+import { logout } from "@/actions";
+import { LPHStaffRole } from "@/app/enums";
 
 interface SearchResult {
-  ID:number;
+  ID: number;
   Amount: number;
   Date: string;
   FirstName: string;
@@ -18,48 +18,46 @@ interface SearchResult {
 }
 
 export default function Backstore() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isQueryEmpty, setIsQueryEmpty] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSearch = async () => {
     if (!name) {
       setIsQueryEmpty(true);
-      setError('Please enter a search query.');
+      setError("Please enter a search query.");
       return;
     }
 
     setIsQueryEmpty(false);
-    setError('');
+    setError("");
 
     const backapi = `${process.env.NEXT_PUBLIC_API_URL}`;
 
     try {
       const response = await fetch(backapi);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log('API Response:', data); // Log API response
+      console.log("API Response:", data); // Log API response
 
       if (Array.isArray(data.results)) {
         setResults(data.results);
-      } 
-
+      }
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      console.error("Error fetching search results:", error);
       setResults([]);
-      setError('name not found.');
+      setError("name not found.");
       setTimeout(() => {
-        setError('');
-      }, 3000)
+        setError("");
+      }, 3000);
     }
   };
- const handleLogout = async () => {
-   logout(LPHStaffRole.BACKSTORE);
-  
- };
+  const handleLogout = async () => {
+    logout(LPHStaffRole.BACKSTORE);
+  };
   return (
     <div>
       <div id="dash">

@@ -1,9 +1,9 @@
-'use client'
-import { useState } from 'react';
-import Image from 'next/image';
-import Header from '@/componets/navbar';
-import Footer from '@/componets/footer';
-import NumberAnimation from '@/app/animation';
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import Header from "@/components/navbar";
+import Footer from "@/components/footer";
+import NumberAnimation from "@/app/animation";
 
 const AboutUs = () => {
   const [showMessage, setShowMessage] = useState(false);
@@ -133,6 +133,6 @@ const AboutUs = () => {
       <Footer />
     </>
   );
-}
+};
 
 export default AboutUs;

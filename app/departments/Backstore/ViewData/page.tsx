@@ -1,17 +1,15 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
-import Header from "@/componets/navbar";
-import Footer from "@/componets/footer";
-
+import Header from "@/components/navbar";
+import Footer from "@/components/footer";
 
 interface DataItem {
   ID: number;
   DrugName: string;
   DrugType: string;
-  Quantity:number;
-  expiryDate:string;
+  Quantity: number;
+  expiryDate: string;
   CreatedAt: string;
-
 }
 
 const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
@@ -19,10 +17,15 @@ const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 const ViewData = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [alert, setAlert] = useState<{ type: string; message: string } | null>(
+    null
+  );
 
   const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "long" }
+  )} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
     fetchData();
@@ -33,28 +36,35 @@ const ViewData = () => {
       setLoading(true);
       const response = await fetch(api);
       const responseData = await response.json();
-  
+
       // Check if response data is an array
       if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
+        const filteredData = responseData.filter(
+          (item: any) => item.test_ordered === "use client"
+        );
         const mappedData = filteredData.map((item: any) => ({
           ID: item.iD,
           DrugName: item.DrugName,
           DrugType: item.DrugType,
-          Quantity:item.Quantity,
-          expiryDate:item.expiryDate,
-         CreatedAt:item.CreatedAt,
-      
+          Quantity: item.Quantity,
+          expiryDate: item.expiryDate,
+          CreatedAt: item.CreatedAt,
         }));
-  
+
         setData(mappedData);
         setAlert(null);
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setAlert({
+          type: "error",
+          message: "Invalid data received from the server.",
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setAlert({ type: "error", message: "Oops! Today's data is not available." });
+      setAlert({
+        type: "error",
+        message: "Oops! Today's data is not available.",
+      });
     } finally {
       setLoading(false);
     }
@@ -84,38 +94,38 @@ const ViewData = () => {
                 <th className="py-2 px-4">Quantity</th>
                 <th className="py-2 px-4">expiryDate</th>
                 <th className="py-2 px-4">CreatedAt</th>
-           
               </tr>
             </thead>
             <tbody className="bg-gray-100">
               {loading ? (
                 <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Data is Loading...</td>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">
+                    Data is Loading...
+                  </td>
                 </tr>
-              ) : (
-                data.length > 0 ? (
-                  data.map((item) => (
-                    <tr key={item.ID} className="text-gray-800">
-                      <td className="py-2 px-4">{item.ID}</td>
-                      <td className="py-2 px-4">{item.DrugName}</td>
-                      <td className="py-2 px-4">{item.DrugType}</td>
-                      <td className="py-2 px-4">{item.Quantity}</td>
-                      <td className="py-2 px-4">{item.expiryDate}</td>
-                      <td className="py-2 px-4">{item.CreatedAt}</td>
-                   
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
+              ) : data.length > 0 ? (
+                data.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.DrugName}</td>
+                    <td className="py-2 px-4">{item.DrugType}</td>
+                    <td className="py-2 px-4">{item.Quantity}</td>
+                    <td className="py-2 px-4">{item.expiryDate}</td>
+                    <td className="py-2 px-4">{item.CreatedAt}</td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4 text-gray-600">
+                    No data available
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
         <div className="text-center mt-4">
-          <button 
+          <button
             className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
             onClick={handleViewData}
           >

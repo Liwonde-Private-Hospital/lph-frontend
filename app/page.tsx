@@ -1,6 +1,5 @@
-
 import ScrollToTopButton from "./pages/Scroll/scroll";
-import Image from 'next/image';
+import Image from "next/image";
 import Herosection from "./pages/Home/Herosection";
 import ServicesCard from "./pages/Home/servicesCard";
 import Section1 from "./pages/Home/section1";
@@ -9,48 +8,54 @@ import QuickServiceSection from "./pages/Home/quickServiceSection";
 import BriefHistory from "./pages/Home/history";
 import BottomSection from "./pages/Home/BottomSection";
 import SimpleAccordion from "./pages/Home/Faq";
-import Navbar from "@/componets/navbar";
-import Footer from "@/componets/footer";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const posts = [
   {
     id: 1,
-    title: 'I Must Say Thank You Liwonde',
-    description: 'After Moving around the hospitals in malawi, looking for  treatment i came accross this website of liwonde. i booke an appointment right at the website and the i visited the hospita.',
-    date: 'Mar 16, 2024',
-    datetime: '2020-03-16',
-    category: { title: 'Zomba' },
+    title: "I Must Say Thank You Liwonde",
+    description:
+      "After Moving around the hospitals in malawi, looking for  treatment i came accross this website of liwonde. i booke an appointment right at the website and the i visited the hospita.",
+    date: "Mar 16, 2024",
+    datetime: "2020-03-16",
+    category: { title: "Zomba" },
     author: {
-      name: 'Jeremial Kamanga',
-      role: 'Patient',
-      href: '#',
-      imageUrl: 'https://i.pinimg.com/564x/01/f4/c8/01f4c8851b0b58aa937541b8827e5feb.jpg',
+      name: "Jeremial Kamanga",
+      role: "Patient",
+      href: "#",
+      imageUrl:
+        "https://i.pinimg.com/564x/01/f4/c8/01f4c8851b0b58aa937541b8827e5feb.jpg",
     },
   },
   {
     id: 2,
-    title: 'Working at Liwonde Private Hospital',
-    description: 'Working at Liwonde Private Hospital has been a fulfilling experience. The hospitals commitment to excellence in patient care is evident in everything we do. am honored to be part of such a dedicated team of healthcare professionals.',
-    date: 'Jan 09, 2020',
-    datetime: '2020-03-16',
-    category: { title: 'Liwonde' },
+    title: "Working at Liwonde Private Hospital",
+    description:
+      "Working at Liwonde Private Hospital has been a fulfilling experience. The hospitals commitment to excellence in patient care is evident in everything we do. am honored to be part of such a dedicated team of healthcare professionals.",
+    date: "Jan 09, 2020",
+    datetime: "2020-03-16",
+    category: { title: "Liwonde" },
     author: {
-      name: 'Mr Chilikumtima',
-      role: 'Doctor',
-      imageUrl: 'https://i.pinimg.com/564x/e8/f9/64/e8f964f2a79487c2bc9515b193be19e3.jpg',
+      name: "Mr Chilikumtima",
+      role: "Doctor",
+      imageUrl:
+        "https://i.pinimg.com/564x/e8/f9/64/e8f964f2a79487c2bc9515b193be19e3.jpg",
     },
   },
   {
     id: 3,
-    title: 'Feeling so grateful',
-    description: 'I recently received treatment at Liwonde Private Hospital, and I must say that I was impressed by the professionalism and compassion of the staff. From the moment I walked in, I felt welcomed and cared for. Thank you to the entire team for your exceptional service!',
-    date: 'Sep 14, 2016',
-    datetime: '2020-03-16',
-    category: { title: 'Blantyre' },
+    title: "Feeling so grateful",
+    description:
+      "I recently received treatment at Liwonde Private Hospital, and I must say that I was impressed by the professionalism and compassion of the staff. From the moment I walked in, I felt welcomed and cared for. Thank you to the entire team for your exceptional service!",
+    date: "Sep 14, 2016",
+    datetime: "2020-03-16",
+    category: { title: "Blantyre" },
     author: {
-      name: 'Grace Phiri',
-      role: 'Patient',
-      imageUrl: 'https://i.pinimg.com/564x/72/9c/46/729c4627467328e2f0a78d5a5c7d6048.jpg',
+      name: "Grace Phiri",
+      role: "Patient",
+      imageUrl:
+        "https://i.pinimg.com/564x/72/9c/46/729c4627467328e2f0a78d5a5c7d6048.jpg",
     },
   },
 ];
