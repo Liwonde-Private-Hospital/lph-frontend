@@ -5,7 +5,6 @@ import icon from '../../../favicon.ico';
 import Image from 'next/image';
 
 import { SearchResultsList } from '@/componets/searchResultsList';
-import { json } from 'stream/consumers';
 import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
 
@@ -299,7 +298,7 @@ export default function Backstore() {
                   <button
                     onClick={toggleProfile}
                     className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md"
-                  >
+                  ></button>
 
                   <h2 className="text-lg font-semibold text-center">User Profile</h2>
                   <p className="text-sm"><span className="font-semibold">Name:</span> Wakisa</p>
