@@ -339,6 +339,7 @@ const Finance = () => {
           {error && <div className="mt-4 text-red-500">{error}</div>}
         </div>
       </div>
+      
 
       {passwordPromptVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -367,12 +368,22 @@ const Finance = () => {
               >
                 Cancel
               </button>
+              
             </div>
+            
+            
+            
+            
           </div>
+          
         </div>
+        
       )}
     </div>
+    
+    
   );
+  
 };
 
 export default Finance;
