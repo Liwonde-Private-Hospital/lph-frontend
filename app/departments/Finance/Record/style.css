@@ -2,8 +2,6 @@
 body {
     background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
     margin: 0;
-    padding: 0;
-    display: flex;
     flex-direction: row; /* Ensure a horizontal layout */
 }
 
@@ -32,14 +30,10 @@ body {
 }
 .tsiku{
     font-weight: bolder;
-
     font-size: 30px;
     margin-left: 900px;
 }
 
-.table-box{
-    /* margin-right: 500px; */
-}
 
 .table-row{
     display: table;
@@ -190,4 +184,61 @@ body {
     }
     
    
+}
+.tsiku {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin-left: auto;
+}
+
+.add-row,
+.save,
+.delete {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.add-row:hover,
+.save:hover,
+.delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.delete {
+    background-color: #e3342f;
+}
+
+.delete:hover {
+    background-color: #cc1f1a;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #4caf50;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+input,
+select {
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input:focus,
+select:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }

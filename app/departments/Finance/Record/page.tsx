@@ -1,19 +1,19 @@
-'use client';
-import './style.css';
+"use client";
+import "./style.css";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
-import FinanceSideBar from '../page';
+import FinanceSideBar from "../page";
 
 const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
 interface FinanceItem {
-  ID: number;
-  FirstName: string;
-  LastName: string;
-  Treatment: string;
-  Amount: number;
-  PaymentMethod: string;
+   ID: number;
+    FirstName: string;
+    LastName: string;
+    Treatment: string;
+    Amount: number;
+    PaymentMethod: string;
 }
 
 const Finance = () => {
@@ -22,12 +22,17 @@ const Finance = () => {
   const [dataModified, setDataModified] = useState<boolean>(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [idCounter, setIdCounter] = useState<number>(1);
-  const [passwordPromptVisible, setPasswordPromptVisible] = useState<boolean>(false);
+  const [passwordPromptVisible, setPasswordPromptVisible] =
+    useState<boolean>(false);
+  const [adminId, setAdminId] = useState<number>(0);
   const [adminPassword, setAdminPassword] = useState<string>("");
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
   const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "long" }
+  )} ${currentDate.getFullYear()}`;
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -68,29 +73,32 @@ const Finance = () => {
   };
 
   const handlePasswordSubmit = async () => {
-    if (!adminPassword) {
-      alert("Admin password is required.");
+    if (!adminId || !adminPassword) {
+      alert("Admin ID and password are required.");
       return;
     }
 
     try {
-      const isValidPassword = await verifyAdminPassword(adminPassword);
+      const isValidCredentials = await verifyAdminCredentials(
+        adminId,
+        adminPassword
+      );
 
-      if (!isValidPassword) {
-        alert("Invalid admin password. Deletion cancelled.");
+      if (!isValidCredentials) {
+        alert("Invalid admin ID or password. Deletion cancelled.");
         return;
       }
 
       if (deleteIndex !== null) {
         const rowToDelete = finance[deleteIndex];
-
-        const deleteSuccess = await deleteData(
-          `${process.env.NEXT_PUBLIC_API_URL}/finance${rowToDelete.ID}`
-        );
+        const deleteSuccess = await deleteData(`${api}/${rowToDelete.ID}`);
 
         if (deleteSuccess) {
           setFinance((prevData) => {
-            const newData = [...prevData.slice(0, deleteIndex), ...prevData.slice(deleteIndex + 1)];
+            const newData = [
+              ...prevData.slice(0, deleteIndex),
+              ...prevData.slice(deleteIndex + 1),
+            ];
             setDataModified(true);
             return newData;
           });
@@ -99,26 +107,39 @@ const Finance = () => {
         }
       }
     } catch (error) {
-      console.error("Error verifying admin password or deleting data:", error);
-      alert("Invalid Admin password please ask for password from Admin to delete data.");
+      console.error(
+        "Error verifying admin credentials or deleting data:",
+        error
+      );
+      alert(
+        "Invalid Admin ID or password. Please ask for the credentials from Admin to delete data."
+      );
     } finally {
       setPasswordPromptVisible(false);
+      setAdminId(0);
       setAdminPassword("");
       setDeleteIndex(null);
     }
   };
 
-  const verifyAdminPassword = async (password: string): Promise<boolean> => {
-    const response = await fetch('/api/verifyAdminPassword', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ password }),
-    });
+  const verifyAdminCredentials = async (
+    adminId: number,
+    password: string
+  ): Promise<boolean> => {
+    console.log(adminId);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/staff/password/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ adminId, password }),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to verify admin password');
+      throw new Error("Failed to verify admin credentials");
     }
 
     const result = await response.json();
@@ -128,20 +149,20 @@ const Finance = () => {
   const deleteData = async (url: string): Promise<boolean> => {
     try {
       const response = await fetch(url, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
         return true;
       } else {
-        throw new Error('Failed to delete data');
+        throw new Error("Failed to delete data");
       }
     } catch (error) {
-      console.error('Error connecting to server:', error);
-      throw new Error('Failed to delete data');
+      console.error("Error connecting to server:", error);
+      throw new Error("Failed to delete data");
     }
   };
 
@@ -153,7 +174,10 @@ const Finance = () => {
   };
 
   const calculateTotal = (data: FinanceItem[]) => {
-    const total = data.reduce((acc, curr) => acc + parseFloat(curr.Amount.toString()), 0);
+    const total = data.reduce(
+      (acc, curr) => acc + parseFloat(curr.Amount.toString()),
+      0
+    );
     setTotalAmount(total);
   };
 
@@ -173,8 +197,6 @@ const Finance = () => {
         return;
       }
 
-      console.log("Submitting data:", JSON.stringify(finance, null, 2));
-
       const success = await postData(`${api}/add`, finance);
 
       if (success) {
@@ -189,18 +211,17 @@ const Finance = () => {
     }
   };
 
-  const postData = async (url: string, data: FinanceItem[]): Promise<boolean> => {
+  const postData = async (
+    url: string,
+    data: FinanceItem[]
+  ): Promise<boolean> => {
     try {
-      const formattedData = data.map(item => ({
-        ...item,
-      }));
-
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formattedData),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
@@ -216,9 +237,9 @@ const Finance = () => {
 
   return (
     <FinanceSideBar>
-      <div className="container mx-auto  bg-opacity-75 ">
+      <div className="container mx-auto bg-opacity-75">
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className=" items-center justify-between bg-green-800 text-white p-4">
+          <div className="items-center justify-between bg-green-800 text-white p-4">
             <div className="flex items-center">
               <Image src={icon} alt="" width={100} height={100} />
               <div className="ml-4">
@@ -230,7 +251,7 @@ const Finance = () => {
           <div className="px-4 py-2">
             <div className="overflow-x-auto">
               <table className="w-full table-auto">
-                <thead className="bg-gray-200">
+                <thead className="bg-green-200">
                   <tr>
                     <th className="px-4 py-2">ID</th>
                     <th className="px-4 py-2">First Name</th>
@@ -243,13 +264,13 @@ const Finance = () => {
                 </thead>
                 <tbody>
                   {finance.map((row, index) => (
-                    <tr key={index} className="border-b border-gray-300">
+                    <tr key={index} className="border-b border-green-300">
                       <td className="px-4 py-2">{row.ID}</td>
                       <td className="px-4 py-2">
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. John"
+                          placeholder="e.g. Richard"
                           value={row.FirstName}
                           onChange={(event) =>
                             updateRow(index, { FirstName: event.target.value })
@@ -260,7 +281,7 @@ const Finance = () => {
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. Doe"
+                          placeholder="e.g. Mlambuzi"
                           value={row.LastName}
                           onChange={(event) =>
                             updateRow(index, { LastName: event.target.value })
@@ -282,8 +303,8 @@ const Finance = () => {
                         <input
                           type="number"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="1000"
-                          value={row.Amount.toString()}
+                          placeholder="Amount"
+                          value={row.Amount}
                           onChange={(event) =>
                             updateRow(index, {
                               Amount: parseFloat(event.target.value),
@@ -293,6 +314,7 @@ const Finance = () => {
                       </td>
                       <td className="px-4 py-2">
                         <select
+                          type="text"
                           className="w-full bg-transparent focus:outline-none"
                           value={row.PaymentMethod}
                           onChange={(event) =>
@@ -300,87 +322,85 @@ const Finance = () => {
                               PaymentMethod: event.target.value,
                             })
                           }
+                          aria-label="Payment Method"
                         >
-                          <option value="">Select Payment Method</option>
+                          <option value="">Select</option>
                           <option value="Cash">Cash</option>
-                          <option value="Airtel Money">Airtel Money</option>
-                          <option value="Mpamba">Mpamba</option>
-                          <option value="Bank">Bank</option>
+                          <option value="Credit Card">Credit Card</option>
+                          <option value="Insurance">Insurance</option>
                         </select>
                       </td>
-                      <td className="px-4 py-2 flex items-center space-x-2">
+                      <td className="px-4 py-2 text-center">
                         <button
-                          className="bg-red-500 text-white hover:bg-red-700 focus:outline-none px-4 py-2"
+                          className="delete bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                           onClick={() => deleteRow(index)}
                         >
                           Delete
                         </button>
-                        <button
-                          className="bg-green-500 text-white hover:bg-orange-700 focus:outline-none px-4 py-2"
-                          onClick={() => handleSubmit()}
-                        >
-                          Save
-                        </button>
                       </td>
                     </tr>
                   ))}
-                  <tr>
-                    <td colSpan={7} className="px-4 py-2 relative">
-                      <div className="flex justify-center mb-2">
-                        <button
-                          className="bg-green-500 text-white hover:bg-green-700 focus:outline-none px-4 py-2"
-                          onClick={addRow}
-                        >
-                          Add Row
-                        </button>
-                      </div>
-                      <div className="absolute bottom-0 right-0 px-4 py-2 text-xl font-bold">
-                        Total Amount: {totalAmount}
-                      </div>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
-            {error && <div className="mt-4 text-red-500">{error}</div>}
+            <div className="flex justify-between mt-4">
+              <button
+                className="add-row bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={addRow}
+              >
+                Add Row
+              </button>
+              <button
+                className="save bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handleSubmit}
+              >
+                Save
+              </button>
+            </div>
+            <div className="mt-4 text-lg font-bold">
+              Total Amount: ${totalAmount.toFixed(2)}
+            </div>
+            {error && <div className="text-red-600 mt-2">{error}</div>}
           </div>
         </div>
-
-        {passwordPromptVisible && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded shadow-md">
-              <h2 className="text-lg font-bold mb-4">Enter Admin Password</h2>
-              <input
-                type="password"
-                className="w-full border border-gray-300 p-2 rounded mb-4"
-                placeholder="••••••••"
-                value={adminPassword}
-                onChange={(e) => setAdminPassword(e.target.value)}
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  className="bg-red-500 text-white hover:bg-orange-700 px-4 py-2 rounded"
-                  onClick={handlePasswordSubmit}
-                >
-                  DELETE
-                </button>
-                <button
-                  className="bg-gray-500 text-white hover:bg-green-700 px-4 py-2 rounded"
-                  onClick={() => {
-                    setPasswordPromptVisible(false);
-                    setAdminPassword("");
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
+      </div>
+      {passwordPromptVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Enter Admin Credentials</h2>
+            <input
+              type="text"
+              placeholder="Admin ID"
+              value={adminId}
+              onChange={(event) => setAdminId(parseInt(event.target.value, 10))}
+              className="w-full mb-2 px-4 py-2 border rounded"
+            />
+            <input
+              type="password"
+              placeholder="Admin Password"
+              value={adminPassword}
+              onChange={(event) => setAdminPassword(event.target.value)}
+              className="w-full mb-4 px-4 py-2 border rounded"
+            />
+            <div className="flex justify-end">
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mr-2"
+                onClick={() => setPasswordPromptVisible(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handlePasswordSubmit}
+              >
+                Submit
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </FinanceSideBar>
   );
-  
 };
 
 export default Finance;
