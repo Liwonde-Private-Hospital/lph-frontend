@@ -63,23 +63,23 @@ export default function DashBoard() {
   const closeDrawer = () => setIsDrawerOpen(false);
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md z-30 transform ${
+        className={`fixed inset-y-0 left-0 w-64 bg-green shadow-md z-30 transform bg-green-900  ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto`}
       >
         <div className="h-full flex flex-col">
           <div className="p-4 flex items-center justify-between bg-gray-800 text-white">
-            <span className="text-lg font-semibold">Sidebar</span>
+            <span className="text-lg font-semibold ">SideBar</span>
             <button className="md:hidden" onClick={closeDrawer}>
-              <FaTimes className="h-6 w-6" /> Exit
+              <FaTimes className="h-6 w-6 "  /> Exit
             </button>
           </div>
           <div className="p-4">
             <div className="relative">
-              <FaSearch className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+              <FaSearch className="absolute left-3 top-2.5 h-5 w-5 text-gray-500 " />
               <input
                 type="text"
                 placeholder="Search"
@@ -88,7 +88,7 @@ export default function DashBoard() {
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-            <header className="text-lg font-semibold p-4">
+            <header className="text-lg font-semibold p-4 text-white">
               Admin Dashboard
             </header>
             <nav>
@@ -96,26 +96,26 @@ export default function DashBoard() {
                 title="Staff Management"
                 icon={<FaTachometerAlt className="h-5 w-5" />}
                 items={[
-                  { title: "Add Staff", link: "/add-staff" },
-                  { title: "Delete Staff", link: "/delete-staff" },
+                  { title: "Add Staff", link: "/departments/admin/AddStaff" },
+                  { title: "Delete Staff", link: "/departments/admin/DeleteStaff" },
                 ]}
               />
               <Accordion
                 title="Report Management"
                 icon={<FaShoppingBag className="h-5 w-5" />}
-                items={[{ title: "Report History", link: "/report-history" }]}
+                items={[{ title: "Report History", link: "/departments/admin/ReportHistory" }]}
               />
               <hr className="my-2" />
               <MenuItem
                 title="Profile"
                 icon={<FaUserCircle className="h-5 w-5" />}
-                link="/profile"
+                link="#"
                 onClick={() => {}}
               />
               <MenuItem
                 title="View Today's Data"
                 icon={<FaCog className="h-5 w-5" />}
-                link="/view-data"
+                link="/departments/admin/ViewData"
                 onClick={() => {}}
               />
               <MenuItem
@@ -170,11 +170,11 @@ function Accordion({ title, icon, items }: AccordionProps) {
   return (
     <div className={`cursor-pointer ${isOpen ? "bg-gray-100" : ""}`}>
       <div
-        className="flex items-center p-4 hover:bg-gray-200"
+        className="flex items-center p-4 hover:bg-orange-500"
         onClick={() => setIsOpen(!isOpen)}
       >
         {icon}
-        <span className="ml-4 flex-1">{title}</span>
+        <span className="ml-4 flex-1 text-white font-semibold">{title}</span>
         <FaChevronDown
           className={`h-5 w-5 transition-transform ${
             isOpen ? "transform rotate-180" : ""
@@ -185,9 +185,9 @@ function Accordion({ title, icon, items }: AccordionProps) {
         <div className="pl-8">
           {items.map((item, index) => (
             <Link key={index} href={item.link || "/"}>
-              <div className="flex items-center p-2 hover:bg-gray-200">
+              <div className="flex items-center p-2 hover:bg-orange-400">
                 <FaChevronRight className="h-4 w-4" />
-                <span className="ml-2">{item.title}</span>
+                <span className="ml-2 ">{item.title}</span>
               </div>
             </Link>
           ))}
@@ -201,11 +201,11 @@ function MenuItem({ title, icon, link, onClick }: MenuItemProps) {
   return (
     <Link href={link || "/"}>
       <div
-        className="flex items-center p-4 hover:bg-gray-200"
+        className="flex items-center p-4 hover:bg-orange-500"
         onClick={onClick}
       >
         {icon}
-        <span className="ml-4 flex-1">{title}</span>
+        <span className="ml-4 flex-1 text-white font-semibold">{title}</span>
       </div>
     </Link>
   );

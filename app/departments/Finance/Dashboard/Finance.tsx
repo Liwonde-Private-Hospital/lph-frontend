@@ -3,16 +3,9 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import icon from '../../../favicon.ico';
 import Image from 'next/image';
-
 import { SearchResultsList } from '@/componets/searchResultsList';
 import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
-
-
-
-
-
-
 
 interface SearchResult {
   ID: number;
@@ -23,10 +16,6 @@ interface SearchResult {
   PaymentMethod: string;
   Treatment: string;
 }
-
-
-
-
 
 export default function Backstore() {
   const [input, setInput] = useState('');
@@ -53,68 +42,42 @@ export default function Backstore() {
     setShowProfile(!showProfile);
   };
 
-
-
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/finance/${name}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('API Response:', data);
-
-
-  const fetchData = (query: string) => {
+  const fetchData = async (query: string) => {
     setIsLoading(true);
     const queryParts = query.toLowerCase().split(' ');
     console.log('Query Parts:', queryParts); // Debug log
-  
-    fetch(`http://localhost:3000/finance/${query}`)
-      .then((response) => response.text())
-      .then((text) => {
-        console.log('Response text:', text); // Debug log
-        try {
-          const json: SearchResult[] = JSON.parse(text);
-          console.log('Parsed JSON:', json); // Debug log
-  
-          const filteredResults = json.filter((item) => {
-            const fullName = (item.FirstName + ' ' + item.LastName).toLowerCase();
-            
-            console.log('Full Name:', fullName); // Debug log
-            return queryParts.every(part => fullName.includes(part));
-          });
-  
-          console.log('Filtered Results:', filteredResults); // Debug log
-  
-          if (filteredResults.length > 0) {
-            setResults(filteredResults);
-            setError('');
-          } else {
-            setResults([]);
-            setError('Name not found');
-          }
-        } catch (error) {
-          console.error('Error parsing JSON:', error);
-          setResults([]);
-          setError('Name not found');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setResults([]);
-        setError('Error fetching data');
-      })
-      .finally(() => {
-        setIsLoading(false);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/finance/${query}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data: SearchResult[] = await response.json();
+      console.log('API Response:', data);
+
+      const filteredResults = data.filter((item) => {
+        const fullName = (item.FirstName + ' ' + item.LastName).toLowerCase();
+        console.log('Full Name:', fullName); // Debug log
+        return queryParts.every(part => fullName.includes(part));
       });
+
+      console.log('Filtered Results:', filteredResults); // Debug log
+
+      if (filteredResults.length > 0) {
+        setResults(filteredResults);
+        setError('');
+      } else {
+        setResults([]);
+        setError('Name not found');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setResults([]);
+      setError('Name not found');
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
-
-
-
-  
-
-
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -133,14 +96,9 @@ export default function Backstore() {
     return date.toLocaleDateString('en-GB', options);
   };
 
-
-
-
-
-
   const handleResultClick = (result: SearchResult) => {
     if (result.FirstName === 'Name not found' || result.FirstName === 'Error fetching data') {
-      alert(result.FirstName+result.LastName);
+      alert(result.FirstName + result.LastName);
     } else {
       //  alert(`
       //   SEARCH RESULTS FOR: ${result.FirstName+'    '+result.LastName}!
@@ -154,16 +112,9 @@ export default function Backstore() {
     }
   };
 
- const handleLogout = async () => {
-   logout(LPHStaffRole.FINANCE);
-  
- };
-
-
-
-
-
-
+  const handleLogout = async () => {
+    logout(LPHStaffRole.FINANCE);
+  };
 
   return (
     <div>
@@ -183,7 +134,7 @@ export default function Backstore() {
           </li>
           <li>
             <a href="#">Creditors</a>
-          </li>{" "}
+          </li>
           <li>
             <a onClick={handleLogout}>Logout</a>
           </li>
@@ -200,13 +151,7 @@ export default function Backstore() {
               value={input}
               onChange={handleChange}
               placeholder="Search for patients"
-
-              className={`flex-grow p-2 border ${
-                isQueryEmpty ? "border-red-500" : "border-gray-300"
-              } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-
               className={`flex-grow p-2 pl-8 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-
             />
             <button
               onClick={() => fetchData(input)}
@@ -215,11 +160,6 @@ export default function Backstore() {
               Search
             </button>
           </div>
-
-          {isQueryEmpty && (
-            <p className="text-red-700 text-sm mt-1">
-              Please enter a search query.
-            </p>
 
           {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
           {isLoading ? (
@@ -243,10 +183,7 @@ export default function Backstore() {
                 ))}
               </div>
             )
-
           )}
-          {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
-          {results.length > 0 && <SearchResultsList results={results} />}
         </div>
         <div className="button-container">
           <a href="ViewData">
@@ -284,33 +221,14 @@ export default function Backstore() {
                   <p className="text-sm">
                     <span className="font-semibold">Position:</span>Cashier
                   </p>
-                  <p className="text-sm">
-                    <span className="font-semibold">Phone Number:</span>{" "}
-                    0880070673
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-semibold">Email:</span>{" "}
-                    wakisa@liwondepvt.com
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-semibold">Status:</span> online🟢
-                  </p>
-                  <button
-                    onClick={toggleProfile}
-                    className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md"
-                  ></button>
-
-                  <h2 className="text-lg font-semibold text-center">User Profile</h2>
-                  <p className="text-sm"><span className="font-semibold">Name:</span> Wakisa</p>
-                  <p className="text-sm"><span className="font-semibold">Age:</span> 25</p>
-                  <p className="text-sm"><span className="font-semibold">Position:</span> Cashier</p>
-                  <p className="text-sm"><span className="font-semibold">Phone Number:</span> 0880070673</p>
-                  <p className="text-sm"><span className="font-semibold">Email:</span> wakisa@liwondepvt.com</p>
-                  <p className="text-sm"><span className="font-semibold">Status:</span> online🟢</p>
-                  <button onClick={toggleProfile} className="mt-4 w-full bg-green-800 hover:bg-orange-300 text-black-800 py-1 px-3 rounded-md">
-
-                    Close
-                  </button>
+                  <div className="text-center mt-4">
+                    <button
+                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                      onClick={toggleProfile}
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

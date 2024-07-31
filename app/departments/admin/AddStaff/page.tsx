@@ -188,24 +188,29 @@ export default function LIwondePrivateHospitalStaffManagement() {
     }
   };
 
+
   const handleDelete = async (staffId: number) => {
-    try {
-      const response = await fetch(`${API_URL}/Staff/delete-staff/${staffId}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) throw new Error("Failed to delete staff member");
-
-      toast.success("Staff member deleted successfully.");
-      fetchStaff();
-      fetchStaffCount();
-      resetForm();
-    } catch (error) {
-      console.error("Error deleting staff member:", error);
-      toast.error("Failed to delete staff member. Please try again.");
+    console.log('Delete button clicked for staff ID:', staffId); // Debugging log
+    const confirmDelete = confirm('Are you sure you want to delete this user? This action is undoable.'); 
+  
+    if (confirmDelete) {
+      try {
+        await axios.delete(
+          `${process.env.NEXT_PUBLIC_API_URL}/Staff/delete-staff/${staffId}`
+        );
+        setStaff(staff.filter((member) => member.id !== staffId));
+        console.log('Deleted staff ID:', staffId); // Debugging log
+        toast.success("Staff member deleted successfully.");
+      } catch (error) {
+        console.error('Error deleting staff member:', error);
+        toast.error("Failed to delete staff member. Please try again.");
+      }
+    } else {
+      console.log('User canceled the deletion'); // Debugging log
+      toast.info("Deletion canceled.");
     }
   };
+  
 
   const resetForm = () => {
     setFormFields({
@@ -319,7 +324,7 @@ export default function LIwondePrivateHospitalStaffManagement() {
             <div className="flex justify-end mt-6">
               <Button
                 type="submit"
-                className="mr-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                className="mr-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
                 isLoading={isSubmitting}
               >
                 {selectedStaff ? "Update Staff" : "Add Staff"}
@@ -335,7 +340,7 @@ export default function LIwondePrivateHospitalStaffManagement() {
         ) : (
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600"
+            className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-orange-600"
           >
             <MdPersonAdd className="mr-2" />
             Add New Staff
