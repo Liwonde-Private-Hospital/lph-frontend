@@ -8,12 +8,12 @@ import FinanceSideBar from "../page";
 const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
 interface FinanceItem {
-  ID: number;
-  FirstName: string;
-  LastName: string;
-  Treatment: string;
-  Amount: number;
-  PaymentMethod: string;
+   ID: number;
+    FirstName: string;
+    LastName: string;
+    Treatment: string;
+    Amount: number;
+    PaymentMethod: string;
 }
 
 const Finance = () => {
@@ -292,7 +292,7 @@ const Finance = () => {
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. Malaria"
+                          placeholder="Treatment"
                           value={row.Treatment}
                           onChange={(event) =>
                             updateRow(index, { Treatment: event.target.value })
@@ -303,7 +303,7 @@ const Finance = () => {
                         <input
                           type="number"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. 10"
+                          placeholder="Amount"
                           value={row.Amount}
                           onChange={(event) =>
                             updateRow(index, {
@@ -313,21 +313,26 @@ const Finance = () => {
                         />
                       </td>
                       <td className="px-4 py-2">
-                        <input
+                        <select
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. Cash"
                           value={row.PaymentMethod}
                           onChange={(event) =>
                             updateRow(index, {
                               PaymentMethod: event.target.value,
                             })
                           }
-                        />
+                          aria-label="Payment Method"
+                        >
+                          <option value="">Select</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Credit Card">Credit Card</option>
+                          <option value="Insurance">Insurance</option>
+                        </select>
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-center">
                         <button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                          className="delete bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                           onClick={() => deleteRow(index)}
                         >
                           Delete
@@ -338,62 +343,62 @@ const Finance = () => {
                 </tbody>
               </table>
             </div>
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={addRow}
-            >
-              Add Row
-            </button>
-            <div className="mt-4">
-              <span className="font-bold">Total Amount:</span>{" "}
-              <span>{totalAmount}</span>
-            </div>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-        {passwordPromptVisible && (
-          <div className="password-prompt-overlay">
-            <div className="password-prompt">
-              <h2 className="text-lg font-bold mb-4">
-                Enter Admin ID and Password
-              </h2>
-              <input
-                type="number"
-                placeholder="Admin ID"
-                className="mb-2 p-2 border border-gray-300 rounded"
-                value={adminId}
-                onChange={(event) =>
-                  setAdminId(parseInt(event.target.value, 10))
-                }
-              />
-              <input
-                type="password"
-                placeholder="Admin Password"
-                className="mb-4 p-2 border border-gray-300 rounded"
-                value={adminPassword}
-                onChange={(event) => setAdminPassword(event.target.value)}
-              />
+            <div className="flex justify-between mt-4">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handlePasswordSubmit}
+                className="add-row bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={addRow}
               >
-                Submit
+                Add Row
               </button>
               <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
+                className="save bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handleSubmit}
+              >
+                Save
+              </button>
+            </div>
+            <div className="mt-4 text-lg font-bold">
+              Total Amount: ${totalAmount.toFixed(2)}
+            </div>
+            {error && <div className="text-red-600 mt-2">{error}</div>}
+          </div>
+        </div>
+      </div>
+      {passwordPromptVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-md">
+            <h2 className="text-lg font-bold mb-4">Enter Admin Credentials</h2>
+            <input
+              type="text"
+              placeholder="Admin ID"
+              value={adminId}
+              onChange={(event) => setAdminId(parseInt(event.target.value, 10))}
+              className="w-full mb-2 px-4 py-2 border rounded"
+            />
+            <input
+              type="password"
+              placeholder="Admin Password"
+              value={adminPassword}
+              onChange={(event) => setAdminPassword(event.target.value)}
+              className="w-full mb-4 px-4 py-2 border rounded"
+            />
+            <div className="flex justify-end">
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mr-2"
                 onClick={() => setPasswordPromptVisible(false)}
               >
                 Cancel
               </button>
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handlePasswordSubmit}
+              >
+                Submit
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </FinanceSideBar>
   );
 };
