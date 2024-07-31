@@ -64,7 +64,7 @@ export default function Backstore() {
     <div>
       <div id="dash">
         <header>LABOROTORY</header>
-        <h2>Welcome, </h2>
+    
         <ul>
         <li><a href="#">Profile</a></li>
           <li><a href="History">History</a></li>
