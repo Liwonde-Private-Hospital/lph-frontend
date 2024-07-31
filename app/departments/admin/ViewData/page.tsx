@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import SideBar from "../adminLayout";
 
 interface ReceptionDataItem {
   ID: number;
@@ -346,402 +347,483 @@ const ViewData = () => {
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-grow">
-        <br />
-      
+    <SideBar>
+      {" "}
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-grow">
+          <br />
 
-        {/* OPD Data Section */}
-        <h1 className="date text-2xl font-bold text-center">1.OPD Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">Treatment</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">MedicalScheme</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : opdData.length > 0 ? (
-                opdData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.Treatment}</td>
-                    <td className="py-2 px-4">{item.Amount}</td>
-                    <td className="py-2 px-4">{item.MedicalScheme}</td>
-                  </tr>
-                ))
-              ) : (
+          {/* OPD Data Section */}
+          <h1 className="date text-2xl font-bold text-center">
+            1.OPD Data {formattedDate}
+          </h1>
+          <br />
+          {error && <div className="text-center text-red-500">{error}</div>}
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
                 <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">Treatment</th>
+                  <th className="py-2 px-4">Amount</th>
+                  <th className="py-2 px-4">MedicalScheme</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshOPDData}
-            disabled={loading}
-          >
-            Refresh OPD Data
-          </button>
-          <hr />
-          <br /><br /><br />
-        </div>
-
-        
-
-        {/* Finance Data Section */}
-        <h1 className="date text-2xl font-bold text-center">2.Finance Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">Treatment</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">PaymentMethod</th>
-                <th className="py-2 px-4">Status</th>
-
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : financeData.length > 0 ? (
-                financeData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.Treatment}</td>
-                    <td className="py-2 px-4">{item.Amount}</td>
-                    <td className="py-2 px-4">{item.PaymentMethod}</td>
-                    <td className="py-2 px-4">paid 🟢</td>
-
-
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshFinanceData}
-            disabled={loading}
-          >
-            Refresh Finance Data
-          </button>
-          <hr />
-          <br /><br /><br />
-
-             {/* laborotory Data Section */}
-        <h1 className="date text-2xl font-bold text-center">3.Laborotory Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">PaymentMethod</th>
-                <th className="py-2 px-4">TestOrdered</th>
-             
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : LabData.length > 0 ? (
-                LabData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.PaymentMethod}</td>
-
-                    <td className="py-2 px-4">{item.TestOrdered}</td>
+                ) : opdData.length > 0 ? (
+                  opdData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.Treatment}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.MedicalScheme}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
                   </tr>
-                ))
-              ) : (
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="text-center mt-4">
+            <button
+              className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+              onClick={refreshOPDData}
+              disabled={loading}
+            >
+              Refresh OPD Data
+            </button>
+            <hr />
+            <br />
+            <br />
+            <br />
+          </div>
+
+          {/* Finance Data Section */}
+          <h1 className="date text-2xl font-bold text-center">
+            2.Finance Data {formattedDate}
+          </h1>
+          <br />
+          {error && <div className="text-center text-red-500">{error}</div>}
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
                 <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">Treatment</th>
+                  <th className="py-2 px-4">Amount</th>
+                  <th className="py-2 px-4">PaymentMethod</th>
+                  <th className="py-2 px-4">Status</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshLabData}
-            disabled={loading}
-          >
-            Refresh Lab Data
-          </button>
-          <hr />
-          <br /><br /><br />
-
-
-
-           {/* Reception Data Section */}
-         <h1 className="date text-2xl font-bold text-center">4. Reception Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">PhoneNumber</th>
-                <th className="py-2 px-4">PaymentMethod</th>
-                <th className="py-2 px-4">Returned</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : receptionData.length > 0 ? (
-                receptionData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.PhoneNumber}</td>
-                    <td className="py-2 px-4">{item.PaymentMethod}</td>
-                    <td className="py-2 px-4">{item.Returned}</td>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshReceptionData}
-            disabled={loading}
-          >
-            Refresh Reception Data
-          </button>
-          <hr />
-          <br /><br /><br />
-
-
-           {/* Xray Data Section */}
-           <h1 className="date text-2xl font-bold text-center">5.Radiology Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">Treatment</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">MedicalScheme</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : XrayData.length > 0 ? (
-                XrayData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.Treatment}</td>
-                    <td className="py-2 px-4">{item.Amount}</td>
-                    <td className="py-2 px-4">{item.MedicalScheme}</td>
+                ) : financeData.length > 0 ? (
+                  financeData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.Treatment}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.PaymentMethod}</td>
+                      <td className="py-2 px-4">paid 🟢</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshXRayData}
-            disabled={loading}
-          >
-            Refresh Radiology Data
-          </button>
-          <hr />
-          <br /><br /><br />
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="text-center mt-4">
+            <button
+              className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+              onClick={refreshFinanceData}
+              disabled={loading}
+            >
+              Refresh Finance Data
+            </button>
+            <hr />
+            <br />
+            <br />
+            <br />
 
+            {/* laborotory Data Section */}
+            <h1 className="date text-2xl font-bold text-center">
+              3.Laborotory Data {formattedDate}
+            </h1>
+            <br />
+            {error && <div className="text-center text-red-500">{error}</div>}
+            <div className="overflow-x-auto">
+              <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+                <thead className="bg-gray-800 text-white">
+                  <tr>
+                    <th className="py-2 px-4">ID</th>
+                    <th className="py-2 px-4">FirstName</th>
+                    <th className="py-2 px-4">LastName</th>
+                    <th className="py-2 px-4">PaymentMethod</th>
+                    <th className="py-2 px-4">TestOrdered</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-gray-100">
+                  {loading ? (
+                    <tr key="loading">
+                      <td
+                        colSpan={6}
+                        className="text-center py-4 text-gray-600"
+                      >
+                        Loading...
+                      </td>
+                    </tr>
+                  ) : LabData.length > 0 ? (
+                    LabData.map((item) => (
+                      <tr key={item.ID} className="text-gray-800">
+                        <td className="py-2 px-4">{item.ID}</td>
+                        <td className="py-2 px-4">{item.FirstName}</td>
+                        <td className="py-2 px-4">{item.LastName}</td>
+                        <td className="py-2 px-4">{item.PaymentMethod}</td>
 
-             {/* dental Data Section */}
-        <h1 className="date text-2xl font-bold text-center">6.Dental Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">PhoneNumber</th>
-                <th className="py-2 px-4">Address</th>
-                <th className="py-2 px-4">Diagnosis</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">MedicalScheme</th>
-                <th className="py-2 px-4">Treatment</th>
-                
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : DentalData.length > 0 ? (
-                DentalData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.PhoneNumber}</td>
-                    <td className="py-2 px-4">{item.Address}</td> 
-                    <td className="py-2 px-4">{item.Diagnosis}</td>
-                    <td className="py-2 px-4">{item.Amount}</td>
-                    
-                    <td className="py-2 px-4">{item.MedicalScheme}</td>
-                    <td className="py-2 px-4">{item.Treatment}</td>
-                    
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={refreshDentalData}
-            disabled={loading}
-          >
-            Refresh Dental Data
-          </button>
-          <hr />
-          <br /><br /><br />
-            
-          <h1 className="date text-2xl font-bold text-center">7.Phamarcy Data {formattedDate}</h1>
-        <br />
-        {error && <div className="text-center text-red-500">{error}</div>}
-        <div className="overflow-x-auto">
-          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">FirstName</th>
-                <th className="py-2 px-4">LastName</th>
-                <th className="py-2 px-4">DrugName</th>
-                <th className="py-2 px-4">DrugType</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">MedicalScheme</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {loading ? (
-                <tr key="loading">
-                  <td colSpan={5} className="text-center py-4 text-gray-600">Loading...</td>
-                </tr>
-              ) : PhamarcyData.length > 0 ? (
-                PhamarcyData.map((item) => (
-                  <tr key={item.ID} className="text-gray-800">
-                    <td className="py-2 px-4">{item.ID}</td>
-                    <td className="py-2 px-4">{item.FirstName}</td>
-                    <td className="py-2 px-4">{item.LastName}</td>
-                    <td className="py-2 px-4">{item.DrugName}</td>
-                    <td className="py-2 px-4">{item.DrugType}</td>
-                    <td className="py-2 px-4">{item.Amount}</td>
-                    <td className="py-2 px-4">{item.MedicalScheme}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center py-4 text-gray-600">No data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-            onClick={RefreshPhamarcyData}
-            disabled={loading}
-          >
-            Refresh Phamarcy Data
-          </button>
-          <hr />
-          <br /><br /><br />
-          
+                        <td className="py-2 px-4">{item.TestOrdered}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="text-center py-4 text-gray-600"
+                      >
+                        No data available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="text-center mt-4">
+              <button
+                className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                onClick={refreshLabData}
+                disabled={loading}
+              >
+                Refresh Lab Data
+              </button>
+              <hr />
+              <br />
+              <br />
+              <br />
+
+              {/* Reception Data Section */}
+              <h1 className="date text-2xl font-bold text-center">
+                4. Reception Data {formattedDate}
+              </h1>
+              <br />
+              {error && <div className="text-center text-red-500">{error}</div>}
+              <div className="overflow-x-auto">
+                <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+                  <thead className="bg-gray-800 text-white">
+                    <tr>
+                      <th className="py-2 px-4">ID</th>
+                      <th className="py-2 px-4">FirstName</th>
+                      <th className="py-2 px-4">LastName</th>
+                      <th className="py-2 px-4">PhoneNumber</th>
+                      <th className="py-2 px-4">PaymentMethod</th>
+                      <th className="py-2 px-4">Returned</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-gray-100">
+                    {loading ? (
+                      <tr key="loading">
+                        <td
+                          colSpan={6}
+                          className="text-center py-4 text-gray-600"
+                        >
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : receptionData.length > 0 ? (
+                      receptionData.map((item) => (
+                        <tr key={item.ID} className="text-gray-800">
+                          <td className="py-2 px-4">{item.ID}</td>
+                          <td className="py-2 px-4">{item.FirstName}</td>
+                          <td className="py-2 px-4">{item.LastName}</td>
+                          <td className="py-2 px-4">{item.PhoneNumber}</td>
+                          <td className="py-2 px-4">{item.PaymentMethod}</td>
+                          <td className="py-2 px-4">{item.Returned}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="text-center py-4 text-gray-600"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <div className="text-center mt-4">
+                <button
+                  className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                  onClick={refreshReceptionData}
+                  disabled={loading}
+                >
+                  Refresh Reception Data
+                </button>
+                <hr />
+                <br />
+                <br />
+                <br />
+
+                {/* Xray Data Section */}
+                <h1 className="date text-2xl font-bold text-center">
+                  5.Radiology Data {formattedDate}
+                </h1>
+                <br />
+                {error && (
+                  <div className="text-center text-red-500">{error}</div>
+                )}
+                <div className="overflow-x-auto">
+                  <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+                    <thead className="bg-gray-800 text-white">
+                      <tr>
+                        <th className="py-2 px-4">ID</th>
+                        <th className="py-2 px-4">FirstName</th>
+                        <th className="py-2 px-4">LastName</th>
+                        <th className="py-2 px-4">Treatment</th>
+                        <th className="py-2 px-4">Amount</th>
+                        <th className="py-2 px-4">MedicalScheme</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-gray-100">
+                      {loading ? (
+                        <tr key="loading">
+                          <td
+                            colSpan={6}
+                            className="text-center py-4 text-gray-600"
+                          >
+                            Loading...
+                          </td>
+                        </tr>
+                      ) : XrayData.length > 0 ? (
+                        XrayData.map((item) => (
+                          <tr key={item.ID} className="text-gray-800">
+                            <td className="py-2 px-4">{item.ID}</td>
+                            <td className="py-2 px-4">{item.FirstName}</td>
+                            <td className="py-2 px-4">{item.LastName}</td>
+                            <td className="py-2 px-4">{item.Treatment}</td>
+                            <td className="py-2 px-4">{item.Amount}</td>
+                            <td className="py-2 px-4">{item.MedicalScheme}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className="text-center py-4 text-gray-600"
+                          >
+                            No data available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="text-center mt-4">
+                  <button
+                    className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                    onClick={refreshXRayData}
+                    disabled={loading}
+                  >
+                    Refresh Radiology Data
+                  </button>
+                  <hr />
+                  <br />
+                  <br />
+                  <br />
+
+                  {/* dental Data Section */}
+                  <h1 className="date text-2xl font-bold text-center">
+                    6.Dental Data {formattedDate}
+                  </h1>
+                  <br />
+                  {error && (
+                    <div className="text-center text-red-500">{error}</div>
+                  )}
+                  <div className="overflow-x-auto">
+                    <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+                      <thead className="bg-gray-800 text-white">
+                        <tr>
+                          <th className="py-2 px-4">ID</th>
+                          <th className="py-2 px-4">FirstName</th>
+                          <th className="py-2 px-4">LastName</th>
+                          <th className="py-2 px-4">PhoneNumber</th>
+                          <th className="py-2 px-4">Address</th>
+                          <th className="py-2 px-4">Diagnosis</th>
+                          <th className="py-2 px-4">Amount</th>
+                          <th className="py-2 px-4">MedicalScheme</th>
+                          <th className="py-2 px-4">Treatment</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-gray-100">
+                        {loading ? (
+                          <tr key="loading">
+                            <td
+                              colSpan={6}
+                              className="text-center py-4 text-gray-600"
+                            >
+                              Loading...
+                            </td>
+                          </tr>
+                        ) : DentalData.length > 0 ? (
+                          DentalData.map((item) => (
+                            <tr key={item.ID} className="text-gray-800">
+                              <td className="py-2 px-4">{item.ID}</td>
+                              <td className="py-2 px-4">{item.FirstName}</td>
+                              <td className="py-2 px-4">{item.LastName}</td>
+                              <td className="py-2 px-4">{item.PhoneNumber}</td>
+                              <td className="py-2 px-4">{item.Address}</td>
+                              <td className="py-2 px-4">{item.Diagnosis}</td>
+                              <td className="py-2 px-4">{item.Amount}</td>
+
+                              <td className="py-2 px-4">
+                                {item.MedicalScheme}
+                              </td>
+                              <td className="py-2 px-4">{item.Treatment}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan={6}
+                              className="text-center py-4 text-gray-600"
+                            >
+                              No data available
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="text-center mt-4">
+                    <button
+                      className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                      onClick={refreshDentalData}
+                      disabled={loading}
+                    >
+                      Refresh Dental Data
+                    </button>
+                    <hr />
+                    <br />
+                    <br />
+                    <br />
+
+                    <h1 className="date text-2xl font-bold text-center">
+                      7.Phamarcy Data {formattedDate}
+                    </h1>
+                    <br />
+                    {error && (
+                      <div className="text-center text-red-500">{error}</div>
+                    )}
+                    <div className="overflow-x-auto">
+                      <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+                        <thead className="bg-gray-800 text-white">
+                          <tr>
+                            <th className="py-2 px-4">ID</th>
+                            <th className="py-2 px-4">FirstName</th>
+                            <th className="py-2 px-4">LastName</th>
+                            <th className="py-2 px-4">DrugName</th>
+                            <th className="py-2 px-4">DrugType</th>
+                            <th className="py-2 px-4">Amount</th>
+                            <th className="py-2 px-4">MedicalScheme</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-gray-100">
+                          {loading ? (
+                            <tr key="loading">
+                              <td
+                                colSpan={5}
+                                className="text-center py-4 text-gray-600"
+                              >
+                                Loading...
+                              </td>
+                            </tr>
+                          ) : PhamarcyData.length > 0 ? (
+                            PhamarcyData.map((item) => (
+                              <tr key={item.ID} className="text-gray-800">
+                                <td className="py-2 px-4">{item.ID}</td>
+                                <td className="py-2 px-4">{item.FirstName}</td>
+                                <td className="py-2 px-4">{item.LastName}</td>
+                                <td className="py-2 px-4">{item.DrugName}</td>
+                                <td className="py-2 px-4">{item.DrugType}</td>
+                                <td className="py-2 px-4">{item.Amount}</td>
+                                <td className="py-2 px-4">
+                                  {item.MedicalScheme}
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan={5}
+                                className="text-center py-4 text-gray-600"
+                              >
+                                No data available
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="text-center mt-4">
+                      <button
+                        className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                        onClick={RefreshPhamarcyData}
+                        disabled={loading}
+                      >
+                        Refresh Phamarcy Data
+                      </button>
+                      <hr />
+                      <br />
+                      <br />
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        </div>
-        </div>
-      
       </div>
-      
-    </div>
-    </div>
-    </div>
-
+    </SideBar>
   );
 };
 

@@ -57,8 +57,12 @@ const LoginForm: React.FC = () => {
         ? data.user.role
         : [data.user?.role];
       const userDepartment = findUserDepartment(userRoles);
+      const fullName = `${
+          data.user.firstName} ${data.user.lastName}`;
       if (userDepartment) {
-        login(userDepartment);
+        login(fullName,
+          userDepartment
+        );
       } else {
         throw new Error("User does not have access to assigned department.");
       }
