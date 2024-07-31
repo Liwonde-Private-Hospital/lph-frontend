@@ -22,6 +22,8 @@ import {
   MdVisibilityOff,
 } from "react-icons/md";
 import SideBar from "../adminLayout";
+import { getSession } from "@/actions";
+import { GetServerSideProps } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -39,12 +41,6 @@ interface StaffMember {
 interface CountAllStaffInterface {
   count: number;
 }
-
-const TABS = [
-  { label: "All", value: "all" },
-  { label: "Admin", value: "admin" },
-  { label: "Doctors", value: "doctors" },
-];
 
 export default function LIwondePrivateHospitalStaffManagement() {
   const TABLE_HEAD = [

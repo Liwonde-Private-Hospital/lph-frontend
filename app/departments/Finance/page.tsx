@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import {
   FaBars,
@@ -40,11 +39,11 @@ interface SideBarProps {
   children: React.ReactNode;
 }
 
-const SideBar: React.FC<SideBarProps> = ({children }) => {
+const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleLogout = async () => {
-    await logout(LPHStaffRole.ADMIN);
+    await logout(LPHStaffRole.FINANCE);
   };
 
   useEffect(() => {
@@ -69,7 +68,7 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
   return (
     <div className="flex flex-col h-screen">
       {/* Navbar */}
-      <div className="flex sticky items-center justify-between p-4 bg-green-800 text-white">
+      <div className="flex sticky top-0 items-center justify-between p-4 bg-green-800 text-white">
         <div className="flex items-center">
           <button onClick={openDrawer} className="md:hidden mr-4">
             {isDrawerOpen ? (
@@ -87,7 +86,7 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
             <FaBell className="h-5 w-5" />
             <span className="absolute top-0 right-0 block h-2 w-2 bg-red-600 rounded-full" />
           </div>
-          <div className="relative flex items-center cursor-pointer">
+          <div className="relative flex items-center cursor-pointer group">
             <FaCog className="h-5 w-5" />
             <div className="absolute top-10 right-0 bg-white shadow-lg rounded-md text-gray-800 hidden group-hover:block">
               <div className="p-2 hover:bg-gray-200 cursor-pointer">
@@ -134,17 +133,18 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
             </div>
             <div className="flex-1 overflow-y-auto">
               <header className="text-lg font-semibold p-4">
-                <Link href="/departments/admin/Dashboard">Admin Dashboard</Link>
+                <Link href="/departments/Finance/Dashboard">
+                  Finance Dashboard
+                </Link>
               </header>
               <nav>
                 <Accordion
-                  title="Staff Management"
+                  title="Day Summary"
                   icon={<FaTachometerAlt className="h-5 w-5" />}
                   items={[
-                    { title: "Add Staff", link: "/departments/admin/AddStaff" },
                     {
-                      title: "Delete Staff",
-                      link: "/departments/admin/DeleteStaff",
+                      title: "Day Summary",
+                      link: "/departments/Finance/Summary",
                     },
                   ]}
                 />
@@ -154,20 +154,24 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
                   items={[
                     {
                       title: "Report History",
-                      link: "/departments/admin/ReportHistory",
+                      link: "/departments/Finance/History",
                     },
                   ]}
                 />
                 <hr className="my-2" />
                 <MenuItem
-                  title="Power BI"
-                  icon={<FaUserCircle className="h-5 w-5" />}
-                  link="/departments/admin/PowerBIEmbed"
+                  title="Record Today's Data"
+                  icon={<FaCog className="h-5 w-5" />}
+                  link="/departments/Finance/Record"
                 />
                 <MenuItem
                   title="View Today's Data"
                   icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/admin/ViewData"
+                  link="/departments/Finance/ViewData"
+                />
+                <MenuItem
+                  title="Profile"
+                  icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem
                   title="Log Out"
@@ -180,7 +184,7 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 p-2 ml-2">{children}</div>
+        <div className="flex-1 p-4 ml-64 overflow-y-auto">{children}</div>
       </div>
 
       {/* Overlay for drawer */}
@@ -194,7 +198,7 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
   );
 };
 
-export default SideBar;
+export default FinanceSideBar;
 
 const Accordion: React.FC<AccordionProps> = ({ title, icon, items }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -237,3 +241,4 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, icon, link, onClick }) => (
     </div>
   </Link>
 );
+

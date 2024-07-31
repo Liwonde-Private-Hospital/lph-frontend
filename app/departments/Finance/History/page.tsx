@@ -2,6 +2,7 @@
 // Import necessary modules from React and Next.js
 import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
+import FinanceSideBar from '../page';
 
 // Define the API endpoint
 const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
@@ -102,134 +103,176 @@ const HistoryDate = ({ initialDate }:any) => {
 
   // JSX rendering of the component
   return (
-    <div className="container mx-auto p-4 bg-opacity-75">
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="flex items-center justify-between bg-gray-800 text-white p-4">
-          <div className="flex items-center">
-            <div className="ml-4">
-              <h1 className="text-4xl font-bold">Finance  Transaction History</h1>
-            </div>
-            <h1 className="tsiku" style={{ fontWeight: 'bolder', fontSize: '30px', marginLeft: '900px' }}>{selectedDate}</h1>
-          </div>
-        </div>
-        <div className="px-4 py-2">
-          <div className="flex">
-            <div className="w-1/2">
-              <p>You can search the date you want to view by selecting a date in the search box below</p>
-              <h2 className="text-xl font-bold mb-2">Search</h2>
-              <div className="flex">
-                <input
-                  type="date"
-                  value={searchText}
-                  onChange={handleSearchChange}
-                  className="border border-gray-800 p-2 mr-2 w-1/2"
-                  placeholder="Search date... e.g., 2024-05-06"
-                  min="2024-01-01" // Set minimum date allowed
-                />
+    <FinanceSideBar>
+      <div className="container mx-auto bg-opacity-75">
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="flex items-center justify-between bg-green-800 text-white p-4">
+            <div className="flex items-center">
+              <div className="ml-4">
+                <h1 className="text-4xl font-bold">
+                  Finance Transaction History
+                </h1>
               </div>
+              <h1
+                className="tsiku"
+                style={{
+                  fontWeight: "bolder",
+                  fontSize: "30px",
+                  marginLeft: "900px",
+                }}
+              >
+                {selectedDate}
+              </h1>
             </div>
-            <div className="w-1/2 pl-4">
-              <h2 className="text-xl font-bold mb-2">{selectedDate} Data</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">ID</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">First Name</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Last Name</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Treatment</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Amount</th>
-                      <th className="px-4 py-2 bg-gray-200 border border-gray-300">Payment Method</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
+          </div>
+          <div className="px-4 py-2">
+            <div className="flex">
+              <div className="w-1/2">
+                <p>
+                  You can search the date you want to view by selecting a date
+                  in the search box below
+                </p>
+                <h2 className="text-xl font-bold mb-2">Search</h2>
+                <div className="flex">
+                  <input
+                    type="date"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    className="border border-green-800 p-2 mr-2 w-1/2"
+                    placeholder="Search date... e.g., 2024-05-06"
+                    min="2024-01-01" // Set minimum date allowed
+                  />
+                </div>
+              </div>
+              <div className="w-1/2 pl-4">
+                <h2 className="text-xl font-bold mb-2">{selectedDate} Data</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300">
+                    <thead>
                       <tr>
-                        <td colSpan={6} className="text-center py-4">Loading...</td>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          ID
+                        </th>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          First Name
+                        </th>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          Last Name
+                        </th>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          Treatment
+                        </th>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          Amount
+                        </th>
+                        <th className="px-4 py-2 bg-gray-200 border border-gray-300">
+                          Payment Method
+                        </th>
                       </tr>
-                    ) : error ? (
-                      <tr>
-                        <td colSpan={6} className="text-center py-4 text-red-500">Error: {error}</td>
-                      </tr>
-                    ) : data.length === 0 ? (
-                      <tr>
-                        <td colSpan={6} className="text-center py-4 text-red-500">No data available for this date.</td>
-                      </tr>
-                    ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-4 py-2 border border-gray-300">{item.id}</td>
-                          <td className="px-4 py-2 border border-gray-300">
-                            <input
-                              type="text"
-                              className="w-full bg-transparent focus:outline-none"
-                              value={item.FirstName}
-                              onChange={(event) =>
-                                updateRow(index, {
-                                  ...item,
-                                  FirstName: event.target.value,
-                                })
-                              }
-                            />
-                          </td>
-                          <td className="px-4 py-2 border border-gray-300">
-                            <input
-                              type="text"
-                              className="w-full bg-transparent focus:outline-none"
-                              value={item.LastName}
-                              onChange={(event) =>
-                                updateRow(index, {
-                                  ...item,
-                                  LastName: event.target.value,
-                                })
-                              }
-                            />
-                          </td>
-                          <td className="px-4 py-2 border border-gray-300">
-                            <input
-                              type="text"
-                              className="w-full bg-transparent focus:outline-none"
-                              value={item.Treatment}
-                              onChange={(event) =>
-                                updateRow(index, {
-                                  ...item,
-                                  Treatment: event.target.value,
-                                })
-                              }
-                            />
-                          </td>
-                          <td className="px-4 py-2 border border-gray-300">
-                            <input
-                              type="number"
-                              className="w-full bg-transparent focus:outline-none"
-                              value={item.Amount.toString()}
-                              onChange={(event) =>
-                                updateRow(index, {
-                                  ...item,
-                                  Amount: parseFloat(event.target.value),
-                                })
-                              }
-                            />
+                    </thead>
+                    <tbody>
+                      {loading ? (
+                        <tr>
+                          <td colSpan={6} className="text-center py-4">
+                            Loading...
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div className="mt-4">
-                <button
-                  onClick={() => setSelectedDate(selectedDate)}
-                  className="block w-32 py-2 px-4 bg-green-900 text-white rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:bg-gray-700"
-                >
-                  Refresh Data
-                </button>
+                      ) : error ? (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className="text-center py-4 text-red-500"
+                          >
+                            Error: {error}
+                          </td>
+                        </tr>
+                      ) : data.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className="text-center py-4 text-red-500"
+                          >
+                            No data available for this date.
+                          </td>
+                        </tr>
+                      ) : (
+                        data.map((item, index) => (
+                          <tr key={item.id}>
+                            <td className="px-4 py-2 border border-gray-300">
+                              {item.id}
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300">
+                              <input
+                                type="text"
+                                className="w-full bg-transparent focus:outline-none"
+                                value={item.FirstName}
+                                onChange={(event) =>
+                                  updateRow(index, {
+                                    ...item,
+                                    FirstName: event.target.value,
+                                  })
+                                }
+                              />
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300">
+                              <input
+                                type="text"
+                                className="w-full bg-transparent focus:outline-none"
+                                value={item.LastName}
+                                onChange={(event) =>
+                                  updateRow(index, {
+                                    ...item,
+                                    LastName: event.target.value,
+                                  })
+                                }
+                              />
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300">
+                              <input
+                                type="text"
+                                className="w-full bg-transparent focus:outline-none"
+                                value={item.Treatment}
+                                onChange={(event) =>
+                                  updateRow(index, {
+                                    ...item,
+                                    Treatment: event.target.value,
+                                  })
+                                }
+                              />
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300">
+                              <input
+                                type="number"
+                                className="w-full bg-transparent focus:outline-none"
+                                value={item.Amount.toString()}
+                                onChange={(event) =>
+                                  updateRow(index, {
+                                    ...item,
+                                    Amount: parseFloat(event.target.value),
+                                  })
+                                }
+                              />
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-4">
+                  <button
+                    onClick={() => setSelectedDate(selectedDate)}
+                    className="block w-32 py-2 px-4 bg-green-900 text-white rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:bg-gray-700"
+                  >
+                    Refresh Data
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </FinanceSideBar>
   );
 };
 export default HistoryDate; 

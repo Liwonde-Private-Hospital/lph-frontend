@@ -2,8 +2,9 @@
 import { IronSession } from 'iron-session';
 
 export interface SessionData {
-    isLoggedIn: boolean;
+    isLoggedIn?: boolean;
     role?: string;
+    fullName?: string;
 }
 
 export type CustomIronSession = IronSession & SessionData;
