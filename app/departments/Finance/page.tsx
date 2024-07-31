@@ -184,7 +184,7 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 p-4 ml-64 overflow-y-auto">{children}</div>
+        <div className="flex-1 p-4 overflow-y-auto">{children}</div>
       </div>
 
       {/* Overlay for drawer */}
