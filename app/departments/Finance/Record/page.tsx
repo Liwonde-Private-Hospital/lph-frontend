@@ -24,6 +24,7 @@ const Finance = () => {
   const [idCounter, setIdCounter] = useState<number>(1);
   const [passwordPromptVisible, setPasswordPromptVisible] =
     useState<boolean>(false);
+  const [adminId, setAdminId] = useState<number>(0);
   const [adminPassword, setAdminPassword] = useState<string>("");
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
@@ -72,16 +73,19 @@ const Finance = () => {
   };
 
   const handlePasswordSubmit = async () => {
-    if (!adminPassword) {
-      alert("Admin password is required.");
+    if (!adminId || !adminPassword) {
+      alert("Admin ID and password are required.");
       return;
     }
 
     try {
-      const isValidPassword = await verifyAdminPassword(adminPassword);
+      const isValidCredentials = await verifyAdminCredentials(
+        adminId,
+        adminPassword
+      );
 
-      if (!isValidPassword) {
-        alert("Invalid admin password. Deletion cancelled.");
+      if (!isValidCredentials) {
+        alert("Invalid admin ID or password. Deletion cancelled.");
         return;
       }
 
@@ -103,28 +107,39 @@ const Finance = () => {
         }
       }
     } catch (error) {
-      console.error("Error verifying admin password or deleting data:", error);
+      console.error(
+        "Error verifying admin credentials or deleting data:",
+        error
+      );
       alert(
-        "Invalid Admin password. Please ask for the password from Admin to delete data."
+        "Invalid Admin ID or password. Please ask for the credentials from Admin to delete data."
       );
     } finally {
       setPasswordPromptVisible(false);
+      setAdminId(0);
       setAdminPassword("");
       setDeleteIndex(null);
     }
   };
 
-  const verifyAdminPassword = async (password: string): Promise<boolean> => {
-    const response = await fetch("/api/verifyAdminPassword", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
+  const verifyAdminCredentials = async (
+    adminId: number,
+    password: string
+  ): Promise<boolean> => {
+    console.log(adminId);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/staff/password/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ adminId, password }),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error("Failed to verify admin password");
+      throw new Error("Failed to verify admin credentials");
     }
 
     const result = await response.json();
@@ -255,7 +270,7 @@ const Finance = () => {
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. John"
+                          placeholder="e.g. Richard"
                           value={row.FirstName}
                           onChange={(event) =>
                             updateRow(index, { FirstName: event.target.value })
@@ -266,7 +281,7 @@ const Finance = () => {
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="e.g. Doe"
+                          placeholder="e.g. Mlambuzi"
                           value={row.LastName}
                           onChange={(event) =>
                             updateRow(index, { LastName: event.target.value })
@@ -277,7 +292,7 @@ const Finance = () => {
                         <input
                           type="text"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="Treatment"
+                          placeholder="e.g. Malaria"
                           value={row.Treatment}
                           onChange={(event) =>
                             updateRow(index, { Treatment: event.target.value })
@@ -288,7 +303,7 @@ const Finance = () => {
                         <input
                           type="number"
                           className="w-full bg-transparent focus:outline-none"
-                          placeholder="Amount"
+                          placeholder="e.g. 10"
                           value={row.Amount}
                           onChange={(event) =>
                             updateRow(index, {
@@ -312,7 +327,7 @@ const Finance = () => {
                       </td>
                       <td className="px-4 py-2">
                         <button
-                          className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                           onClick={() => deleteRow(index)}
                         >
                           Delete
@@ -322,52 +337,59 @@ const Finance = () => {
                   ))}
                 </tbody>
               </table>
-              <div className="total-amount">
-                <h3>Total Amount: {totalAmount}</h3>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  className="bg-green-600 text-white py-1 px-3 rounded hover:bg-green-800"
-                  onClick={addRow}
-                >
-                  Add Row
-                </button>
-                <button
-                  className="bg-green-600 text-white py-1 px-3 rounded hover:bg-green-800 ml-2"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </button>
-              </div>
             </div>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={addRow}
+            >
+              Add Row
+            </button>
+            <div className="mt-4">
+              <span className="font-bold">Total Amount:</span>{" "}
+              <span>{totalAmount}</span>
+            </div>
+            <button
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
           </div>
         </div>
         {passwordPromptVisible && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg">
-              <h2 className="text-xl font-semibold mb-4">
-                Enter Admin Password
+          <div className="password-prompt-overlay">
+            <div className="password-prompt">
+              <h2 className="text-lg font-bold mb-4">
+                Enter Admin ID and Password
               </h2>
               <input
-                type="password"
-                className="w-full border border-green-300 p-2 mb-4 rounded focus:outline-none"
-                value={adminPassword}
-                onChange={(e) => setAdminPassword(e.target.value)}
+                type="number"
+                placeholder="Admin ID"
+                className="mb-2 p-2 border border-gray-300 rounded"
+                value={adminId}
+                onChange={(event) =>
+                  setAdminId(parseInt(event.target.value, 10))
+                }
               />
-              <div className="flex justify-end">
-                <button
-                  className="bg-green-600 text-white py-1 px-3 rounded hover:bg-green-800 mr-2"
-                  onClick={handlePasswordSubmit}
-                >
-                  Submit
-                </button>
-                <button
-                  className="bg-green-400 text-white py-1 px-3 rounded hover:bg-green-600"
-                  onClick={() => setPasswordPromptVisible(false)}
-                >
-                  Cancel
-                </button>
-              </div>
+              <input
+                type="password"
+                placeholder="Admin Password"
+                className="mb-4 p-2 border border-gray-300 rounded"
+                value={adminPassword}
+                onChange={(event) => setAdminPassword(event.target.value)}
+              />
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handlePasswordSubmit}
+              >
+                Submit
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
+                onClick={() => setPasswordPromptVisible(false)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         )}

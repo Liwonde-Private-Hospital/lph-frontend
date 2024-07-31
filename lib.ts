@@ -11,6 +11,7 @@ export const sessionOptions = (userDepartment: string): SessionOptions => {
         cookieOptions: {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
+            maxAge: 10 * 60 * 60 * 1000,
         }
     };
 };
