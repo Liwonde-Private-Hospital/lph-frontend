@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
+import PharmacySideBar from '../page';
 
 // Define the API endpoint (adjust as per your backend setup)
 const api = `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
@@ -108,7 +109,7 @@ const HistoryDate = ({ initialDate }:any) => {
   };
 
   // JSX rendering of the component
-  return (
+  return (<PharmacySideBar>
     <div className="container mx-auto p-4 bg-opacity-75">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -251,7 +252,7 @@ const HistoryDate = ({ initialDate }:any) => {
           </div>
         </div>
       </div>
-    </div>
+    </div></PharmacySideBar>
   );
 };
 

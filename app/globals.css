@@ -4,51 +4,52 @@
 
 /* Custom CSS for glowing effect */
 @layer utilities {
-    .glow-on-hover {
-        position: relative;
-        display: inline-block;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4caf50;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        overflow: hidden;
-        transition: background-color 0.3s ease;
-    }
+  .glow-on-hover {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+  }
 
-    .glow-on-hover::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 300%;
-        height: 300%;
-        background: #4caf50;
-        border-radius: 50%;
-        transition: width 0.4s ease, height 0.4s ease;
-        transform: translate(-50%, -50%);
-    }
+  .glow-on-hover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: #4caf50;
+    border-radius: 50%;
+    transition: width 0.4s ease, height 0.4s ease;
+    transform: translate(-50%, -50%);
+  }
 
-    .glow-on-hover:hover::before {
-        width: 0;
-        height: 0;
-    }
+  .glow-on-hover:hover::before {
+    width: 0;
+    height: 0;
+  }
 
-    .glow-on-hover:hover {
-        background-color: #4caf50;
-    }
+  .glow-on-hover:hover {
+    background-color: #4caf50;
+  }
 
-    .highlight-transition {
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
+  .highlight-transition {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
 
-    .highlight-transition:hover {
-        background-color: #4caf50;
-        transform: scale(1.05);
-    }
+  .highlight-transition:hover {
+    background-color: #4caf50;
+    transform: scale(1.05);
+  }
+
   .glow-spinner {
     border: 8px solid #4caf50;
     border-radius: 50%;
@@ -59,14 +60,21 @@
   }
 
   .glow-spinner-loading {
-    border-top-color: #FF5733; /* Change color when loading */
+    border-top-color: #FF5733;
+    /* Change color when loading */
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }
+
 .modal-overlay {
   @apply fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50;
 }

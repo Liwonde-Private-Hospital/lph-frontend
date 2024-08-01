@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import './style.css';  // Assuming you have a CSS file for styling
 import Image from "next/image";
 import icon from '../../../images/icon.png';
+import MaternitySideBar from "../page";
 
 interface MaternityItem {
     ID: number;
@@ -111,7 +112,7 @@ const Maternity = () => {
         }
     };
 
-    return (
+    return (<MaternitySideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -224,7 +225,7 @@ const Maternity = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></MaternitySideBar>
     );
 }
 

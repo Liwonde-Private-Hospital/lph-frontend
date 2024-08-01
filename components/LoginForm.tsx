@@ -82,7 +82,7 @@ const LoginForm: React.FC = () => {
       <div className="form-wrapper">
         <div className="header1">
           <Link href='/'>
-            <div className="logo-container">
+            <div className="logo-container mt-2">
               <Image
                 src={icon}
                 alt="icon"
@@ -124,7 +124,8 @@ const LoginForm: React.FC = () => {
                 {errorMessage}
               </Text>
             )}
-            <Button type="submit" isLoading={isLoading} mt={4}>
+            <Button type="submit" isLoading={isLoading} mt={4}  className="px-6 py-3 w-full bg-green-500 hover:bg-green-400 text-white font-bold rounded"
+           >
               {isLoading ? <Spinner size="md" /> : "Login"}
             </Button>
           </form>

@@ -5,6 +5,7 @@ import icon from '../../../favicon.ico';
 import Image from 'next/image';
 import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
+import VitalsSideBar from '../page';
 
 interface SearchResult {
   ID: number;
@@ -64,22 +65,8 @@ export default function Backstore() {
    logout(LPHStaffRole.VITALS);
   
  };
-  return (
+  return (<VitalsSideBar>
     <div>
-      <div id="dash">
-        <header>Vitals</header>
-        <ul>
-          <a href="#" onClick={toggleProfile}>
-            Profile
-          </a>
-          <li>
-            <a href="History">History</a>
-          </li>
-          <li>
-            <a onClick={handleLogout}>Logout</a>
-          </li>
-        </ul>
-      </div>
       <div id="table">
         <div>
           <Image src={icon} alt="alt" width={100} height={100} />
@@ -185,5 +172,6 @@ export default function Backstore() {
         )}
       </div>
     </div>
+    </VitalsSideBar>
   );
 }

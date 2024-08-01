@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from "react";
+import XRaySideBar from "./X-Ray";
 
 interface Patient {
   id: number;
@@ -191,8 +192,8 @@ const XrayDepartment = () => {
     }
   };
 
-  return (
-    <div className="flex flex-col min-h-screen">
+  return (<XRaySideBar>
+    <div className=" flex-col min-h-screen">
       <header className="bg-green-500 text-white p-4">
         <h1 className="text-2xl font-bold text-center">X-ray Department</h1>
       </header>
@@ -367,7 +368,7 @@ const XrayDepartment = () => {
           </div>
         </div>
       )}
-    </div>
+    </div></XRaySideBar>
   );
 };
 

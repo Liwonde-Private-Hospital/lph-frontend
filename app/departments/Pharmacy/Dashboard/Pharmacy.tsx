@@ -5,6 +5,7 @@ import icon from '../../../favicon.ico';
 import Image from 'next/image';
 import { logout } from '@/actions';
 import { LPHStaffRole } from '@/app/enums';
+import PharmacySideBar from '../page';
 
 interface SearchResult {
   ID:number;
@@ -59,25 +60,8 @@ export default function Backstore() {
    logout(LPHStaffRole.PHARMACY);
    
  };
-  return (
+  return (<PharmacySideBar>
     <div>
-      <div id="dash">
-        <header>Pharmacy</header>
-        <ul>
-          <li>
-            <a href="#">Profile</a>
-          </li>
-          <li>
-            <a href="#">Drug Management</a>
-          </li>
-          <li>
-            <a href="History">History</a>
-          </li>
-          <li>
-            <a onClick={handleLogout}>Logout</a>
-          </li>
-        </ul>
-      </div>
       <div id="table">
         <div>
           <Image src={icon} alt="alt" width={100} height={100} />
@@ -136,6 +120,6 @@ export default function Backstore() {
           </div>
         </div>
       </div>
-    </div>
+    </div></PharmacySideBar>
   );
 }

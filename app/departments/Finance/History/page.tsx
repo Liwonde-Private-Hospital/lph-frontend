@@ -1,67 +1,44 @@
-'use client'
-// Import necessary modules from React and Next.js
-import React, { useState, useEffect } from 'react';
-import { NextPage, NextPageContext } from 'next';
-import FinanceSideBar from '../page';
+"use client"
+import React, { useState, useEffect } from "react";
+import FinanceSideBar from "../page";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Define the API endpoint
 const api = `${process.env.NEXT_PUBLIC_API_URL}/finance`;
 
-// Define the props interface for the component
 interface HistoryDateProps {
   initialDate: string;
 }
 
-// Define the HistoryDate functional component
-const HistoryDate = ({ initialDate }:any) => {
-  // State hooks for managing component state
+const HistoryDate = ({ initialDate }: HistoryDateProps) => {
   const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [searchText, setSearchText] = useState<string>(initialDate);
-  const [historyDates, setHistoryDates] = useState<string[]>([]);
-  const [filteredDates, setFilteredDates] = useState<string[]>([]);
-  const [alert, setAlert] = useState<{ type: string; message: string } | null>(null);
+  const [alert, setAlert] = useState<{ type: string; message: string } | null>(
+    null
+  );
 
-  // useEffect to initialize historyDates and filteredDates
-  useEffect(() => {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
-    const today = currentDate.getDate();
-
-    const buttons: string[] = [];
-    for (let i = 0; i < 5; i++) { // Generate dates for the next 5 days
-      const targetDate = new Date(year, month - 1, today + i);
-      const targetYear = targetDate.getFullYear();
-      const targetMonth = targetDate.getMonth() + 1;
-      const targetDay = targetDate.getDate();
-      const dateString = `${targetYear}-${targetMonth < 10 ? '0' + targetMonth : targetMonth}-${targetDay < 10 ? '0' + targetDay : targetDay}`;
-      buttons.push(dateString);
-    }
-    setHistoryDates(buttons);
-    setFilteredDates(buttons);
-  }, []);
-
-  // useEffect to fetch data when selectedDate changes
   useEffect(() => {
     fetchData(selectedDate);
   }, [selectedDate]);
 
-  // Function to fetch data from API based on selectedDate
   const fetchData = async (date: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await fetch(`${api}?date=${date}`);
       const responseData = await response.json();
+      console.log("Fetched data:", responseData);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       if (Array.isArray(responseData)) {
-        const filteredData = responseData.filter((item: any) => item.test_ordered === 'use client');
+        const filteredData = responseData.filter(
+          (item: any) => item.test_ordered === "use client"
+        );
         const mappedData = filteredData.map((item: any) => ({
           id: item.id,
           FirstName: item.first_name,
@@ -74,38 +51,42 @@ const HistoryDate = ({ initialDate }:any) => {
 
         setData(mappedData);
         setAlert(null);
+        toast.success("Data fetched successfully!");
       } else {
-        setAlert({ type: "error", message: "Invalid data received from the server." });
+        setAlert({
+          type: "error",
+          message: "Invalid data received from the server.",
+        });
+        toast.error("Invalid data received from the server.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       setAlert({ type: "error", message: "Oops! Failed to fetch data." });
+      toast.error("Failed to fetch data.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Function to handle search input change
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = event.target.value;
     setSearchText(searchText);
-    setSelectedDate(searchText); // Update selectedDate based on the searchText
-    const filteredDates = historyDates.filter(date => date.includes(searchText));
-    setFilteredDates(filteredDates);
+    setSelectedDate(searchText);
   };
 
-  // Function to update a row of data
   const updateRow = (indexToUpdate: number, updatedRow: any) => {
-    setData(prevData =>
-      prevData.map((item, index) => (index === indexToUpdate ? updatedRow : item))
+    setData((prevData) =>
+      prevData.map((item, index) =>
+        index === indexToUpdate ? updatedRow : item
+      )
     );
   };
 
-  // JSX rendering of the component
   return (
     <FinanceSideBar>
       <div className="container mx-auto bg-opacity-75">
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <ToastContainer />
+        <div className=" shadow-md rounded-lg overflow-hidden">
           <div className="flex items-center justify-between bg-green-800 text-white p-4">
             <div className="flex items-center">
               <div className="ml-4">
@@ -140,7 +121,7 @@ const HistoryDate = ({ initialDate }:any) => {
                     onChange={handleSearchChange}
                     className="border border-green-800 p-2 mr-2 w-1/2"
                     placeholder="Search date... e.g., 2024-05-06"
-                    min="2024-01-01" // Set minimum date allowed
+                    min="2024-01-01"
                   />
                 </div>
               </div>
@@ -174,7 +155,7 @@ const HistoryDate = ({ initialDate }:any) => {
                       {loading ? (
                         <tr>
                           <td colSpan={6} className="text-center py-4">
-                            Loading...
+                            <div className="glow-spinner glow-spinner-loading"></div>
                           </td>
                         </tr>
                       ) : error ? (
@@ -242,16 +223,19 @@ const HistoryDate = ({ initialDate }:any) => {
                             </td>
                             <td className="px-4 py-2 border border-gray-300">
                               <input
-                                type="number"
+                                type="text"
                                 className="w-full bg-transparent focus:outline-none"
-                                value={item.Amount.toString()}
+                                value={item.Amount}
                                 onChange={(event) =>
                                   updateRow(index, {
                                     ...item,
-                                    Amount: parseFloat(event.target.value),
+                                    Amount: event.target.value,
                                   })
                                 }
                               />
+                            </td>
+                            <td className="px-4 py-2 border border-gray-300">
+                              {item.PaymentMethod}
                             </td>
                           </tr>
                         ))
@@ -259,20 +243,18 @@ const HistoryDate = ({ initialDate }:any) => {
                     </tbody>
                   </table>
                 </div>
-                <div className="mt-4">
-                  <button
-                    onClick={() => setSelectedDate(selectedDate)}
-                    className="block w-32 py-2 px-4 bg-green-900 text-white rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:bg-gray-700"
-                  >
-                    Refresh Data
-                  </button>
-                </div>
               </div>
             </div>
           </div>
+          {alert && (
+            <div className={`alert alert-${alert.type} mt-4`}>
+              <p>{alert.message}</p>
+            </div>
+          )}
         </div>
       </div>
     </FinanceSideBar>
   );
 };
-export default HistoryDate; 
+
+export default HistoryDate;

@@ -2,6 +2,7 @@
 // Import necessary modules from React and Next.js
 import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
+import OPDSideBar from '../page';
 
 // Define the API endpoint
 const api = "";
@@ -101,7 +102,7 @@ const HistoryDate = ({ initialDate }:any) => {
   };
 
   // JSX rendering of the component
-  return (
+  return (<OPDSideBar>
     <div className="container mx-auto p-4 bg-opacity-75">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -229,7 +230,7 @@ const HistoryDate = ({ initialDate }:any) => {
           </div>
         </div>
       </div>
-    </div>
+    </div></OPDSideBar>
   );
 };
 export default HistoryDate; 

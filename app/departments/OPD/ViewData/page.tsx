@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import OPDSideBar from "../page";
 
 interface ReceptionDataItem {
   ID: number;
@@ -201,7 +202,8 @@ const ViewData = () => {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <OPDSideBar>
+       <div className="flex-col min-h-screen">
       <div className="flex-grow">
         <br />
         <h1 className="date text-2xl font-bold text-center">1.Reception Data {formattedDate}</h1>
@@ -416,6 +418,7 @@ const ViewData = () => {
       </div>
       </div>
     </div>
+    </OPDSideBar>
   );
 };
 
