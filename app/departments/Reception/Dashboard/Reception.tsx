@@ -5,6 +5,7 @@ import icon from '../../../favicon.ico';
 import Image from 'next/image';
 import { LPHStaffRole } from '@/app/enums';
 import { logout } from '@/actions';
+import ReceptionSideBar from '../page';
 
 interface SearchResult {
   ID:number;
@@ -61,31 +62,10 @@ export default function Backstore() {
     event.preventDefault(); // Prevents the default behavior for both <a> and <button>
     setShowProfile(!showProfile);
   };
- const handleLogout = async () => {
-   logout(LPHStaffRole.RECEPTION);
  
- };
-  return (
+  return (<ReceptionSideBar>
     <div>
-      <div id="dash">
-        <header>Reception</header>
-        <ul>
-          <li>
-            <a href="#" onClick={toggleProfile}>
-              Profile
-            </a>
-          </li>
-          <li>
-            <a href="History">Transaction History</a>
-          </li>
-          <li>
-            <a href="#">MedicalSchemes</a>
-          </li>
-          <li>
-            <a onClick={handleLogout}>Logout</a>
-          </li>
-        </ul>
-      </div>
+      
       <div id="table">
         <div>
           <Image src={icon} alt="alt" width={100} height={100} />
@@ -187,6 +167,6 @@ export default function Backstore() {
           )}
         </div>
       </div>
-    </div>
+    </div></ReceptionSideBar>
   );
 }

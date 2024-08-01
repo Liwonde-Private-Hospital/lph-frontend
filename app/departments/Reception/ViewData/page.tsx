@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import ReceptionSideBar from "../page";
 
 interface ReceptionDataItem {
   ID: number;
@@ -151,8 +152,8 @@ const ViewData = () => {
     PaymentMethod: item.PaymentMethod,
   });
 
-  return (
-    <div className="flex flex-col min-h-screen">
+  return (<ReceptionSideBar>
+    <div className="flex-col min-h-screen">
       <div className="flex-grow">
         <br />
         
@@ -315,7 +316,7 @@ const ViewData = () => {
           <br /><br /><br />
         </div>
       </div>
-    </div>
+    </div></ReceptionSideBar>
   );
 };
 

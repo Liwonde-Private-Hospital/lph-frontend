@@ -3,7 +3,6 @@ body {
     background-image: url('https://en.idei.club/uploads/posts/2023-06/1686715780_en-idei-club-p-medical-abstract-background-dizain-instagr-19.jpg');
     margin: 0;
     padding: 0;
-    display: flex;
     flex-direction: row; /* Ensure a horizontal layout */
 }
 .center-container {

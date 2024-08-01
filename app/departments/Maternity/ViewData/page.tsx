@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/navbar";
 import Footer from "@/components/footer";
+import MaternitySideBar from "../page";
 
 interface DataItem {
   ID: number;
@@ -75,8 +76,8 @@ const ViewData = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+  <MaternitySideBar>
+    <div className="flex-col min-h-screen">
       <div className="flex-grow">
         <br />
         <h1 className="date text-4xl font-bold text-center">{formattedDate}</h1>
@@ -133,8 +134,7 @@ const ViewData = () => {
           </button>
         </div>
       </div>
-      <Footer />
-    </div>
+    </div></MaternitySideBar>
   );
 };
 

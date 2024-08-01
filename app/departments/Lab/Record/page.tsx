@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 import axios from "axios";
+import LabSideBar from "../page";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/laboratory`;
 
@@ -163,8 +164,8 @@ const Lab = () => {
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
-  return (
-    <div className="bg-gray-100 min-h-screen py-8">
+  return (<LabSideBar>
+    <div className=" min-h-screen py-8">
       <div className="max-w-5xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div className="p-6 bg-gray-800 text-white flex items-center justify-between">
           <div className="flex items-center">
@@ -308,7 +309,7 @@ const Lab = () => {
           </div>
         </div>
       )}
-    </div>
+    </div></LabSideBar>
   );
 };
 

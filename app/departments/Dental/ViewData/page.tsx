@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
+import DentalSideBar from "../page";
 
 
 
@@ -86,8 +87,8 @@ const ViewData = () => {
     // fetchData();
   };
 
-  return (
-    <div className="flex flex-col min-h-screen">
+  return (<DentalSideBar>
+    <div className="flex-col min-h-screen">
          
 
         {/* OPD Data Section */}
@@ -147,7 +148,7 @@ const ViewData = () => {
       </div>
       </div>
       {/* <Footer /> */}
-    </div>
+    </div></DentalSideBar>
   );
 };
 

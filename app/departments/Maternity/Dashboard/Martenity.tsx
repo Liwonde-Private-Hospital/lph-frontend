@@ -7,27 +7,13 @@ import Image from "next/image";
 import LogoutButton from "@/components/LogoutButton";
 import { logout } from "@/actions";
 import { LPHStaffRole } from "@/app/enums";
+import MaternitySideBar from "../page";
 
 export default function Finance() {
-  const handleLogout = async () => {
-    logout(LPHStaffRole.MATERNITY);
-  };
-  return (
+ 
+  return (<MaternitySideBar>
     <div>
-      <div id="dash">
-        <header>Martenity</header>
-        <ul>
-          <li>
-            <a href="#">Profile</a>
-          </li>
-          <li>
-            <a href="#">History</a>
-          </li>
-          <li>
-            <a onClick={handleLogout}>Logout</a>
-          </li>
-        </ul>
-      </div>
+     
       <div id="table">
         <div>
           <Image src={icon} alt="alt" width={100} height={100} />
@@ -48,6 +34,6 @@ export default function Finance() {
           </div>
         </div>
       </div>
-    </div>
+    </div></MaternitySideBar>
   );
 }

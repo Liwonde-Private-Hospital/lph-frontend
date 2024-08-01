@@ -4,6 +4,7 @@ import "./style.css"; // Ensure this CSS file aligns with the Pharmacy component
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 import CustomModal from "@/components/CustomModal";
+import OPDSideBar from "../page";
 
 interface OPDItem {
   ID: number;
@@ -210,6 +211,7 @@ const OPD = () => {
   };
 
   return (
+    <OPDSideBar>
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -334,9 +336,7 @@ const OPD = () => {
             </button>
           </div>
         </div>
-      </div>
-
-      {passwordPromptVisible && (
+      </div> {passwordPromptVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded shadow-md">
             <h2 className="text-lg font-bold mb-4">Enter Admin Password</h2>
@@ -367,13 +367,12 @@ const OPD = () => {
             </div>
           </div>
         </div>
-      )}
-
-      <CustomModal
+      )} <CustomModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />
     </div>
+    </OPDSideBar>
   );
 };
 

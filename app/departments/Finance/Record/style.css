@@ -242,3 +242,59 @@ select:focus {
     border-color: #4caf50;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
+/* style.css */
+
+.finance-page {
+    font-family: Arial, sans-serif;
+}
+
+.finance-header {
+    /* Darker green color */
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.finance-header img {
+    border-radius: 50%;
+}
+
+.finance-header h1 {
+    font-size: 24px;
+    margin-left: 16px;
+}
+
+.finance-actions {
+    margin-bottom: 16px;
+}
+
+.finance-actions .chakra-button {
+    margin-right: 8px;
+}
+
+.finance-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.finance-table th,
+.finance-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.finance-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.finance-table input[type="text"],
+.finance-table input[type="number"],
+.finance-table select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;}

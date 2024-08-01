@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import "./style.css";
 import icon from "../../../favicon.ico";
 import Image from "next/image";
-import LogoutButton from "@/components/LogoutButton";
-import { logout } from "@/actions";
-import { LPHStaffRole } from "@/app/enums";
+import BackstoreSideBar from "../page";
 
 interface SearchResult {
   ID: number;
@@ -55,28 +53,8 @@ export default function Backstore() {
       }, 3000);
     }
   };
-  const handleLogout = async () => {
-    logout(LPHStaffRole.BACKSTORE);
-  };
-  return (
+  return (<BackstoreSideBar>
     <div>
-      <div id="dash">
-        <header>Backstore</header>
-        <ul>
-          <li>
-            <a href="#">Profile</a>
-          </li>
-          <li>
-            <a href="History">Take Drugs</a>
-          </li>
-          <li>
-            <a href="History">History</a>
-          </li>
-          <li>
-            <a onClick={handleLogout}>Logout</a>
-          </li>
-        </ul>
-      </div>
       <div id="table">
         <div>
           <Image src={icon} alt="alt" width={100} height={100} />
@@ -88,9 +66,8 @@ export default function Backstore() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Search for patients"
-              className={`flex-grow p-2 border ${
-                isQueryEmpty ? "border-red-500" : "border-gray-300"
-              } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`flex-grow p-2 border ${isQueryEmpty ? "border-red-500" : "border-gray-300"
+                } rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             <button
               onClick={handleSearch}
@@ -134,6 +111,6 @@ export default function Backstore() {
           </div>
         </div>
       </div>
-    </div>
+    </div></BackstoreSideBar>
   );
 }

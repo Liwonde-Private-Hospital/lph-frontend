@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import LabSideBar from "../page";
 
 
 interface LabDataItem{
@@ -134,8 +135,8 @@ const ViewData = () => {
 
 
 
-  return (
-    <div className="flex flex-col min-h-screen">
+  return (<LabSideBar>
+    <div className=" flex-col min-h-screen">
       <div className="flex-grow">
         <br />
       
@@ -256,7 +257,7 @@ const ViewData = () => {
         </div>
     
   
-
+    </LabSideBar>
   );
 };
 

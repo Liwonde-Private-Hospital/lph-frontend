@@ -4,6 +4,7 @@ import './style.css';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import icon from '../../../images/icon.png';
+import VitalsSideBar from '../page';
 
 // Define interface for VitalsItem
 interface VitalsItem {
@@ -132,7 +133,7 @@ const Vitals = () => {
     };
 
     // JSX structure for rendering the component
-    return (
+    return (<VitalsSideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -254,7 +255,7 @@ const Vitals = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></VitalsSideBar>
     );
 };
 

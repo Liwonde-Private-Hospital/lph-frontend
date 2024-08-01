@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from '../../../images/icon.png';
 import './style.css';
+import BackstoreSideBar from "../page";
 
 // Define enum for DrugType options
 enum DrugType {
@@ -124,7 +125,7 @@ const Backstore = () => {
         }
     };
 
-    return (
+    return (<BackstoreSideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -227,7 +228,7 @@ const Backstore = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></BackstoreSideBar>
     );
 };
 

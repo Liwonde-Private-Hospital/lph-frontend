@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
 import './style.css';
+import DentalSideBar from "../page";
 
 interface DentalItem {
     ID: number;
@@ -139,7 +140,7 @@ const Dental = () => {
         }
     };
 
-    return (
+    return (<DentalSideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -285,7 +286,7 @@ const Dental = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></DentalSideBar>
     );
 }
 

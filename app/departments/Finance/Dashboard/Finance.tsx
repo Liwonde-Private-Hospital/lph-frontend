@@ -1,19 +1,36 @@
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { FaSearch } from "react-icons/fa";
-import "./style.css";
 import FinanceSideBar from "../page";
-
-// Button Component
-const Button = ({ href, className, children }) => (
-  <a href={href} className={`p-2 rounded-md text-white ${className}`}>
+import Modal from "./Modal";
+import './style.css'
+const Button = ({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: React.ReactNode;
+}) => (
+  <a
+    href={href}
+    className={`p-2 rounded-md text-white bg-green-500 hover:bg-green-600 ${className}`}
+  >
     <button className="w-full md:w-auto text-center">{children}</button>
   </a>
 );
 
-// SearchBar Component
-const SearchBar = ({ value, onChange, onSearch, isQueryEmpty, error }) => (
+const SearchBar = ({
+  value,
+  onChange,
+  isQueryEmpty,
+}: {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  isQueryEmpty: boolean;
+}) => (
   <div className="relative flex flex-col md:flex-row mb-4 max-w-full md:max-w-xs mx-auto">
     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green-500" />
     <input
@@ -25,12 +42,6 @@ const SearchBar = ({ value, onChange, onSearch, isQueryEmpty, error }) => (
         isQueryEmpty ? "border-red-500" : "border-gray-300"
       } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
     />
-    <button
-      onClick={onSearch}
-      className="mt-2 md:mt-0 md:ml-2 p-2 bg-green-800 text-white rounded-md hover:bg-green-700 w-full md:w-auto"
-    >
-      Search
-    </button>
   </div>
 );
 
@@ -44,8 +55,13 @@ interface SearchResult {
   Treatment: string;
 }
 
-// ResultItem Component
-const ResultItem = ({ result, onClick }) => (
+const ResultItem = ({
+  result,
+  onClick,
+}: {
+  result: SearchResult;
+  onClick: () => void;
+}) => (
   <div
     className="p-4 mb-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 cursor-pointer"
     onClick={onClick}
@@ -71,8 +87,7 @@ const ResultItem = ({ result, onClick }) => (
   </div>
 );
 
-// Date Formatter
-const formatDate = (dateString) => {
+const formatDate = (dateString: string | number | Date) => {
   if (!dateString) return "N/A";
   const date = new Date(dateString);
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -84,6 +99,9 @@ const Finance: React.FC = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isQueryEmpty, setIsQueryEmpty] = useState(false);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
+    null
+  );
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -97,11 +115,11 @@ const Finance: React.FC = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [input]);
 
-  const filterResults = (data, query) => {
+  const filterResults = (data: any[], query: string) => {
     const queryParts = query.toLowerCase().split(" ");
-    return data.filter((item) => {
+    return data.filter((item: { FirstName: string; LastName: string }) => {
       const fullName = (item.FirstName + " " + item.LastName).toLowerCase();
-      return queryParts.every((part) => fullName.includes(part));
+      return queryParts.every((part: string) => fullName.includes(part));
     });
   };
 
@@ -148,9 +166,12 @@ const Finance: React.FC = () => {
     setIsQueryEmpty(false);
   };
 
-  const handleResultClick = (result) => {
-    console.log("Result clicked:", result);
-    // Add any additional logic for handling result click
+  const handleResultClick = (result: SearchResult) => {
+    setSelectedResult(result);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedResult(null);
   };
 
   return (
@@ -162,45 +183,74 @@ const Finance: React.FC = () => {
           </h1>
 
           <div className="relative w-full max-w-lg mb-4">
-            {/* Button Section */}
             <div className="mb-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:max-w-xs mx-auto">
-              <Button href="ViewData" className="bg-blue-500">
+              <Button href="ViewData" className="px-6 py-3">
                 Todays Data
               </Button>
-              <Button href="Record" className="bg-green-500">
+              <Button href="Record" className="px-6 py-3">
                 New Day
               </Button>
             </div>
 
-            {/* Search Bar */}
             <SearchBar
               value={input}
               onChange={handleInputChange}
-              onSearch={() => fetchData(input)}
               isQueryEmpty={isQueryEmpty}
-              error={error}
             />
-          </div>
 
-          {/* Error and Loading States */}
-          {isLoading && <p className="text-gray-500">Loading...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-
-          {/* Results List */}
-          <div className="w-full max-w-3xl">
-            {results.length === 0 && !isLoading && !error && (
-              <p className="p-4 text-center text-gray-500">No results found.</p>
+            {error && (
+              <div className="text-red-500 mt-2 text-center">{error}</div>
             )}
-            {results.map((result) => (
-              <ResultItem
-                key={result.ID}
-                result={result}
-                onClick={() => handleResultClick(result)}
-              />
-            ))}
+
+            {isLoading && (
+              <div className="flex items-center justify-center">
+                <div className="glow-spinner" role="status">
+                  {/* <span className="visually-hidden">Loading...</span> */}
+                </div>
+              </div>
+            )}
           </div>
+
+          {results.length > 0 && (
+            <div className="flex flex-col items-center w-full">
+              {results.map((result) => (
+                <ResultItem
+                  key={result.ID}
+                  result={result}
+                  onClick={() => handleResultClick(result)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
+
+      <Modal isOpen={selectedResult !== null} onClose={handleCloseModal}>
+        {selectedResult && (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Patient Details</h2>
+            <div className="mb-2">
+              <strong>First Name:</strong> {selectedResult.FirstName || "N/A"}
+            </div>
+            <div className="mb-2">
+              <strong>Last Name:</strong> {selectedResult.LastName || "N/A"}
+            </div>
+            <div className="mb-2">
+              <strong>Treatment:</strong> {selectedResult.Treatment || "N/A"}
+            </div>
+            <div className="mb-2">
+              <strong>Amount:</strong> {selectedResult.Amount || "N/A"}
+            </div>
+            <div className="mb-2">
+              <strong>Payment Method:</strong>{" "}
+              {selectedResult.PaymentMethod || "N/A"}
+            </div>
+            <div className="mb-2">
+              <strong>Date:</strong> {formatDate(selectedResult.Date)}
+            </div>
+          </div>
+        )}
+      </Modal>
     </FinanceSideBar>
   );
 };

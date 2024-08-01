@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import icon from '../../../images/icon.png';
+import PharmacySideBar from "../page";
 
 // DrugForm enum directly inside the component
 enum DrugForm {
@@ -227,7 +228,7 @@ const Pharmacy = () => {
         setSearchTerm(event.target.value);
     };
 
-    return (
+    return (<PharmacySideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-green-500 text-white p-4">
@@ -316,7 +317,7 @@ const Pharmacy = () => {
                     <h2 className="text-lg font-bold">Total Amount: ${totalAmount}</h2>
                 </div>
             </div>
-        </div>
+        </div></PharmacySideBar>
     );
 };
 

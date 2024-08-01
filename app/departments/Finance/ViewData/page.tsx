@@ -1,8 +1,8 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import FinanceSideBar from "../page";
-
-
+import '../Dashboard/style.css';
+import { Button } from "@chakra-ui/react";
 interface DataItem {
   ID: number;
   FirstName: string;
@@ -170,13 +170,14 @@ const ViewData = () => {
           </table>
         </div>
         <div className="text-center mt-4">
-          <button
-            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+          {" "}
+          <Button
+            className="px-6 py-3  bg-green-500 hover:bg-orange-400 text-white font-bold rounded"
             onClick={refreshOPDData}
             disabled={loading}
           >
             Refresh OPD Data
-          </button>
+          </Button>
           <hr />
           <br />
           <br />
@@ -238,13 +239,13 @@ const ViewData = () => {
               </table>
             </div>
             <div className="text-center mt-4">
-              <button
-                className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+              <Button
+                className="px-6 py-3  bg-green-500 hover:bg-orange-400 text-white font-bold rounded"
                 onClick={handleViewData}
                 disabled={loading}
               >
-                Refresh Data
-              </button>
+                Refresh Finance Data
+              </Button>
             </div>
           </div>
         </div>

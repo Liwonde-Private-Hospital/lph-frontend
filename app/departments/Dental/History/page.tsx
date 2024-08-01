@@ -2,6 +2,7 @@
 // Import necessary modules from React and Next.js
 import React, { useState, useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
+import DentalSideBar from '../page';
 
 // Define the API endpoint
 const api = `${process.env.NEXT_PUBLIC_API_URL}`;
@@ -103,7 +104,7 @@ const HistoryDate = ({ initialDate }:any) => {
   };
 
   // JSX rendering of the component
-  return (
+  return (<DentalSideBar>
     <div className="container mx-auto p-4 bg-opacity-75">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -235,7 +236,7 @@ const HistoryDate = ({ initialDate }:any) => {
           </div>
         </div>
       </div>
-    </div>
+    </div></DentalSideBar>
   );
 };
 export default HistoryDate; 

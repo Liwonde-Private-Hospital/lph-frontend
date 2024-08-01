@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import './style.css'; // Ensure your CSS file for styling is correctly imported
 import Image from "next/image";
 import icon from '../../../images/icon.png';
+import ReceptionSideBar from "../page";
 
 interface ReceptionItem {
     ID: number;
@@ -111,6 +112,7 @@ const Reception = () => {
     };
 
     return (
+    <ReceptionSideBar>
         <div className="container mx-auto p-4 bg-opacity-75">
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between bg-gray-800 text-white p-4">
@@ -237,6 +239,7 @@ const Reception = () => {
                 </div>
             </div>
         </div>
+        </ReceptionSideBar>
     );
 }
 
