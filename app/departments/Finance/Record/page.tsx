@@ -19,7 +19,7 @@ interface FinanceItem {
   PaymentMethod: string;
 }
 
-const paymentMethods = ["Cash", "Medical Scheme", "Insurance"];
+const paymentMethods = ["Cash", "Mpamba", "AirtelMoney","Bank"];
 
 const Finance = () => {
   const [finance, setFinance] = useState<FinanceItem[]>([]);
@@ -34,7 +34,13 @@ const Finance = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Formatting date for display
-  const formattedDate = new Date().toLocaleDateString();
+  const formattedDate = new Date().toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -74,75 +80,71 @@ const Finance = () => {
     setPasswordPromptVisible(true);
   };
 
- const handlePasswordSubmit = async () => {
-   console.log("Password submit triggered with username:", adminUsername);
-
-   if (!adminUsername || !adminPassword) {
-     toast.error("Admin username and password are required.");
-     return;
-   }
-
-   try {
-     setIsSubmitting(true);
-     console.log("Verifying admin credentials...");
-     const isValidCredentials = await verifyAdminCredentials(
-       adminUsername,
-       adminPassword
-     );
-
-     console.log("Admin credentials valid:", isValidCredentials);
-     if (!isValidCredentials) {
-       toast.error("Invalid admin username or password. Deletion cancelled.");
-       return;
-     }
-
-     if (deleteIndex !== null) {
-       console.log("Deleting row at index:", deleteIndex);
-       const rowToDelete = finance[deleteIndex];
-       console.log("Row to delete:", rowToDelete);
-
-       if (rowToDelete && rowToDelete.ID) {
-         const deleteUrl = `${api}/${rowToDelete.ID}`;
-         console.log("Delete URL:", deleteUrl);
-         const deleteSuccess = await deleteData(deleteUrl);
-         console.log("Delete success:", deleteSuccess);
-
-         if (deleteSuccess) {
-           setFinance((prevData) => [
-             ...prevData.slice(0, deleteIndex),
-             ...prevData.slice(deleteIndex + 1),
-           ]);
-           toast.success("Data deleted successfully.");
-         } else {
-           toast.error("Failed to delete data.");
-         }
-       } else {
-         console.error("Invalid row or row ID.");
-         toast.error("Failed to delete data.");
-       }
-     }
-   } catch (error) {
-     console.error(
-       "Error verifying admin credentials or deleting data:",
-       error
-     );
-     toast.error("An error occurred. Please try again later.");
-   } finally {
-     console.log("Resetting submission state...");
-     setIsSubmitting(false);
-     setPasswordPromptVisible(false);
-     setAdminUsername("");
-     setAdminPassword("");
-     setDeleteIndex(null);
-   }
- };
-
-
+  const handlePasswordSubmit = async () => {
+    console.log("Password submit triggered with username:", adminUsername);
+  
+    if (!adminUsername || !adminPassword) {
+      toast.error("Admin username and password are required.");
+      return;
+    }
+  
+    try {
+      setIsSubmitting(true);
+      console.log("Verifying admin credentials...");
+      
+      const isValidCredentials = await verifyAdminCredentials(adminUsername, adminPassword);
+  
+      console.log("Admin credentials valid:", isValidCredentials);
+  
+      if (!isValidCredentials) {
+        toast.error("Invalid admin username or password. Deletion cancelled.");
+        return; // Stop further execution if credentials are invalid
+      }
+  
+      if (deleteIndex !== null) {
+        console.log("Deleting row at index:", deleteIndex);
+        const rowToDelete = finance[deleteIndex];
+        console.log("Row to delete:", rowToDelete);
+  
+        if (rowToDelete && rowToDelete.ID) {
+          const deleteUrl = `${api}/${rowToDelete.ID}`;
+          console.log("Delete URL:", deleteUrl);
+          const deleteSuccess = await deleteData(deleteUrl);
+          console.log("Delete success:", deleteSuccess);
+  
+          if (deleteSuccess) {
+            setFinance((prevData) => [
+              ...prevData.slice(0, deleteIndex),
+              ...prevData.slice(deleteIndex + 1),
+            ]);
+            toast.success("Data deleted successfully.");
+          } else {
+            toast.error("Failed to delete data.");
+          }
+        } else {
+          console.error("Invalid row or row ID.");
+          toast.error("Failed to delete data.");
+        }
+      }
+    } catch (error) {
+      console.error("Error verifying admin credentials or deleting data:", error);
+      toast.error("An error occurred. Please try again later.");
+    } finally {
+      console.log("Resetting submission state...");
+      setIsSubmitting(false); // Ensure loading state is stopped in all cases
+      setPasswordPromptVisible(false);
+      setAdminUsername("");
+      setAdminPassword("");
+      setDeleteIndex(null);
+    }
+  };
+  
   const verifyAdminCredentials = async (
     adminUsername: string,
     password: string
   ): Promise<boolean> => {
     const verifypassDTO = { username: adminUsername, password: password };
+  
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/staff/password/verify`,
@@ -152,20 +154,34 @@ const Finance = () => {
           body: JSON.stringify(verifypassDTO),
         }
       );
-
+  
       if (!response.ok) {
-        throw new Error("Failed to verify admin credentials");
+        // Handle different response statuses
+        if (response.status === 404) {
+          toast.error("User not found. Please check the username and try again.");
+        } else {
+          toast.error("Failed to verify admin credentials. Please try again.");
+        }
+        return false; // Return false for invalid credentials
       }
-
+  
       const result = await response.json();
-      console.log("Verify API result:", result);
+  
+      // Ensure the result contains a valid response
+      if (!result || typeof result.isValid !== "boolean") {
+        toast.error("Unexpected response from the server. Please try again.");
+        return false;
+      }
+  
       return result.isValid;
     } catch (error) {
       console.error("Error verifying admin credentials:", error);
+      toast.error("An error occurred during verification. Please try again later.");
       return false;
     }
   };
-
+  
+  
 const deleteData = async (url: string): Promise<boolean> => {
   try {
     const response = await fetch(url, {
@@ -295,7 +311,7 @@ const deleteData = async (url: string): Promise<boolean> => {
         <header className="finance-header bg-green-800 text-white p-4 mb-6 flex items-center">
           <Image src={icon} alt="Icon" width={50} height={50} />
           <h1 className="text-3xl font-semibold ml-4">Finance Management</h1>
-          <span className="ml-auto text-sm">{formattedDate}</span>
+          <span className="ml-auto text-lg">{formattedDate}</span>
         </header>
         <table className="finance-table w-full border-collapse bg-white shadow-md">
           <thead>
@@ -383,20 +399,20 @@ const deleteData = async (url: string): Promise<boolean> => {
         </table>
         <div className="finance-actions mt-4 flex justify-between">
           <Button
-            className="px-6 py-3  bg-green-500 hover:bg-green-400 text-white font-bold rounded"
+            className="px-6 py-3  bg-green-500 hover:bg-orange-400 text-white font-bold rounded"
             onClick={addRow}
             disabled={isSubmitting}
           >
             Add Row
           </Button>
           <Button
-            className="px-6 py-3  bg-green-500 hover:bg-green-400 text-white font-bold rounded"
+            className="px-6 py-3  bg-green-500 hover:bg-orange-400 text-white font-bold rounded"
             onClick={handleSubmit}
             isLoading={isSubmitting}
           >
-            Submit
+            Save
           </Button>
-          <span>Total Amount: ${totalAmount.toFixed(2)}</span>
+          <span className="font-bold">Total Amount: MWK{totalAmount}</span>
         </div>
         {passwordPromptVisible && (
           <div className="password-prompt fixed inset-0 bg-green-800 bg-opacity-50 flex items-center justify-center">

@@ -138,7 +138,13 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                 </Link>
               </header>
               <nav>
-                <Accordion
+               
+                <MenuItem
+                  title="Transaction History"
+                  icon={<FaCog className="h-5 w-5" />}
+                  link="/departments/Finance/History"
+                />
+                 <Accordion
                   title="Day Summary"
                   icon={<FaTachometerAlt className="h-5 w-5" />}
                   items={[
@@ -148,27 +154,7 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                     },
                   ]}
                 />
-                <Accordion
-                  title="Report Management"
-                  icon={<FaShoppingBag className="h-5 w-5" />}
-                  items={[
-                    {
-                      title: "Report History",
-                      link: "/departments/Finance/History",
-                    },
-                  ]}
-                />
-                <hr className="my-2" />
-                <MenuItem
-                  title="Record Today's Data"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/Finance/Record"
-                />
-                <MenuItem
-                  title="View Today's Data"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/Finance/ViewData"
-                />
+
                 <MenuItem
                   title="Profile"
                   icon={<FaUserCircle className="h-5 w-5" />}

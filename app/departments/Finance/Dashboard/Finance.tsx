@@ -89,8 +89,18 @@ const ResultItem = ({
 
 const formatDate = (dateString: string | number | Date) => {
   if (!dateString) return "N/A";
+
+  const months = [
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   const date = new Date(dateString);
-  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  return `${day} ${months[monthIndex]} ${year}`;
 };
 
 const Finance: React.FC = () => {
@@ -155,7 +165,7 @@ const Finance: React.FC = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
       setResults([]);
-      setError("Error fetching data");
+      setError("name not found");
     } finally {
       setIsLoading(false);
     }
@@ -184,23 +194,29 @@ const Finance: React.FC = () => {
 
           <div className="relative w-full max-w-lg mb-4">
             <div className="mb-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 w-full md:max-w-xs mx-auto">
-              <Button href="ViewData" className="px-6 py-3">
-                Todays Data
-              </Button>
-              <Button href="Record" className="px-6 py-3">
-                New Day
-              </Button>
+           
             </div>
 
+
+            {error && (
+              <div className="text-red-500 mt-2 text-center">{error}</div>
+            )}
             <SearchBar
               value={input}
               onChange={handleInputChange}
               isQueryEmpty={isQueryEmpty}
             />
 
-            {error && (
-              <div className="text-red-500 mt-2 text-center">{error}</div>
-            )}
+
+               <Button href="ViewData" className="px-6 py-3 hover:bg-orange-600">
+                Todays Data
+              </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             
+              <Button href="Record" className="px-6 py-3 hover:bg-orange-600">
+                New Day
+              </Button>
+
+            
 
             {isLoading && (
               <div className="flex items-center justify-center">
