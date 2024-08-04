@@ -14,8 +14,15 @@ body {
 .Tsikuli{
     font-weight: bolder;
     font-size: 25px;
+;
 
 }
+.Tsiku{
+    margin-left: 900px;
+    font-weight: bolder;
+    font-size: 20px
+}
+
 #dash {
     position: fixed;
     left: 0;

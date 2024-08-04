@@ -9,50 +9,46 @@ interface ReceptionDataItem {
   LastName: string;
   PhoneNumber: string;
   PaymentMethod: string;
-  Returned:string
-}
-interface LabDataItem{
-    ID:number;
-    FirstName:string;
-    LastName:string;
-    PaymentMethod:string;
-    TestOrdered:string
-
-
+  Returned: string;
 }
 
-interface PhamarcyDataItem {
+interface LabDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  PaymentMethod: string;
+  TestOrdered: string;
+}
+
+interface PharmacyDataItem {
   ID: number;
   FirstName: string;
   LastName: string;
   DrugName: string;
   DrugType: string;
   Amount: string;
-  MedicalScheme:string
+  MedicalScheme: string;
 }
 
-
-interface DentalDataItem{
-    ID:number;
-    FirstName:string;
-    LastName:string;
-    PhoneNumber:string;
-    Address:string;
-    Diagnosis:string;
-    Amount:number;
-    MedicalScheme:string;
-    Treatment:string;
-
+interface DentalDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  PhoneNumber: string;
+  Address: string;
+  Diagnosis: string;
+  Amount: number;
+  MedicalScheme: string;
+  Treatment: string;
 }
-interface XrayDataItem{
-    ID:number;
-    FirstName:string;
-    LastName:string;
-    Treatment:string;
-    Amount:String;
-    MedicalScheme:string;
 
-
+interface XrayDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: string;
+  MedicalScheme: string;
 }
 
 interface OPDDataItem {
@@ -75,22 +71,22 @@ interface FinanceDataItem {
 
 const apiEndpoints = {
   reception: `${process.env.NEXT_PUBLIC_API_URL}/reception/day`,
-  Phamarcy: `${process.env.NEXT_PUBLIC_API_URL}/ pharmacy - sales / day`,
+  pharmacy: `${process.env.NEXT_PUBLIC_API_URL}/pharmacy/sales/day`,
   opd: `${process.env.NEXT_PUBLIC_API_URL}/opd/day`,
   finance: `${process.env.NEXT_PUBLIC_API_URL}/finance/day`,
   dental: `${process.env.NEXT_PUBLIC_API_URL}/dental/day`,
-  Xray: `${process.env.NEXT_PUBLIC_API_URL}/x-ray/day`,
-  Lab: `${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
+  xray: `${process.env.NEXT_PUBLIC_API_URL}/x-ray/day`,
+  lab: `${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
 };
 
 const ViewData = () => {
   const [receptionData, setReceptionData] = useState<ReceptionDataItem[]>([]);
-  const [PhamarcyData, setPhamarcyData] = useState<PhamarcyDataItem[]>([]);
+  const [pharmacyData, setPharmacyData] = useState<PharmacyDataItem[]>([]);
   const [opdData, setOPDData] = useState<OPDDataItem[]>([]);
-  const [DentalData, setDentalData] = useState<DentalDataItem[]>([]);
-  const [LabData, setLabData] = useState<LabDataItem[]>([]);
+  const [dentalData, setDentalData] = useState<DentalDataItem[]>([]);
+  const [labData, setLabData] = useState<LabDataItem[]>([]);
   const [financeData, setFinanceData] = useState<FinanceDataItem[]>([]);
-  const [XrayData, setXrayData] = useState<XrayDataItem[]>([]);
+  const [xrayData, setXrayData] = useState<XrayDataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -100,60 +96,58 @@ const ViewData = () => {
   useEffect(() => {
     refreshReceptionData();
     refreshOPDData();
-    RefreshPhamarcyData();
+    refreshPharmacyData();
     refreshFinanceData();
     refreshLabData();
     refreshDentalData();
-    refreshXRayData();
+    refreshXrayData();
   }, []);
 
-  const RefreshPhamarcyData = async () => {
+  const refreshPharmacyData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(apiEndpoints.Phamarcy);
+      const response = await fetch(apiEndpoints.pharmacy);
       if (!response.ok) {
-        throw new Error('Failed to fetch Phamarcy data');
+        throw new Error('Failed to fetch pharmacy data');
       }
       const data = await response.json();
       if (Array.isArray(data)) {
         const uniqueData = removeDuplicates(data, 'ID');
-        setPhamarcyData(uniqueData.map(mapToPhamarcyDataItem));
+        setPharmacyData(uniqueData.map(mapToPharmacyDataItem));
         setError(null);
       } else {
-        setError("Invalid data received from the phamarcy server.");
+        setError("Invalid data received from the pharmacy server.");
       }
     } catch (error) {
-      console.error("Error fetching phamarcy data:", error);
-      setError("Oops! phamarcy data is not available.");
+      console.error("Error fetching pharmacy data:", error);
+      setError("Oops! Pharmacy data is not available.");
     } finally {
       setLoading(false);
     }
   };
 
-
-  const refreshXRayData = async () => {
+  const refreshXrayData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(apiEndpoints.Xray);
+      const response = await fetch(apiEndpoints.xray);
       if (!response.ok) {
         throw new Error('Failed to fetch xray data');
       }
       const data = await response.json();
       if (Array.isArray(data)) {
         const uniqueData = removeDuplicates(data, 'ID');
-  const [XrayData, setXrayData] = useState<XrayDataItem[]>([]);
-  setXrayData(uniqueData.map(mapToXraylDataItem));
+        setXrayData(uniqueData.map(mapToXrayDataItem));
         setError(null);
       } else {
         setError("Invalid data received from the xray server.");
       }
     } catch (error) {
-        console.error("Error fetching xray data:", error);
-        setError("Oops! xray data is not available.");
-      } finally {
-        setLoading(false);
-      }
-    };
+      console.error("Error fetching xray data:", error);
+      setError("Oops! Xray data is not available.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const refreshDentalData = async () => {
     setLoading(true);
@@ -171,17 +165,16 @@ const ViewData = () => {
       }
     } catch (error) {
       console.error("Error fetching dental data:", error);
-      setError("Oops! dental data is not available.");
+      setError("Oops! Dental data is not available.");
     } finally {
       setLoading(false);
     }
   };
 
-
   const refreshLabData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(apiEndpoints.Lab);
+      const response = await fetch(apiEndpoints.lab);
       if (!response.ok) {
         throw new Error('Failed to fetch lab data');
       }
@@ -191,18 +184,15 @@ const ViewData = () => {
         setLabData(uniqueData.map(mapToLabDataItem));
         setError(null);
       } else {
-        setError("Invalid data received from the Lab server.");
+        setError("Invalid data received from the lab server.");
       }
     } catch (error) {
-        console.error("Error fetching Lab data:", error);
-        setError("Oops! Lab data is not available.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-
-
+      console.error("Error fetching lab data:", error);
+      setError("Oops! Lab data is not available.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const refreshReceptionData = async () => {
     setLoading(true);
@@ -220,12 +210,12 @@ const ViewData = () => {
         setError("Invalid data received from the reception server.");
       }
     } catch (error) {
-        console.error("Error fetching reception data:", error);
-        setError("Oops! Reception data is not available.");
-      } finally {
-        setLoading(false);
-      }
-    };
+      console.error("Error fetching reception data:", error);
+      setError("Oops! Reception data is not available.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const refreshOPDData = async () => {
     setLoading(true);
@@ -248,7 +238,6 @@ const ViewData = () => {
       setLoading(false);
     }
   };
-  
 
   const refreshFinanceData = async () => {
     setLoading(true);
@@ -284,7 +273,7 @@ const ViewData = () => {
     LastName: item.LastName,
     PhoneNumber: item.PhoneNumber,
     PaymentMethod: item.PaymentMethod,
-    Returned:item.Returned
+    Returned: item.Returned
   });
 
   const mapToOPDDataItem = (item: any): OPDDataItem => ({
@@ -304,61 +293,102 @@ const ViewData = () => {
     Amount: item.Amount,
     PaymentMethod: item.PaymentMethod,
   });
-  const mapToPhamarcyDataItem = (item: any): PhamarcyDataItem => ({
+
+  const mapToDentalDataItem = (item: any): DentalDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    PhoneNumber: item.PhoneNumber,
+    Address: item.Address,
+    Diagnosis: item.Diagnosis,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
+    Treatment: item.Treatment,
+  });
+
+  const mapToLabDataItem = (item: any): LabDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    PaymentMethod: item.PaymentMethod,
+    TestOrdered: item.TestOrdered
+  });
+
+  const mapToPharmacyDataItem = (item: any): PharmacyDataItem => ({
     ID: item.ID,
     FirstName: item.FirstName,
     LastName: item.LastName,
     DrugName: item.DrugName,
     DrugType: item.DrugType,
-    Amount:item.Amount,
-    MedicalScheme:item.MedicalScheme,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
   });
 
-  const mapToLabDataItem = (item: any): LabDataItem => ({
-    ID:item.ID,
-    FirstName:item.FirstName,
-    LastName:item.LastName,
-    PaymentMethod:item.PaymentMethod,
-    TestOrdered:item.TestOrdered,
-
-  });
-
-   const mapToXraylDataItem = (item: any): XrayDataItem => ({
-    ID:item.ID,
-    FirstName:item.FirstName,
-    LastName:item.LastName,
-    Treatment:item.Teatment,
-    Amount:item.Amount,
-    MedicalScheme:item.MedicalScheme,
-   });
-
-
-  const mapToDentalDataItem = (item: any): DentalDataItem => ({
-    ID:item.ID,
-    FirstName:item.FirstName,
-    LastName:item.LastName,
-    PhoneNumber:item.PhoneNumber,
-    Address:item.Address,
-    Diagnosis:item.Diagnosis,
-    Amount:item.Amount,
-    MedicalScheme:item.MedicalScheme,
-    Treatment:item.Teatment,
-
+  const mapToXrayDataItem = (item: any): XrayDataItem => ({
+    ID: item.ID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Treatment: item.Treatment,
+    Amount: item.Amount,
+    MedicalScheme: item.MedicalScheme,
   });
 
   return (
     <SideBar>
-      {" "}
       <div className="flex flex-col min-h-screen">
         <div className="flex-grow">
-          <br />
-
-          {/* OPD Data Section */}
+          {/* Reception Data Section */}
           <h1 className="date text-2xl font-bold text-center">
-            1.OPD Data {formattedDate}
+            1. Reception Data {formattedDate}
           </h1>
           <br />
           {error && <div className="text-center text-red-500">{error}</div>}
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
+                <tr>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">PhoneNumber</th>
+                  <th className="py-2 px-4">PaymentMethod</th>
+                  <th className="py-2 px-4">Returned</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
+                  </tr>
+                ) : receptionData.length > 0 ? (
+                  receptionData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.PhoneNumber}</td>
+                      <td className="py-2 px-4">{item.PaymentMethod}</td>
+                      <td className="py-2 px-4">{item.Returned}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr key="no-data">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* OPD Data Section */}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            2. OPD Data {formattedDate}
+          </h1>
+          <br />
           <div className="overflow-x-auto">
             <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
               <thead className="bg-gray-800 text-white">
@@ -390,7 +420,7 @@ const ViewData = () => {
                     </tr>
                   ))
                 ) : (
-                  <tr>
+                  <tr key="no-data">
                     <td colSpan={6} className="text-center py-4 text-gray-600">
                       No data available
                     </td>
@@ -399,26 +429,60 @@ const ViewData = () => {
               </tbody>
             </table>
           </div>
-          <div className="text-center mt-4">
-            <button
-              className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-              onClick={refreshOPDData}
-              disabled={loading}
-            >
-              Refresh OPD Data
-            </button>
-            <hr />
-            <br />
-            <br />
-            <br />
+
+          {/* Pharmacy Data Section */}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            3. Pharmacy Data {formattedDate}
+          </h1>
+          <br />
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
+                <tr>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">DrugName</th>
+                  <th className="py-2 px-4">DrugType</th>
+                  <th className="py-2 px-4">Amount</th>
+                  <th className="py-2 px-4">MedicalScheme</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={7} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
+                  </tr>
+                ) : pharmacyData.length > 0 ? (
+                  pharmacyData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.DrugName}</td>
+                      <td className="py-2 px-4">{item.DrugType}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.MedicalScheme}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr key="no-data">
+                    <td colSpan={7} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
 
           {/* Finance Data Section */}
-          <h1 className="date text-2xl font-bold text-center">
-            2.Finance Data {formattedDate}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            4. Finance Data {formattedDate}
           </h1>
           <br />
-          {error && <div className="text-center text-red-500">{error}</div>}
           <div className="overflow-x-auto">
             <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
               <thead className="bg-gray-800 text-white">
@@ -429,7 +493,8 @@ const ViewData = () => {
                   <th className="py-2 px-4">Treatment</th>
                   <th className="py-2 px-4">Amount</th>
                   <th className="py-2 px-4">PaymentMethod</th>
-                  <th className="py-2 px-4">Status</th>
+                  <th className="py-2 px-4">Paid</th>
+
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
@@ -448,11 +513,12 @@ const ViewData = () => {
                       <td className="py-2 px-4">{item.Treatment}</td>
                       <td className="py-2 px-4">{item.Amount}</td>
                       <td className="py-2 px-4">{item.PaymentMethod}</td>
-                      <td className="py-2 px-4">paid 🟢</td>
+                      <td className="py-2 px-4">paid🟢</td>
+
                     </tr>
                   ))
                 ) : (
-                  <tr>
+                  <tr key="no-data">
                     <td colSpan={6} className="text-center py-4 text-gray-600">
                       No data available
                     </td>
@@ -461,365 +527,147 @@ const ViewData = () => {
               </tbody>
             </table>
           </div>
-          <div className="text-center mt-4">
-            <button
-              className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-              onClick={refreshFinanceData}
-              disabled={loading}
-            >
-              Refresh Finance Data
-            </button>
-            <hr />
-            <br />
-            <br />
-            <br />
 
-            {/* laborotory Data Section */}
-            <h1 className="date text-2xl font-bold text-center">
-              3.Laborotory Data {formattedDate}
-            </h1>
-            <br />
-            {error && <div className="text-center text-red-500">{error}</div>}
-            <div className="overflow-x-auto">
-              <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-                <thead className="bg-gray-800 text-white">
-                  <tr>
-                    <th className="py-2 px-4">ID</th>
-                    <th className="py-2 px-4">FirstName</th>
-                    <th className="py-2 px-4">LastName</th>
-                    <th className="py-2 px-4">PaymentMethod</th>
-                    <th className="py-2 px-4">TestOrdered</th>
+          {/* Dental Data Section */}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            5. Dental Data {formattedDate}
+          </h1>
+          <br />
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
+                <tr>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">PhoneNumber</th>
+                  <th className="py-2 px-4">Address</th>
+                  <th className="py-2 px-4">Diagnosis</th>
+                  <th className="py-2 px-4">Amount</th>
+                  <th className="py-2 px-4">MedicalScheme</th>
+                  <th className="py-2 px-4">Treatment</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={9} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="bg-gray-100">
-                  {loading ? (
-                    <tr key="loading">
-                      <td
-                        colSpan={6}
-                        className="text-center py-4 text-gray-600"
-                      >
-                        Loading...
-                      </td>
+                ) : dentalData.length > 0 ? (
+                  dentalData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.PhoneNumber}</td>
+                      <td className="py-2 px-4">{item.Address}</td>
+                      <td className="py-2 px-4">{item.Diagnosis}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.MedicalScheme}</td>
+                      <td className="py-2 px-4">{item.Treatment}</td>
                     </tr>
-                  ) : LabData.length > 0 ? (
-                    LabData.map((item) => (
-                      <tr key={item.ID} className="text-gray-800">
-                        <td className="py-2 px-4">{item.ID}</td>
-                        <td className="py-2 px-4">{item.FirstName}</td>
-                        <td className="py-2 px-4">{item.LastName}</td>
-                        <td className="py-2 px-4">{item.PaymentMethod}</td>
-
-                        <td className="py-2 px-4">{item.TestOrdered}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="text-center py-4 text-gray-600"
-                      >
-                        No data available
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            <div className="text-center mt-4">
-              <button
-                className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                onClick={refreshLabData}
-                disabled={loading}
-              >
-                Refresh Lab Data
-              </button>
-              <hr />
-              <br />
-              <br />
-              <br />
-
-              {/* Reception Data Section */}
-              <h1 className="date text-2xl font-bold text-center">
-                4. Reception Data {formattedDate}
-              </h1>
-              <br />
-              {error && <div className="text-center text-red-500">{error}</div>}
-              <div className="overflow-x-auto">
-                <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-                  <thead className="bg-gray-800 text-white">
-                    <tr>
-                      <th className="py-2 px-4">ID</th>
-                      <th className="py-2 px-4">FirstName</th>
-                      <th className="py-2 px-4">LastName</th>
-                      <th className="py-2 px-4">PhoneNumber</th>
-                      <th className="py-2 px-4">PaymentMethod</th>
-                      <th className="py-2 px-4">Returned</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-gray-100">
-                    {loading ? (
-                      <tr key="loading">
-                        <td
-                          colSpan={6}
-                          className="text-center py-4 text-gray-600"
-                        >
-                          Loading...
-                        </td>
-                      </tr>
-                    ) : receptionData.length > 0 ? (
-                      receptionData.map((item) => (
-                        <tr key={item.ID} className="text-gray-800">
-                          <td className="py-2 px-4">{item.ID}</td>
-                          <td className="py-2 px-4">{item.FirstName}</td>
-                          <td className="py-2 px-4">{item.LastName}</td>
-                          <td className="py-2 px-4">{item.PhoneNumber}</td>
-                          <td className="py-2 px-4">{item.PaymentMethod}</td>
-                          <td className="py-2 px-4">{item.Returned}</td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={6}
-                          className="text-center py-4 text-gray-600"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div className="text-center mt-4">
-                <button
-                  className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                  onClick={refreshReceptionData}
-                  disabled={loading}
-                >
-                  Refresh Reception Data
-                </button>
-                <hr />
-                <br />
-                <br />
-                <br />
-
-                {/* Xray Data Section */}
-                <h1 className="date text-2xl font-bold text-center">
-                  5.Radiology Data {formattedDate}
-                </h1>
-                <br />
-                {error && (
-                  <div className="text-center text-red-500">{error}</div>
+                  ))
+                ) : (
+                  <tr key="no-data">
+                    <td colSpan={9} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
+                  </tr>
                 )}
-                <div className="overflow-x-auto">
-                  <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-                    <thead className="bg-gray-800 text-white">
-                      <tr>
-                        <th className="py-2 px-4">ID</th>
-                        <th className="py-2 px-4">FirstName</th>
-                        <th className="py-2 px-4">LastName</th>
-                        <th className="py-2 px-4">Treatment</th>
-                        <th className="py-2 px-4">Amount</th>
-                        <th className="py-2 px-4">MedicalScheme</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-gray-100">
-                      {loading ? (
-                        <tr key="loading">
-                          <td
-                            colSpan={6}
-                            className="text-center py-4 text-gray-600"
-                          >
-                            Loading...
-                          </td>
-                        </tr>
-                      ) : XrayData.length > 0 ? (
-                        XrayData.map((item) => (
-                          <tr key={item.ID} className="text-gray-800">
-                            <td className="py-2 px-4">{item.ID}</td>
-                            <td className="py-2 px-4">{item.FirstName}</td>
-                            <td className="py-2 px-4">{item.LastName}</td>
-                            <td className="py-2 px-4">{item.Treatment}</td>
-                            <td className="py-2 px-4">{item.Amount}</td>
-                            <td className="py-2 px-4">{item.MedicalScheme}</td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            className="text-center py-4 text-gray-600"
-                          >
-                            No data available
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="text-center mt-4">
-                  <button
-                    className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                    onClick={refreshXRayData}
-                    disabled={loading}
-                  >
-                    Refresh Radiology Data
-                  </button>
-                  <hr />
-                  <br />
-                  <br />
-                  <br />
+              </tbody>
+            </table>
+          </div>
 
-                  {/* dental Data Section */}
-                  <h1 className="date text-2xl font-bold text-center">
-                    6.Dental Data {formattedDate}
-                  </h1>
-                  <br />
-                  {error && (
-                    <div className="text-center text-red-500">{error}</div>
-                  )}
-                  <div className="overflow-x-auto">
-                    <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-                      <thead className="bg-gray-800 text-white">
-                        <tr>
-                          <th className="py-2 px-4">ID</th>
-                          <th className="py-2 px-4">FirstName</th>
-                          <th className="py-2 px-4">LastName</th>
-                          <th className="py-2 px-4">PhoneNumber</th>
-                          <th className="py-2 px-4">Address</th>
-                          <th className="py-2 px-4">Diagnosis</th>
-                          <th className="py-2 px-4">Amount</th>
-                          <th className="py-2 px-4">MedicalScheme</th>
-                          <th className="py-2 px-4">Treatment</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-gray-100">
-                        {loading ? (
-                          <tr key="loading">
-                            <td
-                              colSpan={6}
-                              className="text-center py-4 text-gray-600"
-                            >
-                              Loading...
-                            </td>
-                          </tr>
-                        ) : DentalData.length > 0 ? (
-                          DentalData.map((item) => (
-                            <tr key={item.ID} className="text-gray-800">
-                              <td className="py-2 px-4">{item.ID}</td>
-                              <td className="py-2 px-4">{item.FirstName}</td>
-                              <td className="py-2 px-4">{item.LastName}</td>
-                              <td className="py-2 px-4">{item.PhoneNumber}</td>
-                              <td className="py-2 px-4">{item.Address}</td>
-                              <td className="py-2 px-4">{item.Diagnosis}</td>
-                              <td className="py-2 px-4">{item.Amount}</td>
+          {/* Lab Data Section */}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            6. Lab Data {formattedDate}
+          </h1>
+          <br />
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
+                <tr>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">PaymentMethod</th>
+                  <th className="py-2 px-4">TestOrdered</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={5} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
+                  </tr>
+                ) : labData.length > 0 ? (
+                  labData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.PaymentMethod}</td>
+                      <td className="py-2 px-4">{item.TestOrdered}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr key="no-data">
+                    <td colSpan={5} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
 
-                              <td className="py-2 px-4">
-                                {item.MedicalScheme}
-                              </td>
-                              <td className="py-2 px-4">{item.Treatment}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan={6}
-                              className="text-center py-4 text-gray-600"
-                            >
-                              No data available
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="text-center mt-4">
-                    <button
-                      className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                      onClick={refreshDentalData}
-                      disabled={loading}
-                    >
-                      Refresh Dental Data
-                    </button>
-                    <hr />
-                    <br />
-                    <br />
-                    <br />
-
-                    <h1 className="date text-2xl font-bold text-center">
-                      7.Phamarcy Data {formattedDate}
-                    </h1>
-                    <br />
-                    {error && (
-                      <div className="text-center text-red-500">{error}</div>
-                    )}
-                    <div className="overflow-x-auto">
-                      <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
-                        <thead className="bg-gray-800 text-white">
-                          <tr>
-                            <th className="py-2 px-4">ID</th>
-                            <th className="py-2 px-4">FirstName</th>
-                            <th className="py-2 px-4">LastName</th>
-                            <th className="py-2 px-4">DrugName</th>
-                            <th className="py-2 px-4">DrugType</th>
-                            <th className="py-2 px-4">Amount</th>
-                            <th className="py-2 px-4">MedicalScheme</th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-gray-100">
-                          {loading ? (
-                            <tr key="loading">
-                              <td
-                                colSpan={5}
-                                className="text-center py-4 text-gray-600"
-                              >
-                                Loading...
-                              </td>
-                            </tr>
-                          ) : PhamarcyData.length > 0 ? (
-                            PhamarcyData.map((item) => (
-                              <tr key={item.ID} className="text-gray-800">
-                                <td className="py-2 px-4">{item.ID}</td>
-                                <td className="py-2 px-4">{item.FirstName}</td>
-                                <td className="py-2 px-4">{item.LastName}</td>
-                                <td className="py-2 px-4">{item.DrugName}</td>
-                                <td className="py-2 px-4">{item.DrugType}</td>
-                                <td className="py-2 px-4">{item.Amount}</td>
-                                <td className="py-2 px-4">
-                                  {item.MedicalScheme}
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td
-                                colSpan={5}
-                                className="text-center py-4 text-gray-600"
-                              >
-                                No data available
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="text-center mt-4">
-                      <button
-                        className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                        onClick={RefreshPhamarcyData}
-                        disabled={loading}
-                      >
-                        Refresh Phamarcy Data
-                      </button>
-                      <hr />
-                      <br />
-                      <br />
-                      <br />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* X-ray Data Section */}
+          <h1 className="date text-2xl font-bold text-center mt-8">
+            7. X-ray Data {formattedDate}
+          </h1>
+          <br />
+          <div className="overflow-x-auto">
+            <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+              <thead className="bg-gray-800 text-white">
+                <tr>
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">FirstName</th>
+                  <th className="py-2 px-4">LastName</th>
+                  <th className="py-2 px-4">Treatment</th>
+                  <th className="py-2 px-4">Amount</th>
+                  <th className="py-2 px-4">MedicalScheme</th>
+                </tr>
+              </thead>
+              <tbody className="bg-gray-100">
+                {loading ? (
+                  <tr key="loading">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      Loading...
+                    </td>
+                  </tr>
+                ) : xrayData.length > 0 ? (
+                  xrayData.map((item) => (
+                    <tr key={item.ID} className="text-gray-800">
+                      <td className="py-2 px-4">{item.ID}</td>
+                      <td className="py-2 px-4">{item.FirstName}</td>
+                      <td className="py-2 px-4">{item.LastName}</td>
+                      <td className="py-2 px-4">{item.Treatment}</td>
+                      <td className="py-2 px-4">{item.Amount}</td>
+                      <td className="py-2 px-4">{item.MedicalScheme}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr key="no-data">
+                    <td colSpan={6} className="text-center py-4 text-gray-600">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -47,11 +47,11 @@ const XRaySideBar: React.FC<SideBarProps> = ({ children }) => {
 
   useEffect(() => {
     if (!navigator.onLine) {
-      alert("Unable to open report: no internet connection");
+      // alert("Unable to open report: no internet connection");
     }
 
     const handleOffline = () => {
-      alert("Check your connection and try again later");
+      // alert("Check your connection and try again later");
     };
 
     window.addEventListener("offline", handleOffline);

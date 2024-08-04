@@ -82,7 +82,7 @@ const ViewData = () => {
       }
     } catch (error) {
       console.error("Error fetching Xray data:", error);
-      setError("Oops! Radiologu data is not available.");
+      setError("Oops! Radiology data is not available.");
     } finally {
       setLoading(false);
     }
