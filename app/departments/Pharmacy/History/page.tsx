@@ -115,7 +115,7 @@ const HistoryDate = ({ initialDate }:any) => {
         <div className="flex items-center justify-between bg-gray-800 text-white p-4">
           <div className="flex items-center">
             <div className="ml-4">
-              <h1 className="text-4xl font-bold">Pharmacy Transaction History</h1>
+              <h1 className="text-2xl font-bold">PharmacyTransactionHistory</h1>
             </div>
             <h1 className="tsiku" style={{ fontWeight: 'bolder', fontSize: '30px', marginLeft: '900px' }}>{selectedDate}</h1>
           </div>

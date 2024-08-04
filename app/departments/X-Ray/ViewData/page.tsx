@@ -78,11 +78,11 @@ const ViewData = () => {
         setXrayData(data.map(mapToXrayDataItem));
         setError(null);
       } else {
-        setError("Invalid data received from the Xray  server.");
+        setError("Invalid data received from the Radiology  server.");
       }
     } catch (error) {
       console.error("Error fetching Xray data:", error);
-      setError("Oops! Xray data is not available.");
+      setError("Oops! Radiologu data is not available.");
     } finally {
       setLoading(false);
     }
@@ -137,7 +137,7 @@ const ViewData = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("Oops! Today's data is not available.");
+      setError("Oops! Today's Financial data is not available.");
     } finally {
       setLoading(false);
     }

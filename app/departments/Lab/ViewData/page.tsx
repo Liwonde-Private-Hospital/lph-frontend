@@ -14,6 +14,14 @@ interface LabDataItem{
 
 }
 
+interface FinanceDataItem {
+  ID: number;
+  FirstName: string;
+  LastName: string;
+  Treatment: string;
+  Amount: number;
+  PaymentMethod: string;
+}
 
 
 
@@ -30,6 +38,7 @@ interface OPDDataItem {
 const apiEndpoints = {
 
   opd: `${process.env.NEXT_PUBLIC_API_URL}/opd/treatments/current-day?treatments=lab,laborotory`,
+  finance:`http://localhost:3000/finance/treatments/current-day?treatments=lab,laborotory`,
 
   Lab:`${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
 };
@@ -37,6 +46,8 @@ const apiEndpoints = {
 const ViewData = () => {
 
   const [opdData, setOPDData] = useState<OPDDataItem[]>([]);
+
+  const[FinanceData, setFinanceData]=useState<FinanceDataItem[]>([])
 
   const [LabData, setLabData] = useState<LabDataItem[]>([]);
 
@@ -51,9 +62,35 @@ const ViewData = () => {
     refreshOPDData();
   
     refreshLabData();
+
+    refreshFinanceData();
  
   }, []);
 
+
+
+  const refreshFinanceData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(apiEndpoints.finance);
+      if (!response.ok) {
+        throw new Error('Failed to fetch finance data');
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const uniqueData = removeDuplicates(data, 'ID');
+        setFinanceData(uniqueData.map(mapToFinanceDataItem));
+        setError(null);
+      } else {
+        setError("Invalid data received from the finance server.");
+      }
+    } catch (error) {
+        console.error("Error fetching finace data:", error);
+        setError("Oops! finance data is not available.");
+      } finally {
+        setLoading(false);
+      }
+    };
  
 
 
@@ -121,6 +158,19 @@ const ViewData = () => {
     Amount: item.Amount,
     MedicalScheme: item.MedicalScheme,
   });
+
+
+  const mapToFinanceDataItem = (item: any): FinanceDataItem => ({
+    ID:item.ID,
+    FirstName:item.FirstName,
+    LastName:item.LastName,
+    Treatment:item.Treatment,
+    Amount:item.Amount,
+    PaymentMethod:item.PaymentMethod
+ 
+  
+  });
+
 
 
   const mapToLabDataItem = (item: any): LabDataItem => ({
@@ -193,6 +243,63 @@ const ViewData = () => {
           <br /><br /><br />
         </div>
 
+
+ 
+ {/* finance Data Section */}
+ <h1 className="date text-2xl font-bold text-center">2.Finance Data {formattedDate}</h1>
+        <br />
+        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="overflow-x-auto">
+          <table className="w-full md:w-3/4 lg:w-2/3 mx-auto bg-white rounded-md shadow-md overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2 px-4">ID</th>
+                <th className="py-2 px-4">FirstName</th>
+                <th className="py-2 px-4">LastName</th>
+                <th className="py-2 px-4">Treatment</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">PaymentMethod</th>
+                <th className="py-2 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-100">
+              {loading ? (
+                <tr key="loading">
+                  <td colSpan={6} className="text-center py-4 text-gray-600">Loading...</td>
+                </tr>
+              ) : FinanceData.length > 0 ? (
+                FinanceData.map((item) => (
+                  <tr key={item.ID} className="text-gray-800">
+                    <td className="py-2 px-4">{item.ID}</td>
+                    <td className="py-2 px-4">{item.FirstName}</td>
+                    <td className="py-2 px-4">{item.LastName}</td>
+                    <td className="py-2 px-4">{item.Treatment}</td>
+                    <td className="py-2 px-4">{item.Amount}</td>
+                    <td className="py-2 px-4">{item.PaymentMethod}</td>
+                    <td className="py-2 px-4">paid🟢</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-600">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            className="button bg-green-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+            onClick={refreshFinanceData}
+            disabled={loading}
+          >
+            Refresh Finance Data
+          </button>
+          <hr />
+          <br /><br /><br />
+        </div>
+
+  
         
 
        

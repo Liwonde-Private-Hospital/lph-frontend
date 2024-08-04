@@ -13,6 +13,7 @@ import icon from "../public/favicon.ico";
 import { LPHStaffRole } from "@/app/enums";
 import { login } from "@/actions";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -26,13 +27,13 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     setShowEnterFieldsMessage(false);
     setErrorMessage(null);
-
+  
     if (!username || !password) {
       setShowEnterFieldsMessage(true);
       setIsLoading(false);
       return;
     }
-
+  
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Staff/login`,
@@ -44,35 +45,45 @@ const LoginForm: React.FC = () => {
           body: JSON.stringify({ username, password }),
         }
       );
-
+  
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Invalid username or password. Please try again."
-        );
+        // Check if the response is in JSON format
+        let errorMessage = "Login failed. Please check your credentials.";
+        if (response.headers.get("content-type")?.includes("application/json")) {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } else {
+          // If the response is plain text
+          errorMessage = await response.text();
+        }
+        throw new Error(errorMessage);
       }
-
+  
       const data = await response.json();
       const userRoles = Array.isArray(data.user?.role)
         ? data.user.role
         : [data.user?.role];
       const userDepartment = findUserDepartment(userRoles);
-      const fullName = `${
-          data.user.firstName} ${data.user.lastName}`;
+      const fullName = `${data.user.firstName} ${data.user.lastName}`;
+      
       if (userDepartment) {
-        login(fullName,
-          userDepartment
-        );
+        login(fullName, userDepartment);
       } else {
-        throw new Error("User does not have access to assigned department.");
+        const deptError = "User does not have access to the assigned department.";
+        toast.error(deptError);
+        throw new Error(deptError);
       }
     } catch (error) {
-      setErrorMessage((error as Error).message);
-    } finally {
-      setIsLoading(false);
+      // Display user-friendly error message
+      setErrorMessage(
+        (error as Error).message
+      );
+      toast.error((error as Error).message);
+      setIsLoading(false); // Set isLoading to false here
     }
   };
 
+  
   const findUserDepartment = (userRoles: string[]): string | undefined => {
     return Object.values(LPHStaffRole).find((role) => userRoles.includes(role));
   };
@@ -81,7 +92,7 @@ const LoginForm: React.FC = () => {
     <div className="form">
       <div className="form-wrapper">
         <div className="header1">
-          <Link href='/'>
+          <Link href="/">
             <div className="logo-container mt-2">
               <Image
                 src={icon}
@@ -124,8 +135,12 @@ const LoginForm: React.FC = () => {
                 {errorMessage}
               </Text>
             )}
-            <Button type="submit" isLoading={isLoading} mt={4}  className="px-6 py-3 w-full bg-green-500 hover:bg-green-400 text-white font-bold rounded"
-           >
+            <Button
+              type="submit"
+              isLoading={isLoading}
+              mt={4}
+              className="px-6 py-3 w-full bg-green-500 hover:bg-green-400 text-white font-bold rounded"
+            >
               {isLoading ? <Spinner size="md" /> : "Login"}
             </Button>
           </form>

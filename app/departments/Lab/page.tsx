@@ -140,28 +140,32 @@ const LabSideBar: React.FC<SideBarProps> = ({ children }) => {
               <nav>
                
                 <Accordion
-                  title="Report Management"
+                  title="Transaction History"
                   icon={<FaShoppingBag className="h-5 w-5" />}
                   items={[
                     {
-                      title: "Report History",
+                      title: " History",
                       link: "/departments/Lab/History",
                     },
                   ]}
                 />
                 <hr className="my-2" />
+
                 <MenuItem
-                  title="Record Today's Data"
+                  title="Record Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Lab/Record"
                 />
                 <MenuItem
-                  title="View Today's Data"
+                  title="View Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Lab/ViewData"
                 />
+
+              
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

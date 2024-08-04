@@ -140,28 +140,29 @@ const OPDSideBar: React.FC<SideBarProps> = ({ children }) => {
               <nav>
                
                 <Accordion
-                  title="Report Management"
+                  title="History Management"
                   icon={<FaShoppingBag className="h-5 w-5" />}
                   items={[
                     {
-                      title: "Report History",
+                      title: "Transaction History",
                       link: "/departments/OPD/History",
                     },
                   ]}
                 />
-                <hr className="my-2" />
-                <MenuItem
-                  title="Record Today's Data"
+            
+                 <MenuItem
+                  title="Record Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/OPD/Record"
                 />
                 <MenuItem
-                  title="View Today's Data"
+                  title="View Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/OPD/ViewData"
                 />
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

@@ -7,14 +7,14 @@ import Image from "next/image";
 const people = [
   {
     name: "Samson Zarila",
-    role: "Full-Stack Developer & Integration Manager",
+    role: "Frontend Developer & Integration Manager",
     imageUrl:
       "https://scontent.fblz2-1.fna.fbcdn.net/v/t39.30808-6/346633571_246195788065316_8681281355806901271_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG9P74UkNA3YEBsjY4TddelCM94POWZrh0Iz3g85ZmuHezvGLcC-sfSLwNkOBIIXnIgBnxJYztkp4Tren-E4XhC&_nc_ohc=Jnq2SEclMWMQ7kNvgHvUVQG&_nc_zt=23&_nc_ht=scontent.fblz2-1.fna&oh=00_AYD83yV2sOAvKAgG0ONuwSq6dLxvGt2a7io1PYR3291mnw&oe=66555EDB",
     phoneNumber: "+265887261094",
   },
   {
     name: "Crossby Chilikumtima",
-    role: "System Analyst, Information System Manager & Developer",
+    role: "System Analyst, Information System Manager &Full stack Developer",
     imageUrl:
       "https://scontent.fblz2-1.fna.fbcdn.net/v/t1.6435-9/116582215_1168043260221072_8807594132717734057_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGRPyuOULLsxozsQhDPF8J4856Yrmmrq37znpiuaaurfsBlPmng31j7Ki7-6wNdiovMQA_9thFuXTGq6EtcHdD8&_nc_ohc=L8bj8v_xUQgQ7kNvgFcpqTJ&_nc_ht=scontent.fblz2-1.fna&oh=00_AYCQuXZ_MpjXOlwOeM0DPay7eRdopMpwO2NooRPEMYYqLQ&oe=6676FCEA",
     phoneNumber: "+265886262527",

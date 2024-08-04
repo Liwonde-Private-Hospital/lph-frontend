@@ -138,30 +138,50 @@ const PharmacySideBar: React.FC<SideBarProps> = ({ children }) => {
                 </Link>
               </header>
               <nav>
-                
-                <Accordion
-                  title="Report Management"
+              <Accordion
+                  title="Phamarcy Management System"
                   icon={<FaShoppingBag className="h-5 w-5" />}
                   items={[
                     {
-                      title: "Report History",
+                      title: "Stock Drug in Phamarcy",
+                      link: "#",
+                    },
+                    {
+                      title: "Sell Drug  in Phamarcy",
+                      link: "#",
+                    },
+                    {
+                      title: "Phamarcy Sales History",
+                      link: "#",
+                    },
+                  ]}
+                />
+                
+                <Accordion
+                  title="History Management"
+                  icon={<FaShoppingBag className="h-5 w-5" />}
+                  items={[
+                    {
+                      title: "Transaction History",
                       link: "/departments/Pharmacy/History",
                     },
                   ]}
                 />
+                
                 <hr className="my-2" />
                 <MenuItem
-                  title="Record Today's Data"
+                  title="Record Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Pharmacy/Record"
                 />
                 <MenuItem
-                  title="View Today's Data"
+                  title="View Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Pharmacy/ViewData"
                 />
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

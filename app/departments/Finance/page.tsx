@@ -137,13 +137,31 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                   Finance Dashboard
                 </Link>
               </header>
+
+              <MenuItem
+                  title="Record Todays Data"
+                  icon={<FaCog className="h-5 w-5" />}
+                  link="/departments/Finance/Record"
+                />
+                <MenuItem
+                  title="View Todays Data"
+                  icon={<FaCog className="h-5 w-5" />}
+                  link="/departments/Finance/ViewData"
+                />
+
               <nav>
                
-                <MenuItem
-                  title="Transaction History"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/Finance/History"
-                />
+               <Accordion
+                 title="History Management"
+                 icon={<FaShoppingBag className="h-5 w-5" />}
+                 items={[
+                   {
+                     title: "Transaction History",
+                     link: "/departments/Finance/History",
+                   },
+                 ]}
+               />
+              
                  <Accordion
                   title="Day Summary"
                   icon={<FaTachometerAlt className="h-5 w-5" />}
@@ -152,11 +170,21 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                       title: "Day Summary",
                       link: "/departments/Finance/Summary",
                     },
+                    {
+                      title: "Day Summary History",
+                      link: "#",
+                    },
                   ]}
+                />
+                <MenuItem
+                  title="Creditors"
+                  icon={<FaCog className="h-5 w-5" />}
+                  link="#"
                 />
 
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

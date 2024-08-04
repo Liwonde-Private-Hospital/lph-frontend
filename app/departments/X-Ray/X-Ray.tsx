@@ -133,34 +133,35 @@ const XRaySideBar: React.FC<SideBarProps> = ({ children }) => {
             <div className="flex-1 overflow-y-auto">
               <header className="text-lg font-semibold p-4">
                 <Link href="/departments/X-Ray/Dashboard">
-                X-Ray Dashboard
+                Radiology Dashboard
                 </Link>
               </header>
               <nav>
                
                 <Accordion
-                  title="Report Management"
+                  title="History Management"
                   icon={<FaShoppingBag className="h-5 w-5" />}
                   items={[
                     {
-                      title: "Report History",
+                      title: "Transaction History",
                       link: "/departments/X-Ray/History",
                     },
                   ]}
                 />
                 <hr className="my-2" />
                 <MenuItem
-                  title="Record Today's Data"
+                  title="Record Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/X-Ray/Record"
                 />
                 <MenuItem
-                  title="View Today's Data"
+                  title="View Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/X-Ray/ViewData"
                 />
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

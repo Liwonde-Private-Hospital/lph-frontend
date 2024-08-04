@@ -160,7 +160,7 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
                 />
                 <hr className="my-2" />
                 <MenuItem
-                  title="Power BI"
+                  title="Power BI Reports"
                   icon={<FaUserCircle className="h-5 w-5" />}
                   link="/departments/admin/PowerBIEmbed"
                 />

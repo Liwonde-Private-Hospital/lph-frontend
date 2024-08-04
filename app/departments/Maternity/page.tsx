@@ -137,21 +137,34 @@ const MaternitySideBar: React.FC<SideBarProps> = ({ children }) => {
                 Maternity Dashboard
                 </Link>
               </header>
+              
               <nav>
+               
+               <Accordion
+                 title="Transaction History"
+                 icon={<FaShoppingBag className="h-5 w-5" />}
+                 items={[
+                   {
+                     title: " History",
+                     link: "/departments/Maternity/History",
+                   },
+                 ]}
+               />
                
                 <hr className="my-2" />
                 <MenuItem
-                  title="Record Today's Data"
+                  title="Record Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Maternity/Record"
                 />
                 <MenuItem
-                  title="View Today's Data"
+                  title="View Todays Data"
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Maternity/ViewData"
                 />
                 <MenuItem
                   title="Profile"
+                  link="#"
                   icon={<FaUserCircle className="h-5 w-5" />}
                 />
                 <MenuItem

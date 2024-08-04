@@ -151,39 +151,44 @@ export default function LIwondePrivateHospitalStaffManagement() {
       toast.error("Failed to update staff member. Please try again.");
     }
   };
-
   const handleAdd = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { firstName, lastName, phoneNumber, email, password } = formFields;
-    if (!firstName || !lastName || !phoneNumber || !email || !password) {
-      toast.error("All fields are required.");
-      return;
-    }
+  e.preventDefault();
+  const { firstName, lastName, phoneNumber, email, password } = formFields;
+  if (!firstName || !lastName || !phoneNumber || !email || !password) {
+    toast.error("All fields are required.");
+    return;
+  }
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    try {
-      const response = await fetch(`${API_URL}/staff/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formFields),
-      });
+  try {
+    const response = await fetch(`${API_URL}/staff/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formFields),
+    });
 
-      if (response.ok) {
-        toast.success("Staff member added successfully.");
-        fetchStaff();
-        fetchStaffCount();
-        resetForm();
+    if (response.ok) {
+      toast.success("Staff member added successfully.");
+      fetchStaff();
+      fetchStaffCount();
+      resetForm();
+    } else {
+      const errorData = await response.json();
+      if (errorData.message) {
+        toast.error(errorData.message); // Display backend error message
       } else {
         toast.error("Failed to add staff member.");
       }
-    } catch (error) {
-      console.error("Error adding staff member:", error);
-      toast.error("Failed to add staff member. Please try again.");
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  } catch (error) {
+    console.error("Error adding staff member:", error);
+    toast.error("Failed to add staff member. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   const handleDelete = async (staffId: number) => {
     try {
@@ -396,13 +401,13 @@ export default function LIwondePrivateHospitalStaffManagement() {
                           size="sm"
                           aria-label="Edit staff"
                         />
-                        <IconButton
+                        {/* <IconButton
                           onClick={() => handleDelete(staffMember.id)}
                           className="text-red-500 hover:text-red-700"
                           icon={<MdDelete />}
                           size="sm"
                           aria-label="Delete staff"
-                        />
+                        /> */}
                       </td>
                     </tr>
                   ))}

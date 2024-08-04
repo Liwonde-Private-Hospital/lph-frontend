@@ -90,8 +90,8 @@ const HistoryDate = ({ initialDate }: HistoryDateProps) => {
           <div className="flex items-center justify-between bg-green-800 text-white p-4">
             <div className="flex items-center">
               <div className="ml-4">
-                <h1 className="text-4xl font-bold">
-                  Finance Transaction History
+                <h1 className="text-2xl font-bold">
+                  FinanceTransactionHistory
                 </h1>
               </div>
               <h1
