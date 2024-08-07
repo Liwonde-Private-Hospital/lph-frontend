@@ -13,6 +13,7 @@ import {
   FaChevronDown,
   FaChevronRight,
   FaBell,
+  FaCreditCard,
 } from "react-icons/fa";
 import Link from "next/link";
 import { logout } from "@/actions";
@@ -169,6 +170,22 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/admin/ViewData"
                 />
+                <Accordion
+  title="MedicalSchemes"
+  icon={<FaCreditCard className="h-5 w-5" />}
+       items={[
+        {
+      title: "LibertyHealth",
+      link: "#",
+        },
+        {
+          title: "View All MedicalSchemes",
+          link: "#",
+            }
+   
+    
+        ]}
+    />
                 <MenuItem
                   title="Log Out"
                   onClick={handleLogout}

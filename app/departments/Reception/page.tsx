@@ -12,6 +12,7 @@ import {
   FaChevronDown,
   FaChevronRight,
   FaBell,
+  FaCreditCard,
 } from "react-icons/fa";
 import Link from "next/link";
 import { logout } from "@/actions";
@@ -48,11 +49,11 @@ const ReceptionSideBar: React.FC<SideBarProps> = ({ children }) => {
 
   useEffect(() => {
     if (!navigator.onLine) {
-      alert("Unable to open report: no internet connection");
+      // alert("Unable to open report: no internet connection");
     }
 
     const handleOffline = () => {
-      alert("Check your connection and try again later");
+      // alert("Check your connection and try again later");
     };
 
     window.addEventListener("offline", handleOffline);
@@ -160,6 +161,17 @@ const ReceptionSideBar: React.FC<SideBarProps> = ({ children }) => {
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Reception/ViewData"
                 />
+                  <Accordion
+                  title="MedicalSchemes"
+                  icon={<FaCreditCard className="h-5 w-5" />}
+                  items={[
+                    {
+                      title: "Masm",
+                      link: "#",
+                    },
+                  ]}
+                />
+               
                 <MenuItem
                   title="Profile"
                   link="#"

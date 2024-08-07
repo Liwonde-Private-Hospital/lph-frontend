@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../adminLayout";
 
+
+
+
+
 interface ReceptionDataItem {
   ID: number;
   FirstName: string;
@@ -12,6 +16,9 @@ interface ReceptionDataItem {
   Returned: string;
 }
 
+
+
+
 interface LabDataItem {
   ID: number;
   FirstName: string;
@@ -19,6 +26,10 @@ interface LabDataItem {
   PaymentMethod: string;
   TestOrdered: string;
 }
+
+
+
+
 
 interface PharmacyDataItem {
   ID: number;
@@ -29,6 +40,9 @@ interface PharmacyDataItem {
   Amount: string;
   MedicalScheme: string;
 }
+
+
+
 
 interface DentalDataItem {
   ID: number;
@@ -42,6 +56,9 @@ interface DentalDataItem {
   Treatment: string;
 }
 
+
+
+
 interface XrayDataItem {
   ID: number;
   FirstName: string;
@@ -51,6 +68,8 @@ interface XrayDataItem {
   MedicalScheme: string;
 }
 
+
+
 interface OPDDataItem {
   ID: number;
   FirstName: string;
@@ -59,6 +78,9 @@ interface OPDDataItem {
   Amount: number;
   MedicalScheme: string;
 }
+
+
+
 
 interface FinanceDataItem {
   ID: number;
@@ -71,13 +93,17 @@ interface FinanceDataItem {
 
 const apiEndpoints = {
   reception: `${process.env.NEXT_PUBLIC_API_URL}/reception/day`,
-  pharmacy: `${process.env.NEXT_PUBLIC_API_URL}/pharmacy/sales/day`,
+  pharmacy: `${process.env.NEXT_PUBLIC_API_URL}/pharmacy-sales/day`,
   opd: `${process.env.NEXT_PUBLIC_API_URL}/opd/day`,
   finance: `${process.env.NEXT_PUBLIC_API_URL}/finance/day`,
   dental: `${process.env.NEXT_PUBLIC_API_URL}/dental/day`,
   xray: `${process.env.NEXT_PUBLIC_API_URL}/x-ray/day`,
   lab: `${process.env.NEXT_PUBLIC_API_URL}/laboratory/day`,
 };
+
+
+
+
 
 const ViewData = () => {
   const [receptionData, setReceptionData] = useState<ReceptionDataItem[]>([]);
@@ -90,8 +116,15 @@ const ViewData = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+
+
+
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
+
+
+
+
 
   useEffect(() => {
     refreshReceptionData();
@@ -102,6 +135,12 @@ const ViewData = () => {
     refreshDentalData();
     refreshXrayData();
   }, []);
+
+
+
+
+
+
 
   const refreshPharmacyData = async () => {
     setLoading(true);
@@ -126,6 +165,10 @@ const ViewData = () => {
     }
   };
 
+
+
+
+
   const refreshXrayData = async () => {
     setLoading(true);
     try {
@@ -149,6 +192,9 @@ const ViewData = () => {
     }
   };
 
+
+
+
   const refreshDentalData = async () => {
     setLoading(true);
     try {
@@ -170,6 +216,10 @@ const ViewData = () => {
       setLoading(false);
     }
   };
+
+
+
+
 
   const refreshLabData = async () => {
     setLoading(true);
@@ -194,6 +244,12 @@ const ViewData = () => {
     }
   };
 
+
+
+
+
+
+
   const refreshReceptionData = async () => {
     setLoading(true);
     try {
@@ -217,6 +273,12 @@ const ViewData = () => {
     }
   };
 
+
+
+
+
+
+
   const refreshOPDData = async () => {
     setLoading(true);
     try {
@@ -238,6 +300,11 @@ const ViewData = () => {
       setLoading(false);
     }
   };
+
+
+
+
+
 
   const refreshFinanceData = async () => {
     setLoading(true);
@@ -261,11 +328,21 @@ const ViewData = () => {
     }
   };
 
+
+
+
+
+
   const removeDuplicates = (arr: any[], key: string) => {
     return arr.filter((obj, index, self) =>
       index === self.findIndex((o) => o[key] === obj[key])
     );
   };
+
+
+
+
+
 
   const mapToReceptionDataItem = (item: any): ReceptionDataItem => ({
     ID: item.ID,
@@ -276,6 +353,11 @@ const ViewData = () => {
     Returned: item.Returned
   });
 
+
+
+
+
+
   const mapToOPDDataItem = (item: any): OPDDataItem => ({
     ID: item.ID,
     FirstName: item.FirstName,
@@ -285,6 +367,10 @@ const ViewData = () => {
     MedicalScheme: item.MedicalScheme,
   });
 
+
+
+
+
   const mapToFinanceDataItem = (item: any): FinanceDataItem => ({
     ID: item.ID,
     FirstName: item.FirstName,
@@ -293,6 +379,11 @@ const ViewData = () => {
     Amount: item.Amount,
     PaymentMethod: item.PaymentMethod,
   });
+
+
+
+
+
 
   const mapToDentalDataItem = (item: any): DentalDataItem => ({
     ID: item.ID,
@@ -306,6 +397,10 @@ const ViewData = () => {
     Treatment: item.Treatment,
   });
 
+
+
+
+
   const mapToLabDataItem = (item: any): LabDataItem => ({
     ID: item.ID,
     FirstName: item.FirstName,
@@ -313,6 +408,10 @@ const ViewData = () => {
     PaymentMethod: item.PaymentMethod,
     TestOrdered: item.TestOrdered
   });
+
+
+
+
 
   const mapToPharmacyDataItem = (item: any): PharmacyDataItem => ({
     ID: item.ID,
@@ -324,6 +423,10 @@ const ViewData = () => {
     MedicalScheme: item.MedicalScheme,
   });
 
+
+
+
+
   const mapToXrayDataItem = (item: any): XrayDataItem => ({
     ID: item.ID,
     FirstName: item.FirstName,
@@ -332,6 +435,11 @@ const ViewData = () => {
     Amount: item.Amount,
     MedicalScheme: item.MedicalScheme,
   });
+
+
+
+
+
 
   return (
     <SideBar>

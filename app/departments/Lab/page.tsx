@@ -161,6 +161,7 @@ const LabSideBar: React.FC<SideBarProps> = ({ children }) => {
                   icon={<FaCog className="h-5 w-5" />}
                   link="/departments/Lab/ViewData"
                 />
+                
 
               
                 <MenuItem

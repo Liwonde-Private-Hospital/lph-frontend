@@ -1,10 +1,11 @@
-'use client'
-// Import necessary modules and styles
+'use client';
 import './style.css';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import icon from '../../../images/icon.png';
 import VitalsSideBar from '../page';
+import { toast, ToastContainer } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
 
 // Define interface for VitalsItem
 interface VitalsItem {
@@ -64,28 +65,31 @@ const Vitals = () => {
         setDataModified(true);
     };
 
+    // Function to calculate BMI category
+    const calculateBMICategory = (height: number, weight: number): string => {
+        if (height > 0 && weight > 0) {
+            const bmi = weight / ((height / 100) * (height / 100)); // Calculate BMI as number
+            if (bmi < 18.5) return 'Underweight';
+            if (bmi >= 18.5 && bmi < 24.9) return 'Normal weight';
+            if (bmi >= 25 && bmi < 29.9) return 'Overweight';
+            if (bmi >= 30) return 'Obesity';
+        }
+        return 'Unknown';
+    };
+
     // Function to update a row in vitals
     const updateRow = (index: number, newData: Partial<VitalsItem>) => {
         const updatedData = [...vitals];
         updatedData[index] = { ...updatedData[index], ...newData };
 
-        // Recalculate BMI when height or weight changes
-        if (newData.Height && newData.Weight) {
-            const bmi = calculateBMI(newData.Height, newData.Weight);
-            updatedData[index].BMI = bmi; // BMI is already a string
+        // Recalculate BMI category when height or weight changes
+        if (newData.Height !== undefined && newData.Weight !== undefined) {
+            const bmiCategory = calculateBMICategory(newData.Height, newData.Weight);
+            updatedData[index].BMI = bmiCategory; // BMI is now a category string
         }
 
         setVitals(updatedData);
         setDataModified(true);
-    };
-
-    // Function to calculate BMI
-    const calculateBMI = (height: number, weight: number): string => {
-        if (height > 0 && weight > 0) {
-            const bmi = (weight / ((height / 100) * (height / 100))).toFixed(2); // Calculate BMI and convert to string with two decimal places
-            return bmi;
-        }
-        return '0';
     };
 
     const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/vitals`;
@@ -95,7 +99,7 @@ const Vitals = () => {
         try {
             for (const item of vitals) {
                 if (!item.FirstName || !item.LastName || item.Temperature === 0 || item.Weight === 0 || item.BloodPressure === 0) {
-                    alert('Please fill in all fields!');
+                    toast.error('Please fill in all fields!');
                     return;
                 }
 
@@ -104,9 +108,10 @@ const Vitals = () => {
                 await postData(API_URL, item);
             }
             setDataModified(false); // Reset dataModified after successful submission
+            toast.success('Data saved successfully'); // Display success toast
         } catch (error) {
             console.error('Error connecting to server:', error);
-            alert('Failed to save data');
+            toast.error('Failed to save data'); // Display error toast
         }
     };
 
@@ -122,140 +127,148 @@ const Vitals = () => {
             });
 
             if (response.ok) {
-                alert('Data saved successfully');
+                // No need to handle success here as it's handled in handleSubmit
             } else {
-                alert('Failed to save data');
+                throw new Error('Failed to save data');
             }
         } catch (error) {
             console.error('Error connecting to server:', error);
-            alert('Failed to save data');
+            throw error;
         }
     };
 
     // JSX structure for rendering the component
-    return (<VitalsSideBar>
-        <div className="container mx-auto p-4 bg-opacity-75">
-            <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-800 text-white p-4">
-                    <div className="flex items-center">
-                        <Image src={icon} alt="" width={100} height={100} />
-                        <div className="ml-4">
-                            <h1 className="text-4xl font-bold">Body Tests</h1>
+    return (
+        <VitalsSideBar>
+            <div className="container mx-auto p-4 bg-opacity-75">
+                <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div className="flex items-center justify-between bg-gray-800 text-white p-4">
+                        <div className="flex items-center">
+                            <Image src={icon} alt="" width={100} height={100} />
+                            <div className="ml-4">
+                                <h1 className="text-4xl font-bold">Body Tests</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="px-4 py-2">
-                    <div className="overflow-x-auto">
-                        <div className="w-full table-auto border-collapse border border-gray-300">
-                            <div className="table-row bg-gray-200">
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">ID</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">FirstName</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">LastName</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Temperature</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Height (cm)</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Weight (kg)</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Blood Pressure</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">BMI</div>
-                                <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Action</div>
-                            </div>
-
-                            {vitals.map((row, index) => (
-                                <div className="table-row" key={index}>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="number"
-                                            className="w-full p-2"
-                                            placeholder="e.g 1"
-                                            value={row.ID}
-                                            onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) || 0 })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="text"
-                                            className="w-full p-2"
-                                            placeholder="e.g FirstName"
-                                            value={row.FirstName}
-                                            onChange={(event) => updateRow(index, { ...row, FirstName: event.target.value })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="text"
-                                            className="w-full p-2"
-                                            placeholder="e.g LastName"
-                                            value={row.LastName}
-                                            onChange={(event) => updateRow(index, { ...row, LastName: event.target.value })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="number"
-                                            className="w-full p-2"
-                                            placeholder="e.g Temperature"
-                                            value={row.Temperature}
-                                            onChange={(event) => updateRow(index, { ...row, Temperature: parseFloat(event.target.value) || 0 })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="number"
-                                            className="w-full p-2"
-                                            placeholder="e.g Height in cm"
-                                            value={row.Height}
-                                            onChange={(event) => updateRow(index, { ...row, Height: parseFloat(event.target.value) || 0 })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="number"
-                                            className="w-full p-2"
-                                            placeholder="e.g Weight in kg"
-                                            value={row.Weight}
-                                            onChange={(event) => updateRow(index, { ...row, Weight: parseFloat(event.target.value) || 0 })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <input
-                                            type="number"
-                                            className="w-full p-2"
-                                            placeholder="e.g Blood Pressure"
-                                            value={row.BloodPressure}
-                                            onChange={(event) => updateRow(index, { ...row, BloodPressure: parseFloat(event.target.value) || 0 })}
-                                        />
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        {row.BMI}
-                                    </div>
-                                    <div className="table-cell border border-gray-300 p-2 text-center">
-                                        <button
-                                            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none"
-                                            onClick={() => deleteRow(index)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                    <div className="px-4 py-2">
+                        <div className="overflow-x-auto">
+                            <div className="w-full table-auto border-collapse border border-gray-300">
+                                <div className="table-row bg-gray-200">
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">ID</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">FirstName</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">LastName</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Temperature</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Height (cm)</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Weight (kg)</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Blood Pressure</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">BMI</div>
+                                    <div className="table-cell border border-gray-300 p-2 text-center font-semibold">Action</div>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="mt-4 flex justify-center">
-                            <button
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none mr-4"
-                                onClick={addRow}
-                            >
-                                Add Row
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-500 focus:outline-none"
-                                onClick={handleSubmit}
-                            >
-                                Save
-                            </button>
+
+                                {vitals.map((row, index) => (
+                                    <div className="table-row" key={index}>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="number"
+                                                className="w-full p-2"
+                                                placeholder="e.g 1"
+                                                value={row.ID}
+                                                onChange={(event) => updateRow(index, { ...row, ID: parseInt(event.target.value) || 0 })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="text"
+                                                className="w-full p-2"
+                                                placeholder="e.g FirstName"
+                                                value={row.FirstName}
+                                                onChange={(event) => updateRow(index, { ...row, FirstName: event.target.value })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="text"
+                                                className="w-full p-2"
+                                                placeholder="e.g LastName"
+                                                value={row.LastName}
+                                                onChange={(event) => updateRow(index, { ...row, LastName: event.target.value })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="number"
+                                                className="w-full p-2"
+                                                placeholder="e.g Temperature"
+                                                value={row.Temperature}
+                                                onChange={(event) => updateRow(index, { ...row, Temperature: parseFloat(event.target.value) || 0 })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="number"
+                                                className="w-full p-2"
+                                                placeholder="e.g Height in cm"
+                                                value={row.Height}
+                                                onChange={(event) => updateRow(index, { ...row, Height: parseFloat(event.target.value) || 0 })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="number"
+                                                className="w-full p-2"
+                                                placeholder="e.g Weight in kg"
+                                                value={row.Weight}
+                                                onChange={(event) => updateRow(index, { ...row, Weight: parseFloat(event.target.value) || 0 })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="number"
+                                                className="w-full p-2"
+                                                placeholder="e.g Blood Pressure"
+                                                value={row.BloodPressure}
+                                                onChange={(event) => updateRow(index, { ...row, BloodPressure: parseFloat(event.target.value) || 0 })}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <input
+                                                type="text"
+                                                className="w-full p-2"
+                                                readOnly
+                                                value={row.BMI}
+                                            />
+                                        </div>
+                                        <div className="table-cell border border-gray-300 p-2 text-center">
+                                            <button
+                                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                                onClick={() => deleteRow(index)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex justify-between mt-4">
+                                <button
+                                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                                    onClick={addRow}
+                                >
+                                    Add Row
+                                </button>
+                                <button
+                                    className="bg-green-500 text-white px-4 py-2 rounded"
+                                    onClick={handleSubmit}
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div></VitalsSideBar>
+            <ToastContainer /> {/* Toast container to render notifications */}
+        </VitalsSideBar>
     );
 };
 

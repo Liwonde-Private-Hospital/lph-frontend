@@ -1,4 +1,5 @@
 "use client";
+import { FaMoneyBillWave, FaCreditCard, FaMoon } from 'react-icons/fa';
 import React, { useState, useEffect } from "react";
 import {
   FaBars,
@@ -138,16 +139,6 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                 </Link>
               </header>
 
-              <MenuItem
-                  title="Record Todays Data"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/Finance/Record"
-                />
-                <MenuItem
-                  title="View Todays Data"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="/departments/Finance/ViewData"
-                />
 
               <nav>
                
@@ -167,7 +158,7 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                   icon={<FaTachometerAlt className="h-5 w-5" />}
                   items={[
                     {
-                      title: "Day Summary",
+                      title: "Record Todays Summary",
                       link: "/departments/Finance/Summary",
                     },
                     {
@@ -176,11 +167,111 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
                     },
                   ]}
                 />
-                <MenuItem
-                  title="Creditors"
-                  icon={<FaCog className="h-5 w-5" />}
-                  link="#"
-                />
+                <Accordion
+  title="Expenditures"
+  icon={<FaMoneyBillWave className="h-5 w-5" />}
+  items={[
+    {
+      title: "Record Todays Expenditure",
+      link: "#",
+    },
+    {
+      title: "Expenditure History",
+      link: "#",
+    },
+  ]}
+/>
+
+<Accordion
+  title="Creditors"
+  icon={<FaCreditCard className="h-5 w-5" />}
+  items={[
+    {
+      title: "Record Creditors",
+      link: "#",
+    },
+    {
+      title: "View Creditors History",
+      link: "#",
+    },
+  ]}
+/>
+<Accordion
+  title="MedicalSchemes"
+  icon={<FaCreditCard className="h-5 w-5" />}
+  items={[
+    {
+      title: "MedHealth",
+      link: "MedHealth",
+    },
+    {
+      title: "MRA",
+      link: "#",
+    },
+    {
+      title: "WaterBoard",
+      link: "#",
+    },
+    {
+      title: "NationalBank",
+      link: "#",
+    },
+    {
+      title: "Malawi Fertlizer",
+      link: "#",
+    },
+    {
+      title: "Nkhokwe Fertlizer",
+      link: "#",
+    },
+    {
+      title: "Escom",
+      link: "#",
+    },
+    {
+      title: "Egenco",
+      link: "#",
+    },
+    {
+      title: "Reserve Bank",
+      link: "#",
+    },
+    
+  ]}
+/>
+<Accordion
+  title="Cashflow"
+  icon={<FaCreditCard className="h-5 w-5" />}
+  items={[
+    {
+      title: "Record Cashflow",
+      link: "#",
+    },
+    {
+      title: "View Cashflow History",
+      link: "#",
+    },
+  ]}
+/>
+
+
+
+<Accordion
+  title="Night Duty"
+  icon={<FaMoon className="h-5 w-5" />}
+  items={[
+    {
+      title: "Record Night Duty",
+      link: "#",
+    },
+    {
+      title: "View NightDuty History",
+      link: "#",
+    },
+  ]}
+/>
+
+             
 
                 <MenuItem
                   title="Profile"

@@ -5,34 +5,23 @@ body {
     padding: 0;
     flex-direction: row; /* Ensure a horizontal layout */
 }
-.delete-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.Tsikuli{
-    font-weight: bolder;
-    font-size: 25px;
-
-}
 .tsiku{
     font-weight: bolder;
 
     font-size: 30px;
-    margin-left: 900px;
+    margin-left: 1399px;
+}
+.Tsikuli{
+    font-weight: bolder;
+    font-size: 25px;
+;
+
 }
 .Tsiku{
-    margin-left: 800px;
+    margin-left: 900px;
     font-weight: bolder;
     font-size: 20px
 }
-
-
-
 
 #dash {
     position: fixed;
@@ -57,8 +46,6 @@ body {
     font-weight: 300;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
 }
-
-
 .table-box{
     /* margin-right: 500px; */
 }
@@ -111,7 +98,7 @@ body {
     border: 1px solid green;
 }
 .button:hover{
-    background-color: orange;
+    background-color:orange;
     color: white;
     cursor: pointer;
     transition: all 400ms linear;
@@ -130,7 +117,7 @@ body {
     border: 1px solid green;
 }
 .button1:hover{
-    background-color:orange;
+    background-color: orange;
     color: white;
     cursor: pointer;
     transition: all 400ms linear;
@@ -190,7 +177,7 @@ body {
         width: 50px;
     }
     #label{
-        width: 30px;
+        width: 60px;
         height: 20px;
     }
     .delete{
