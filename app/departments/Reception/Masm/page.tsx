@@ -4,12 +4,13 @@ import "./style.css";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import icon from "../../../images/icon.png";
-import { Button } from "@chakra-ui/react";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import FinanceSideBar from "../page";
+
+import ReceptionSideBar from "../page";
 
 // Extend jsPDF to include autoTable method
 declare module "jspdf" {
@@ -237,7 +238,7 @@ const MedHealth = () => {
   };
   
   return (
-    <FinanceSideBar>
+    <ReceptionSideBar>
     <>
       <ToastContainer />
       <div className="min-h-screen py-8">
@@ -411,7 +412,7 @@ const MedHealth = () => {
       </div>
       
     </>
-  </FinanceSideBar>
+    </ReceptionSideBar>
 
   );
 };
