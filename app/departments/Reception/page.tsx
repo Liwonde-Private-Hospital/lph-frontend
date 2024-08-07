@@ -162,12 +162,12 @@ const ReceptionSideBar: React.FC<SideBarProps> = ({ children }) => {
                   link="/departments/Reception/ViewData"
                 />
                   <Accordion
-                  title="MedicalSchemes"
+                  title="Claim Forms"
                   icon={<FaCreditCard className="h-5 w-5" />}
                   items={[
                     {
                       title: "Masm",
-                      link: "#",
+                      link: "Masm",
                     },
                   ]}
                 />

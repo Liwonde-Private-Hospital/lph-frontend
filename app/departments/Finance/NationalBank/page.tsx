@@ -170,7 +170,7 @@ const MedHealth = () => {
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    const title = "MEDHEALTH SUMMARY";
+    const title = "NATIONAL BANK SUMMARY";
   
     // Header section
     doc.setFontSize(18);
@@ -187,7 +187,7 @@ const MedHealth = () => {
     const selectedDate = new Date(selectedYear, selectedMonth - 1);
     doc.setFontSize(14);
     doc.text(
-      `MEDHEALTH SUMMARY AS AT ${selectedDate.toLocaleString("en-US", {
+      `NATIONAL BANK SUMMARY AS AT ${selectedDate.toLocaleString("en-US", {
         month: "long",
         year: "numeric",
       })}`,
@@ -232,7 +232,7 @@ const MedHealth = () => {
     }).replace(/\s+/g, '_'); // Replace spaces with underscores
   
     // Save the PDF with the formatted date as part of the file name
-    const filename = `MedHealth_Summary_${formattedDate}.pdf`;
+    const filename = `NationalBank_Summary_${formattedDate}.pdf`;
     doc.save(filename);
   };
   
@@ -252,7 +252,7 @@ const MedHealth = () => {
                 <p>CELL: 0888597087</p>
                 <div className="text-center mt-4">
                   <p className="font-bold text-xl">
-                    MEDHEALTH SUMMARY AS AT{" "}
+                    NATIONALBANK SUMMARY AS AT{" "}
                     {new Date(
                       selectedYear,
                       selectedMonth - 1

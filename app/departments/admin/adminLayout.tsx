@@ -171,17 +171,21 @@ const SideBar: React.FC<SideBarProps> = ({children }) => {
                   link="/departments/admin/ViewData"
                 />
                 <Accordion
-  title="MedicalSchemes"
+  title="Claim Forms"
   icon={<FaCreditCard className="h-5 w-5" />}
        items={[
         {
       title: "LibertyHealth",
-      link: "#",
+      link: "LibertyHealth",
         },
         {
-          title: "View All MedicalSchemes",
+          title: "View All Claim Forms",
           link: "#",
-            }
+            },
+            {
+              title: "Confirm Payments",
+              link: "#",
+                }
    
     
         ]}

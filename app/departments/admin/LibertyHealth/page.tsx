@@ -9,7 +9,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import FinanceSideBar from "../page";
+
+import SideBar from "../adminLayout";
 
 // Extend jsPDF to include autoTable method
 declare module "jspdf" {
@@ -170,7 +171,7 @@ const MedHealth = () => {
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    const title = "MEDHEALTH SUMMARY";
+    const title = "LIBERTYHEALTH SUMMARY";
   
     // Header section
     doc.setFontSize(18);
@@ -187,7 +188,7 @@ const MedHealth = () => {
     const selectedDate = new Date(selectedYear, selectedMonth - 1);
     doc.setFontSize(14);
     doc.text(
-      `MEDHEALTH SUMMARY AS AT ${selectedDate.toLocaleString("en-US", {
+      `LIBERTYHEALTH SUMMARY AS AT ${selectedDate.toLocaleString("en-US", {
         month: "long",
         year: "numeric",
       })}`,
@@ -232,12 +233,12 @@ const MedHealth = () => {
     }).replace(/\s+/g, '_'); // Replace spaces with underscores
   
     // Save the PDF with the formatted date as part of the file name
-    const filename = `MedHealth_Summary_${formattedDate}.pdf`;
+    const filename = `LibertyHealth_Summary_${formattedDate}.pdf`;
     doc.save(filename);
   };
   
   return (
-    <FinanceSideBar>
+    <SideBar>
     <>
       <ToastContainer />
       <div className="min-h-screen py-8">
@@ -252,7 +253,7 @@ const MedHealth = () => {
                 <p>CELL: 0888597087</p>
                 <div className="text-center mt-4">
                   <p className="font-bold text-xl">
-                    MEDHEALTH SUMMARY AS AT{" "}
+                    LIBERTY HEALTH SUMMARY AS AT{" "}
                     {new Date(
                       selectedYear,
                       selectedMonth - 1
@@ -411,7 +412,7 @@ const MedHealth = () => {
       </div>
       
     </>
-  </FinanceSideBar>
+  </SideBar>
 
   );
 };

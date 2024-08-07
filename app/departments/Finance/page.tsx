@@ -197,7 +197,7 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
   ]}
 />
 <Accordion
-  title="MedicalSchemes"
+  title="Claim Forms"
   icon={<FaCreditCard className="h-5 w-5" />}
   items={[
     {
@@ -206,35 +206,35 @@ const FinanceSideBar: React.FC<SideBarProps> = ({ children }) => {
     },
     {
       title: "MRA",
-      link: "#",
+      link: "MRA",
     },
     {
       title: "WaterBoard",
-      link: "#",
+      link: "WaterBoard",
     },
     {
       title: "NationalBank",
-      link: "#",
+      link: "NationalBank",
     },
     {
       title: "Malawi Fertlizer",
-      link: "#",
+      link: "MalawiFertlizer",
     },
     {
       title: "Nkhokwe Fertlizer",
-      link: "#",
+      link: "NkhokweFertlizer",
     },
     {
       title: "Escom",
-      link: "#",
+      link: "Escom",
     },
     {
       title: "Egenco",
-      link: "#",
+      link: "Egenco",
     },
     {
       title: "Reserve Bank",
-      link: "#",
+      link: "ReserveBank",
     },
     
   ]}
